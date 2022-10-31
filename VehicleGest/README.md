@@ -1,2 +1,0 @@
-# VehicleGest
- Ilerna project

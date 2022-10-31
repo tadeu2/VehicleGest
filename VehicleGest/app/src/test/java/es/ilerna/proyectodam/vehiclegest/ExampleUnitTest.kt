@@ -1,4 +1,4 @@
-package es.ilerna.proyecto.vehiclegest
+package es.ilerna.proyectodam.vehiclegest
 
 import org.junit.Test
 
