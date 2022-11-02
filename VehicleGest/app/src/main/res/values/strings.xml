@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">VehicleGest</string>
+    <string name="edit">edit</string>
+    <string name="page_title">page_title</string>
+    <string name="content_description_search" />
+    <string name="favorite" />
+    <string name="content_description_favorite" />
+    <string name="more" />
+    <string name="content_description_more" />
 </resources>

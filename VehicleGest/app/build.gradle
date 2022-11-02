@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace 'es.ilerna.proyectodam.vehiclegest'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "es.ilerna.proyectodam.vehiclegest"
-        minSdk 28
+        minSdk 27
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -44,4 +44,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     // https://mvnrepository.com/artifact/androidx.compose.material3/material3
     runtimeOnly 'androidx.compose.material3:material3:1.0.0'
+    implementation("androidx.compose.material3:material3:1.0.0-rc01")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-rc01")
 }
