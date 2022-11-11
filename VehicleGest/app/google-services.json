@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "248396037774",
+    "project_id": "vehiclegest",
+    "storage_bucket": "vehiclegest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248396037774:android:21eb523e6c9812198813df",
+        "android_client_info": {
+          "package_name": "es.ilerna.proyectodam.vehiclegest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248396037774-lqtifbsl85bnlrktitil22b38mgqbo4d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj0dMGd_uuEtTLWFQ1dCtzC4urviQ5B-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248396037774-lqtifbsl85bnlrktitil22b38mgqbo4d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
