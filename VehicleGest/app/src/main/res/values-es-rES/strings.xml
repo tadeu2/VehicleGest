@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="edit">editar</string>
+    <string name="vehiculos_menu_inferior">Vehiculos</string>
+    <string name="servicios_menu_inferior">Servicios</string>
+    <string name="personal_menu_inferior">Personal</string>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
+    <string name="title_activity_vehiculos">Vehicles</string>
+    <string name="more">más</string>
+    <string name="favorite">favorito</string>
+    <string name="inventario_menu_inferior">Inventario</string>
+</resources>

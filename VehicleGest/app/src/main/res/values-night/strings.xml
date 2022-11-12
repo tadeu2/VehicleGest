@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">VehicleGest</string>
+    <string name="edit">edit</string>
+    <string name="page_title" translatable="false">VehicleGest</string>
+    <string name="content_description_search" translatable="false" />
+    <string name="favorite" >favorite</string>
+    <string name="content_description_favorite" translatable="false" />
+    <string name="more" >more</string>
+    <string name="content_description_more" translatable="false" />
+    <string name="vehiculos_menu_inferior">Vehícles</string>
+    <string name="itv_menu_inferior" translatable="false">ITV</string>
+    <string name="servicios_menu_inferior">Services</string>
+    <string name="inventario_menu_inferior">Inventory</string>
+    <string name="personal_menu_inferior">Personnel</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/vehiculos"
+        android:enabled="true"
+        android:icon="@drawable/outline_local_shipping_24"
+        android:title="@string/vehiculos_menu_inferior"/>
+    <item
+        android:id="@+id/itv"
+        android:enabled="true"
+        android:icon="@drawable/outline_handyman_24"
+        android:title="@string/itv_menu_inferior"/>
+    <item
+        android:id="@+id/servicios"
+        android:enabled="true"
+        android:icon="@drawable/outline_handshake_24"
+        android:title="@string/servicios_menu_inferior"/>
+    <item
+        android:id="@+id/inventario"
+        android:enabled="true"
+        android:icon="@drawable/outline_inventory_24"
+        android:title="@string/inventario_menu_inferior"/>
+    <item
+        android:id="@+id/personal"
+        android:enabled="true"
+        android:icon="@drawable/outline_group_24"
+        android:title="@string/personal_menu_inferior"/>
+</menu>
