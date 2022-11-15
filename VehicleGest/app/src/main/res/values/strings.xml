@@ -2,20 +2,14 @@
     <string name="app_name" translatable="false">VehicleGest</string>
     <string name="edit">edit</string>
     <string name="page_title" translatable="false">VehicleGest</string>
-    <string name="content_description_search" />
     <string name="favorite">favorite</string>
-    <string name="content_description_favorite" />
     <string name="more">more</string>
-    <string name="content_description_more" />
     <string name="vehiculos_menu_inferior">Vehicles</string>
-    <string name="itv_menu_inferior">ITV</string>
+    <string name="itv_menu_inferior" translatable="false">ITV</string>
     <string name="servicios_menu_inferior">Services</string>
     <string name="inventario_menu_inferior">Inventory</string>
-    <string name="personal_menu_inferior">Staff</string>
+    <string name="personal_menu_inferior">Employees</string>
     <string name="title_activity_vehiculos">Vehicles</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label" translatable="false">First Fragment</string>
-    <string name="second_fragment_label" translatable="false">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -67,8 +61,10 @@
     <string name="username">Username</string>
     <string name="Enter">Enter</string>
     <string name="password">Password</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_alerts">Alertas</string>
+    <string name="title_vehicles">Vehicles</string>
+    <string name="title_dashboard">Tablón de avisos</string>
+    <string name="content_description_search">Buscar</string>
+    <string name="content_description_favorite">Favorito</string>
+    <string name="content_description_more">Más</string>
 </resources>

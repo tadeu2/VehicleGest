@@ -22,4 +22,10 @@
     <string name="login_failed">Autenticación fallida</string>
     <string name="title_activity_login">Autenticación</string>
     <string name="prompt_email">Correo electrónico</string>
+    <string name="title_alerts">Alertas</string>
+    <string name="title_vehicles">Vehicles</string>
+    <string name="title_dashboard">Tablón de avisos</string>
+    <string name="content_description_search">Buscar</string>
+    <string name="content_description_favorite">Favorito</string>
+    <string name="content_description_more">Más</string>
 </resources>

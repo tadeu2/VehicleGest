@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ActivityLogin">
+    tools:context=".ui.login.LoginFragment">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_Login"
@@ -104,5 +104,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_10"
         app:srcCompat="@mipmap/ic_launcher" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

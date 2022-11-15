@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.ui.notifications
+package es.ilerna.proyectodam.vehiclegest.ui.services
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import es.ilerna.proyectodam.vehiclegest.ui.databinding.FragmentNotificationsBinding
+import es.ilerna.proyectodam.vehiclegest.databinding.FragmentServicesBinding
 
-class NotificationsFragment : Fragment() {
+class ServicesFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
+    private var _binding: FragmentServicesBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        val servicesViewModel =
+            ViewModelProvider(this).get(ServicesViewModel::class.java)
 
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        _binding = FragmentServicesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textDashboard
+        servicesViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

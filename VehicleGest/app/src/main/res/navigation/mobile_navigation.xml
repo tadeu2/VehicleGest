@@ -3,23 +3,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_vehicles" />
+    app:startDestination="@id/navigation_dashboard">
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.ui.dashboard.DashboardFragment"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_vehicles"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment"
+        android:label="@string/title_vehicles"
+        tools:layout="@layout/fragment_vehicles" />
+
+    <fragment
+        android:id="@+id/navigation_itv"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.itv.ITVFragment"
+        android:label="@string/title_vehicles"
+        tools:layout="@layout/fragment_vehicles" />
+
+    <fragment
+        android:id="@+id/navigation_services"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.services.ServicesFragment"
+        android:label="@string/title_vehicles"
+        tools:layout="@layout/fragment_vehicles" />
+
+    <fragment
+        android:id="@+id/navigation_employees"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeesFragment"
+        android:label="@string/title_vehicles"
+        tools:layout="@layout/fragment_vehicles" />
+    <fragment
+        android:id="@+id/navigation_inventory"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.inventory.InventoryFragment"
+        android:label="@string/title_vehicles"
+        tools:layout="@layout/fragment_vehicles" />
+
+    <fragment
+        android:id="@+id/navigation_alerts"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment"
+        android:label="@string/title_alerts"
+        tools:layout="@layout/fragment_alerts" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.MainActivity"
+        android:label="MainActivity" />
+
+
 </navigation>

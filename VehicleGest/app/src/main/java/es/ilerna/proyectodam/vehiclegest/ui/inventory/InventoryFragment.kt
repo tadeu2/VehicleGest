@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.ui.dashboard
+package es.ilerna.proyectodam.vehiclegest.ui.inventory
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import es.ilerna.proyectodam.vehiclegest.ui.databinding.FragmentDashboardBinding
+import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
 
-class DashboardFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+class InventoryFragment : Fragment() {
+
+    private var _binding: FragmentInventoryBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +23,14 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        val servicesViewModel =
+            ViewModelProvider(this).get(InventoryViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textHome
+        servicesViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
