@@ -1,10 +1,9 @@
-package es.ilerna.proyectodam.vehiclegest
+package es.ilerna.proyectodam.vehiclegest.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.replace
-import com.google.android.material.navigation.NavigationBarView
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_main)
 
         setContentView(binding.root)
-
+ /*
         binding.bottomNavigation.setOnClickListener(){
             when() {
                 R.id.vehiculos -> {
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
+*/
         /* NavigationBarView.OnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.vehiculos -> {
