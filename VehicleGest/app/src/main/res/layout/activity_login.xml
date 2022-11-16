@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.LoginFragment">
+    tools:context=".ui.login.LoginActivity">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_Login"
+        android:id="@+id/btLogin"
         android:layout_width="228dp"
         android:layout_height="74dp"
         android:text="@string/Enter"
