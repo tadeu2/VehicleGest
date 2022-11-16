@@ -67,4 +67,9 @@
     <string name="content_description_search">Buscar</string>
     <string name="content_description_favorite">Favorito</string>
     <string name="content_description_more">Más</string>
+    <string name="Logout">Logout</string>
+    <string name="title_activity_top">TopActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
 </resources>

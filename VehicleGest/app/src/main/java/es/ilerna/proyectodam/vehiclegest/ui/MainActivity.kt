@@ -1,15 +1,20 @@
 package es.ilerna.proyectodam.vehiclegest.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
+import androidx.fragment.app.Fragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
+import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeesFragment
+import es.ilerna.proyectodam.vehiclegest.ui.inventory.InventoryFragment
+import es.ilerna.proyectodam.vehiclegest.ui.inspections.InspectionsFragment
+import es.ilerna.proyectodam.vehiclegest.ui.login.LoginActivity
+import es.ilerna.proyectodam.vehiclegest.ui.services.ServicesFragment
+import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,46 +26,46 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_dashboard, R.id.navigation_vehicles,R.id.navigation_services,
-                R.id.navigation_itv,R.id.navigation_employees,R.id.navigation_inventory)
-            )
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-
-        NavigationBarView.OnItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.vehiculos -> {
-                    // Respond to navigation item 1 click
-                    true
+        binding.bottomNavMenu.setOnClickListener {
+            when (it.id) {
+                R.id.vehicles -> {replaceFragment(VehiclesFragment())
+                    Toast.makeText(this@MainActivity, "You clicked me.", Toast.LENGTH_SHORT).show()
                 }
-                R.id.itv -> {
-                    // Respond to navigation item 2 click
-                    true
+                R.id.itv -> replaceFragment(InspectionsFragment())
+                R.id.services -> replaceFragment(ServicesFragment())
+                R.id.inventory -> replaceFragment(InventoryFragment())
+                R.id.employees -> replaceFragment(EmployeesFragment())
+                else -> {
                 }
-                R.id.servicios -> {
-                    // Respond to navigation item 2 click
-                    true
-                }
-                R.id.inventario -> {
-                    // Respond to navigation item 2 click
-                    true
-                }
-                R.id.personal -> {
-                    // Respond to navigation item 2 click
-                    true
-                }
-                else -> false
             }
+        }
+        //Chequea que el usuario logueado no sea nulo, si lo es vuelve al login
+        checkCurrentUser()
+
+    }
+
+    private fun replaceFragment(fragment: Fragment){
+
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_fragment_activity_main,fragment)
+        fragmentTransaction.commit()
+
+    }
+
+    private fun checkCurrentUser() {
+        // [START check_current_user]
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            binding.textUsername.text = user.displayName.toString()
+        } else {
+            showLogin()
         }
     }
 
+    private fun showLogin() {
+        val loginIntent : Intent = Intent(this, LoginActivity::class.java)
+        startActivity(loginIntent)
+    }
 }
 

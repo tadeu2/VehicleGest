@@ -70,29 +70,30 @@
             android:id="@+id/tie_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:textColorHint="#546E7A" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextTextPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:hint="@string/password"
         app:endIconMode="password_toggle"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_90"
-        app:layout_constraintTop_toBottomOf="@id/til_username"
-        >
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
+        app:layout_constraintTop_toBottomOf="@id/til_username">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:minHeight="48dp" />
     </com.google.android.material.textfield.TextInputLayout>
-
-
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/logo"
@@ -104,7 +105,5 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_10"
         app:srcCompat="@mipmap/ic_launcher" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

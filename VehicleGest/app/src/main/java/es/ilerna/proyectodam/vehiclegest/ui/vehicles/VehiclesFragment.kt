@@ -28,7 +28,7 @@ class VehiclesFragment : Fragment() {
         _binding = FragmentVehiclesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        val textView: TextView = binding.textVehicles
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }

@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+
     namespace 'es.ilerna.proyectodam.vehiclegest'
     compileSdk 33
 
@@ -27,6 +28,7 @@ android {
     }
 
     buildFeatures{
+        dataBinding = true
         viewBinding true
     }
     compileOptions {
@@ -40,6 +42,16 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    //pongo este exclude porque da error al compilar
+    packagingOptions{
+        pickFirst 'META-INF/DEPENDENCIES'
+        pickFirst 'META-INF/AL2.0'
+        pickFirst 'META-INF/LGPL2.1'
+        pickFirst 'xsd/catalog.xml'
+        pickFirst 'META-INF/LICENSE.md'
+    }
+
 }
 
 dependencies {
@@ -47,7 +59,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation group: 'com.android.tools.build', name: 'gradle', version: '7.3.1'
     /*
 
 
@@ -64,8 +75,9 @@ dependencies {
 
     //MATERIAL3
     // https://mvnrepository.com/artifact/androidx.compose.material3/material3
-    implementation("androidx.compose.material3:material3:1.1.0-alpha02")
-    implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha02")
+   // runtimeOnly("androidx.compose.material3:material3:1.0.1")
+    // https://mvnrepository.com/artifact/androidx.compose.material3/material3-window-size-class
+    //runtimeOnly("androidx.compose.material3:material3-window-size-class:1.0.1")
     implementation 'com.google.android.material:material:1.7.0'
 
     //FIREBASE
@@ -77,7 +89,8 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
     //firebase auth
-    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
 

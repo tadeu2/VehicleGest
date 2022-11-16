@@ -2,6 +2,7 @@ package es.ilerna.proyectodam.vehiclegest.ui.login
 
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -9,77 +10,80 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import android.widget.Toast
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityLoginBinding
+import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
+
 
 class LoginActivity :AppCompatActivity(){
 
     private lateinit var binding: ActivityLoginBinding
+
     //Declarar la variable auth
     private lateinit var auth: FirebaseAuth
-    private var au: String = "sd"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Creamos el binding y lo inflamos
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        // Initialize Firebase Auth
         setContentView(binding.root)
+
+        // Inicializamos la variable auth de firebase
         auth = Firebase.auth
 
-        val tie_username = binding.tieUsername.toString()
-        val tie_password = binding.tiePassword.toString()
+        //Creamos un listener para el boton que chequea si esta en blanco alguno de los dos campos de texto
         binding.btLogin.setOnClickListener{
-            signIn(tie_username,tie_password)
+            //Con el binding le pasamos los campos de texto de la actividad de autenticacion
+            val tie_username = binding.tieUsername.text.toString()
+            val tie_password = binding.tiePassword.text.toString()
+            //Si no estan en blanco llamamos a la funcion login
+            login(tie_username,tie_password)
         }
 
     }
 
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if(currentUser != null){
-            reload();
-        }
+        //Comprueba que el usuario actual es el que esta autenticado.
+        //val currentUser = auth.currentUser
+        //if(currentUser != null){
+         // showMain(currentUser)
+       // }
     }
 
-    private fun login(username: String, password: String){
-        auth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this){}
-
-
-        val tie_username = binding.tieUsername.toString()
-        val tie_password = binding.tiePassword.toString()
-
-            if (tie_username.isBlank() || tie_password.isBlank())(
-                //app.showSnackbar()
-                    return
-            )
-    }
-    private fun signIn(username: String, password: String) {
-        // [START sign_in_with_email]
+    private fun login(username: String, password: String) {
+        // Autenticarse con correo electronico y password
+        if (username.isNotBlank() || password.isNotBlank())(
+                showAlert("Debe rellenar todos los huecos")
+        )
         auth.signInWithEmailAndPassword(username, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
+                    // Autenticacion exitosa, ejecuta el metodo de cambio de actividad pasandole el usuario autenticado
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
-                    updateUI(user)
+                    showMain(user)
                 } else {
-                    // If sign in fails, display a message to the user.
+                    // Si la autenticacion falla manda un mensaje de error
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                    updateUI(null)
-                }
+                    showAlert("Autenticación fallida")
+                   }
             }
-        // [END sign_in_with_email]
+     }
+
+    private fun showAlert(text: String) {
+        Toast.makeText(baseContext, text, Toast.LENGTH_SHORT).show()
     }
 
-    private fun updateUI(user: FirebaseUser?) {
-
-    }
-
-    private fun reload() {
-
+    //Lanzamos la actividad Main una vez autenticado el usuario pasandole el usuario
+    private fun showMain(user: FirebaseUser?) {
+        val mainIntent : Intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("currentUser", user)
+        }
+        startActivity(mainIntent)
     }
 
 }

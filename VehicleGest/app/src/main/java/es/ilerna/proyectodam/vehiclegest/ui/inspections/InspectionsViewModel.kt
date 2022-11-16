@@ -1,13 +1,13 @@
-package es.ilerna.proyectodam.vehiclegest.ui.dashboard
+package es.ilerna.proyectodam.vehiclegest.ui.inspections
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
+class InspectionsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "This is ITV Fragment"
     }
     val text: LiveData<String> = _text
 }

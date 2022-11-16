@@ -2,14 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_dashboard">
-
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+    android:id="@+id/mobile_navigation">
 
     <fragment
         android:id="@+id/navigation_vehicles"
@@ -19,7 +12,7 @@
 
     <fragment
         android:id="@+id/navigation_itv"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.itv.ITVFragment"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.inspections.ITVFragment"
         android:label="@string/title_vehicles"
         tools:layout="@layout/fragment_vehicles" />
 
@@ -33,7 +26,11 @@
         android:id="@+id/navigation_employees"
         android:name="es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeesFragment"
         android:label="@string/title_vehicles"
-        tools:layout="@layout/fragment_vehicles" />
+        tools:layout="@layout/fragment_vehicles" >
+        <action
+            android:id="@+id/action_navigation_employees_to_navigation_vehicles"
+            app:destination="@id/navigation_vehicles" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_inventory"
         android:name="es.ilerna.proyectodam.vehiclegest.ui.inventory.InventoryFragment"
@@ -45,10 +42,6 @@
         android:name="es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment"
         android:label="@string/title_alerts"
         tools:layout="@layout/fragment_alerts" />
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.MainActivity"
-        android:label="MainActivity" />
 
 
 </navigation>

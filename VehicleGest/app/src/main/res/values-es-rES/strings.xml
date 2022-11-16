@@ -3,7 +3,7 @@
     <string name="edit">editar</string>
     <string name="vehiculos_menu_inferior">Vehiculos</string>
     <string name="servicios_menu_inferior">Servicios</string>
-    <string name="personal_menu_inferior">Personal</string>
+    <string name="personal_menu_inferior">Empleados</string>
     <string name="next">Siguiente</string>
     <string name="previous">Anterior</string>
     <string name="title_activity_vehiculos">Vehículos</string>
@@ -28,4 +28,5 @@
     <string name="content_description_search">Buscar</string>
     <string name="content_description_favorite">Favorito</string>
     <string name="content_description_more">Más</string>
+    <string name="Logout">Logout</string>
 </resources>
