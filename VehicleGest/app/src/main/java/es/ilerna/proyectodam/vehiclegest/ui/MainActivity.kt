@@ -25,19 +25,25 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        replaceFragment(VehiclesFragment())
 
-        binding.bottomNavMenu.setOnClickListener {
-            when (it.id) {
-                R.id.vehicles -> {replaceFragment(VehiclesFragment())
-                    Toast.makeText(this@MainActivity, "You clicked me.", Toast.LENGTH_SHORT).show()
+        binding.bottomNavMenu.setOnItemSelectedListener {
+
+            when (it.itemId) {
+
+                R.id.vehicles -> {
+                    replaceFragment(VehiclesFragment())
+                    //Toast.makeText(this@MainActivity, "You clicked me.", Toast.LENGTH_SHORT).show()
                 }
                 R.id.itv -> replaceFragment(InspectionsFragment())
                 R.id.services -> replaceFragment(ServicesFragment())
                 R.id.inventory -> replaceFragment(InventoryFragment())
                 R.id.employees -> replaceFragment(EmployeesFragment())
-                else -> {
+                else ->{
+
                 }
             }
+            true
         }
         //Chequea que el usuario logueado no sea nulo, si lo es vuelve al login
         checkCurrentUser()
@@ -66,6 +72,11 @@ class MainActivity : AppCompatActivity() {
     private fun showLogin() {
         val loginIntent : Intent = Intent(this, LoginActivity::class.java)
         startActivity(loginIntent)
+    }
+
+    private fun logout(){
+        val user = Firebase.auth.currentUser
+
     }
 }
 
