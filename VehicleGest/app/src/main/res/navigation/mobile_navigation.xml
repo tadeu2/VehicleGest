@@ -2,34 +2,86 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation">
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_vehicles">
 
     <fragment
         android:id="@+id/navigation_vehicles"
         android:name="es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment"
         android:label="@string/title_vehicles"
-        tools:layout="@layout/fragment_vehicles" />
+        tools:layout="@layout/fragment_vehicles">
+        <action
+            android:id="@+id/action_navigation_vehicles_to_navigation_services"
+            app:destination="@id/navigation_services" />
+        <action
+            android:id="@+id/action_navigation_vehicles_to_navigation_employees"
+            app:destination="@id/navigation_employees" />
+        <action
+            android:id="@+id/action_navigation_vehicles_to_navigation_inventory"
+            app:destination="@id/navigation_inventory" />
+        <action
+            android:id="@+id/action_navigation_vehicles_to_navigation_itv"
+            app:destination="@id/navigation_itv" />
+        <action
+            android:id="@+id/action_navigation_vehicles_self"
+            app:destination="@id/navigation_vehicles" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_itv"
         android:name="es.ilerna.proyectodam.vehiclegest.ui.inspections.ITVFragment"
         android:label="@string/title_vehicles"
-        tools:layout="@layout/fragment_vehicles" />
+        tools:layout="@layout/fragment_vehicles">
+        <action
+            android:id="@+id/action_navigation_itv_to_navigation_vehicles"
+            app:destination="@id/navigation_vehicles" />
+        <action
+            android:id="@+id/action_navigation_itv_to_navigation_services"
+            app:destination="@id/navigation_services" />
+        <action
+            android:id="@+id/action_navigation_itv_to_navigation_inventory"
+            app:destination="@id/navigation_inventory" />
+        <action
+            android:id="@+id/action_navigation_itv_to_navigation_employees"
+            app:destination="@id/navigation_employees" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_services"
         android:name="es.ilerna.proyectodam.vehiclegest.ui.services.ServicesFragment"
         android:label="@string/title_vehicles"
-        tools:layout="@layout/fragment_vehicles" />
+        tools:layout="@layout/fragment_vehicles">
+        <action
+            android:id="@+id/action_navigation_services_to_navigation_vehicles"
+            app:destination="@id/navigation_vehicles" />
+        <action
+            android:id="@+id/action_navigation_services_to_navigation_itv"
+            app:destination="@id/navigation_itv" />
+        <action
+            android:id="@+id/action_navigation_services_to_navigation_inventory"
+            app:destination="@id/navigation_inventory" />
+        <action
+            android:id="@+id/action_navigation_services_to_navigation_employees"
+            app:destination="@id/navigation_employees" />
+        <action
+            android:id="@+id/action_navigation_services_self"
+            app:destination="@id/navigation_services" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_employees"
         android:name="es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeesFragment"
         android:label="@string/title_vehicles"
-        tools:layout="@layout/fragment_vehicles" >
+        tools:layout="@layout/fragment_vehicles">
         <action
-            android:id="@+id/action_navigation_employees_to_navigation_vehicles"
-            app:destination="@id/navigation_vehicles" />
+            android:id="@+id/action_navigation_employees_to_navigation_inventory"
+            app:destination="@id/navigation_inventory" />
+        <action
+            android:id="@+id/action_navigation_employees_to_navigation_itv"
+            app:destination="@id/navigation_itv" />
+        <action
+            android:id="@+id/action_navigation_employees_to_navigation_services"
+            app:destination="@id/navigation_services" />
     </fragment>
     <fragment
         android:id="@+id/navigation_inventory"
