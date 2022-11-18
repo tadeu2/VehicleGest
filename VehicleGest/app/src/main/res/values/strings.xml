@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">VehicleGest</string>
-    <string name="edit">edit</string>
     <string name="page_title" translatable="false">VehicleGest</string>
-    <string name="favorite">favorite</string>
+    <string name="favorite">Favorite</string>
     <string name="more">more</string>
     <string name="vehiculos_menu_inferior">Vehicles</string>
     <string name="itv_menu_inferior" translatable="false">ITV</string>
@@ -68,8 +67,5 @@
     <string name="content_description_favorite">Favorito</string>
     <string name="content_description_more">Más</string>
     <string name="Logout">Logout</string>
-    <string name="title_activity_top">TopActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="edit">Edit</string>
 </resources>

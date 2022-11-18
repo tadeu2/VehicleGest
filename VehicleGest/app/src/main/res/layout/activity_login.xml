@@ -9,10 +9,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btLogin"
         android:layout_width="228dp"
-        android:layout_height="74dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="@string/Enter"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_90"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
@@ -64,7 +64,13 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
-        app:layout_constraintTop_toBottomOf="@id/logo">
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:boxCornerRadiusBottomEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusTopStart="15dp"
+        app:errorEnabled="true"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_username"
@@ -76,16 +82,24 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/til_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        app:boxCornerRadiusBottomEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusTopStart="15dp"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_90"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
-        app:layout_constraintTop_toBottomOf="@id/til_username">
+        app:layout_constraintTop_toBottomOf="@+id/til_username"
+        app:errorEnabled="true"
+        >
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_password"

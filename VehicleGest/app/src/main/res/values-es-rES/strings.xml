@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="edit">editar</string>
+    <string name="edit">Editar</string>
     <string name="vehiculos_menu_inferior">Vehiculos</string>
     <string name="servicios_menu_inferior">Servicios</string>
     <string name="personal_menu_inferior">Empleados</string>
@@ -8,12 +8,11 @@
     <string name="previous">Anterior</string>
     <string name="title_activity_vehiculos">Vehículos</string>
     <string name="more">más</string>
-    <string name="favorite">favorito</string>
+    <string name="favorite">Favorito</string>
     <string name="inventario_menu_inferior">Inventario</string>
     <string name="username">Nombre de Usuario</string>
     <string name="Enter">Entrar</string>
     <string name="password">Contraseña</string>
-    <string name="prompt_password" translatable="false">Contraseña</string>
     <string name="action_sign_in">Autenticarse o registrarse</string>
     <string name="action_sign_in_short">Autenticarse</string>
     <string name="welcome">Bienvenido!</string>
@@ -28,5 +27,6 @@
     <string name="content_description_search">Buscar</string>
     <string name="content_description_favorite">Favorito</string>
     <string name="content_description_more">Más</string>
-    <string name="Logout">Logout</string>
+    <string name="Logout">Deconectar</string>
+    <string name="prompt_password">Contraseña</string>
 </resources>
