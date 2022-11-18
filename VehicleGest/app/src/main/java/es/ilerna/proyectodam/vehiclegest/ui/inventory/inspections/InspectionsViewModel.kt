@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.inspections
+package es.ilerna.proyectodam.vehiclegest.ui.inventory.inspections
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

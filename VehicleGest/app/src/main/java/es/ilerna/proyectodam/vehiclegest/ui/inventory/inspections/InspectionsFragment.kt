@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.inspections
+package es.ilerna.proyectodam.vehiclegest.ui.inventory.inspections
 
 import android.os.Bundle
 import android.view.LayoutInflater

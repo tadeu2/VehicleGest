@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.FirebaseUser
-import es.ilerna.proyectodam.vehiclegest.Backend
+import es.ilerna.proyectodam.vehiclegest.Backend.Backend
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityLoginBinding
 import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
@@ -42,19 +42,19 @@ class LoginActivity : AppCompatActivity() {
             if (username.isBlank()) {
                 binding.tilUsername.error =
                     getString(R.string.invalid_username)
-                Log.w(ContentValues.TAG, "signInWithEmail: blank username")
-            } else if (password.isBlank()) {
+                Log.w(ContentValues.TAG, "signInWithEmail:Username lenght")
+            } else if (password.isBlank() || password.length< 6) {
                 binding.tilPassword.error =
                     getString(R.string.invalid_password)
-                Log.w(ContentValues.TAG, "signInWithEmail: blank password")
+                Log.w(ContentValues.TAG, "signInWithEmail: Invalid password lenght")
             } else {
-                login(username, password)
+                binding.tilUsername.error = null
+                binding.tilPassword.error = null
+                userAuthentication(username, password)
             }
 
         }
-
     }
-
 
     /**
      * La función login se encarga de comprobar si los campos están en blanco
@@ -63,14 +63,16 @@ class LoginActivity : AppCompatActivity() {
      * @param username Email o nombre de usuario
      * @param password  Contraseña de usuario
      */
-    private fun login(username: String, password: String) {
+    private fun userAuthentication(username: String, password: String) {
+        // TODO: password complexity - Backend.isValidPassword(password)
         auth.signInWithEmailAndPassword(username, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(ContentValues.TAG, "signInWithEmail: login success")
-                    showMain(auth.currentUser)
+                    navigateMain(auth.currentUser)
                 } else {
                     Log.w(ContentValues.TAG, "signInWithEmail:login failure", task.exception)
+                    Backend.showSnackbar(binding.root, task.exception?.message.toString())
                 }
             }
     }
@@ -81,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
      * @param user Usuario de Firebase auth
      * @see Firebase
      */
-    private fun showMain(user: FirebaseUser?) {
+    private fun navigateMain(user: FirebaseUser?) {
         val mainIntent: Intent = Intent(this, MainActivity::class.java).apply {
             putExtra("currentUser", user)
         }

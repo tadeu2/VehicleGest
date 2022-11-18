@@ -11,11 +11,10 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import es.ilerna.proyectodam.vehiclegest.Backend
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeesFragment
-import es.ilerna.proyectodam.vehiclegest.ui.inspections.InspectionsFragment
+import es.ilerna.proyectodam.vehiclegest.ui.inventory.inspections.InspectionsFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inventory.InventoryFragment
 import es.ilerna.proyectodam.vehiclegest.ui.login.LoginActivity
 import es.ilerna.proyectodam.vehiclegest.ui.services.ServicesFragment
