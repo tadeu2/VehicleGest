@@ -11,7 +11,7 @@
     <string name="favorite">Favorito</string>
     <string name="inventario_menu_inferior">Inventario</string>
     <string name="username">Nombre de Usuario</string>
-    <string name="Enter">Entrar</string>
+    <string name="Access">Acceder</string>
     <string name="password">Contraseña</string>
     <string name="action_sign_in">Autenticarse o registrarse</string>
     <string name="action_sign_in_short">Autenticarse</string>
@@ -22,11 +22,15 @@
     <string name="title_activity_login">Autenticación</string>
     <string name="prompt_email">Correo electrónico</string>
     <string name="title_alerts">Alertas</string>
-    <string name="title_vehicles">Vehicles</string>
+    <string name="title_vehicles">Vehículos</string>
     <string name="title_dashboard">Tablón de avisos</string>
     <string name="content_description_search">Buscar</string>
     <string name="content_description_favorite">Favorito</string>
     <string name="content_description_more">Más</string>
     <string name="Logout">Deconectar</string>
     <string name="prompt_password">Contraseña</string>
+    <string name="dialog_error_text">Check that username and password are correct.</string>
+    <string name="dialog_error_title">Credenciales erróneas</string>
+    <string name="authError">Error de autenticación</string>
+    <string name="accept">Aceptar</string>
 </resources>

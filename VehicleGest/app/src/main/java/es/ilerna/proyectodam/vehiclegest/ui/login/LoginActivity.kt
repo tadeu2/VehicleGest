@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -72,7 +73,13 @@ class LoginActivity : AppCompatActivity() {
                     navigateMain(auth.currentUser)
                 } else {
                     Log.w(ContentValues.TAG, "signInWithEmail:login failure", task.exception)
-                    Backend.showSnackbar(binding.root, task.exception?.message.toString())
+                    //Backend.showSnackbar(binding.root, task.exception?.message.toString())
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(resources.getString(R.string.authError))
+                        .setMessage(task.exception?.message.toString())
+                        .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                        }
+                        .show()
                 }
             }
     }

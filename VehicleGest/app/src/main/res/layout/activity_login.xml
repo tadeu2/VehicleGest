@@ -9,21 +9,20 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btLogin"
         android:layout_width="228dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/Enter"
+        android:layout_height="0dp"
+        android:text="@string/Access"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_75" />
+        app:layout_constraintTop_toBottomOf="@+id/til_password" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.04" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal_90"
@@ -37,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.67" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_vertical_90"
@@ -99,7 +98,6 @@
         app:layout_constraintTop_toBottomOf="@+id/til_username"
         app:errorEnabled="true"
         >
-
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_password"
