@@ -2,6 +2,7 @@ package es.ilerna.proyectodam.vehiclegest.Backend
 
 import android.app.Application
 import android.view.View
+import com.google.android.material.color.DynamicColors
 import com.google.android.material.snackbar.Snackbar
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -11,6 +12,11 @@ class Backend : Application() {
     init {
         instancia = this
 
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
     companion object {
@@ -34,7 +40,7 @@ class Backend : Application() {
          *  .{4,}             # anything, at least six places though
          *  $                 # end-of-string
          */
-        fun isValidPassword(password: String?): Boolean {
+        fun isValidPassword(password: CharSequence?): Boolean {
             val pattern: Pattern
             val matcher: Matcher
             val PASSWORD_PATTERN =

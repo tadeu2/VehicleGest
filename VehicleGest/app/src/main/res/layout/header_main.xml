@@ -4,7 +4,6 @@
     android:id="@+id/linear_top"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="#E46969"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -38,7 +37,6 @@
             android:paddingEnd="0dp"
             app:cornerRadius="25dp"
             app:icon="@drawable/ic_baseline_logout_24"
-            app:iconPadding="0dp"
-            app:iconTint="@color/black" />
+            app:iconPadding="0dp" />
     </LinearLayout>
 </LinearLayout>

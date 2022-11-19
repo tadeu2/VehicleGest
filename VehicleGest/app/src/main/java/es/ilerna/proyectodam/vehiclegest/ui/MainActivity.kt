@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(VehiclesFragment())
 
         //Esuchador del menú inferior
-        binding.bottomNavMenu.setOnItemSelectedListener {
+        binding.bottonBarMain.bottomNavMenu.setOnItemSelectedListener {
 
             when (it.itemId) {
 
@@ -59,14 +59,15 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         //Chequea que el usuario logueado no sea nulo, si lo es vuelve al login
         checkCurrentUser()
-        //Escuchador del botón de desconexion, vuelve a la actividad login
-        val btn: MaterialButton = findViewById<View>(R.id.btLogout) as MaterialButton
-        btn.setOnClickListener {
-            Log.d(ContentValues.TAG, "signInWithEmail:Usuario deslogueado")
-            auth.signOut()
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
+        /*
+         //Escuchador del botón de desconexion, vuelve a la actividad login
+         val btn: MaterialButton = findViewById<View>(R.id.btLogout) as MaterialButton
+         btn.setOnClickListener {
+             Log.d(ContentValues.TAG, "signInWithEmail:Usuario deslogueado")
+             auth.signOut()
+             startActivity(Intent(this, LoginActivity::class.java))
+             finish()
+         }*/
     }
 
     /**
