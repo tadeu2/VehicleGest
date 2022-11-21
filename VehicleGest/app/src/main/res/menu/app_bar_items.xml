@@ -11,7 +11,7 @@
     <item
         android:id="@+id/favorite"
         android:contentDescription="@string/content_description_favorite"
-        android:icon="@drawable/ic_favorite_24dp"
+        android:icon="@drawable/ic_itv_menu_24dp"
         android:title="@string/favorite"
         app:showAsAction="withText" />
 

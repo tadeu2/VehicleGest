@@ -57,7 +57,11 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/tipo"
+                    android:id="@+id/expirydateitv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/totaldistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         replaceFragment(VehiclesFragment())
 
-        //Esuchador del menú inferior
+        //Escuchador del menú inferior
         binding.bottonBarMain.bottomNavMenu.setOnItemSelectedListener {
 
             when (it.itemId) {
