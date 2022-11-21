@@ -6,57 +6,72 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.data.vehicledata.VehicleDataProvider
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
-import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerViewAdapter
+import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerAdapter
+import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 
 /**
  * Fragmento de listado de vehículos
  */
-class VehiclesFragment : Fragment(R.layout.fragment_vehicles) {
+class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListener {
 
     private var _binding: FragmentVehiclesBinding? = null
     private val binding get() = _binding!!
-/*
-    //private val viewModel: VehiclesViewModel by viewModels()
+
+    private lateinit var vehicleRecyclerAdapter:VehicleRecyclerAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var vehiclesQuery: Query
+
     override fun onCreateView(
-       // inflater: LayoutInflater,
-        //container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ){
+    ): View? {
 
+        //Pintar el fragment
+        _binding = FragmentVehiclesBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        //Firestore
+        vehiclesQuery = FirebaseFirestore.getInstance().collection("vehicle")
 
-        // _binding = FragmentVehiclesBinding.inflate(inflater, container, false)
-        //  val root: View = binding.root
-        /*
-        viewModel.(TipoDispositivo.GENERALES).observe(viewLifecycleOwner) {
-            CommonFragmentImpl(
-                DeviceListenerImpl(
-                    requireContext(),
-                    viewModel,
-                    parentFragmentManager
-                ), requireContext(), binding
-            ).createRecyclerView(it)
-        }
+        //Pintar el recycler
+        recyclerView = binding.recyclerVehicles
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
 
-*/
-        // return root
+        vehicleRecyclerAdapter = VehicleRecyclerAdapter(vehiclesQuery,this)
+        recyclerView.adapter = vehicleRecyclerAdapter
+
+        return root
     }
-*/
+    /*
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+
+
     }
-    private fun initRecyclerView() {
-        val recyclerView = binding.recyclerVehicles
-        recyclerView.layoutManager = LinearLayoutManager(this.activity)
-        recyclerView.adapter = VehicleRecyclerViewAdapter(VehicleDataProvider.vehicleList)
+*/
+
+    override fun onVehicleSelected(vehicle: Vehicle?) {
+        TODO("Not yet implemented")
     }
-}
-/*
+
+    override fun onStart() {
+        super.onStart()
+        vehicleRecyclerAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        vehicleRecyclerAdapter.startListening()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-}*/
+}
+

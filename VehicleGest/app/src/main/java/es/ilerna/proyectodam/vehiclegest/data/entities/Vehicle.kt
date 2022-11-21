@@ -12,7 +12,7 @@ class Vehicle : Parcelable {
     var brand: String? = null
     var model: String? = null
     //var expiryDateITV: Datetime? = null
-    var totalDistance: Int? = 0
+    //var totalDistance: Int? = 0
 
     constructor()
 
@@ -22,7 +22,7 @@ class Vehicle : Parcelable {
         brand = parcel.readString()
         model = parcel.readString()
         //plateNumber = parcel.readString()
-        totalDistance = parcel.readInt()
+        //totalDistance = parcel.readInt()
     }
 
     override fun describeContents(): Int {
@@ -35,7 +35,7 @@ class Vehicle : Parcelable {
         dest?.writeString(brand)
         dest?.writeString(model)
         //dest?.writeString(title)
-        dest?.writeInt(totalDistance!!)
+        //dest?.writeInt(totalDistance!!)
     }
 
     companion object CREATOR : Parcelable.Creator<Vehicle> {

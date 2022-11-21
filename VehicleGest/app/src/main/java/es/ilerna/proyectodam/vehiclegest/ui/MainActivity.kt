@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         // Inicializa el objeto auth de Firebase
         auth = Firebase.auth
 
+        // See https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/FirebaseFirestore.html#setLoggingEnabled(boolean)
+        FirebaseFirestore.setLoggingEnabled(true);
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(VehiclesFragment())
