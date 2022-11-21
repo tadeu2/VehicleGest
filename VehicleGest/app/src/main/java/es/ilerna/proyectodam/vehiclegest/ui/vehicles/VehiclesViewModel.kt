@@ -1,47 +1,53 @@
-package es.ilerna.proyectodam.vehiclegest.ui.vehicles
+package es.codigonline.proyecto.smarthome.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import androidx.lifecycle.*
+import es.codigonline.proyecto.smarthome.app.App
+import es.codigonline.proyecto.smarthome.database.entities.Favorito
+import es.codigonline.proyecto.smarthome.database.entities.Personal
+import es.ilerna.proyectodam.vehiclegest.Backend.FragmentType
+import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-/*
-class VehiclesViewModel(var vehicleService:IVehicleService=VehicleService()) : ViewModel() {
+import kotlinx.coroutines.withContext
 
-    //Variable firestore para crear la instancia en el constructor
-    private lateinit var firestore: FirebaseFirestore
-
-    init {
-        firestore = FirebaseFirestore.getInstance()
-        firestore.firestoreSettings
-    }
+class VehiclesViewModel : ViewModel() {
 
 
-    /**
-     * Lanza una corutina para descargar los vehículos de la base de datos?¿
-     */
-    fun fetchVehicle(){
-        viewModelScope.launch {
-            var innerVehicles = vehicleService.fetchVehicles()
-            vehicles.postValue(innerVehicles)
+    fun vehicles(sectionId: FragmentType.SectionIdEnum): LiveData<List<Vehicle>> {
+        return when (sectionId.id) {
+            1 -> List<Vehicle>
         }
     }
 
-    /**
-     * Guarda los datos del vehículo en la base de datos
-     */
-    fun save(vehicles:Vehicle){
-        // Todo Implementar el salvado en la DB
+    fun addFav(dispositivoId: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                favoritoDao.save(Favorito(dispositivoId, App.getUsuario()!!.id))
+            }
+        }
     }
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is vehicles Fragment"
+    fun delFav(dispositivoId: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                favoritoDao.delete(Favorito(dispositivoId, App.getUsuario()!!.id))
+            }
+        }
     }
-    val text: LiveData<String> = _text
 
+    fun addPersonal(dispositivoId: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                personalDao.save(Personal(dispositivoId, App.getUsuario()!!.id))
+            }
+        }
+    }
+
+    fun delPersonal(dispositivoId: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                personalDao.delete(Personal(dispositivoId, App.getUsuario()!!.id))
+            }
+        }
+    }
 }
-
- */

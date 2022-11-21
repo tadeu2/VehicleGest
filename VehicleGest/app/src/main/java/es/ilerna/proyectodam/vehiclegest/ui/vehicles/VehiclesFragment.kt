@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.data.vehicledata.VehicleDataProvider
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
-import es.ilerna.proyectodam.vehiclegest.ui.adapters.VehicleRecyclerViewAdapter
+import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerViewAdapter
 
 /**
  * Fragmento de listado de vehículos
