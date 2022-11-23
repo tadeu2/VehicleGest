@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.backend.Constants
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
 import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
+import javax.annotation.Nullable
 
 /**
  * Fragmento de listado de vehículos
@@ -29,7 +31,7 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         //Pintar el fragment
         _binding = FragmentVehiclesBinding.inflate(inflater, container, false)
@@ -47,16 +49,10 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
 
         return root
     }
-    /*
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-    }
-*/
 
     override fun onVehicleSelected(vehicle: Vehicle?) {
-        TODO("Not yet implemented")
+        val deviceFragment = VehicleDialog(vehicle!!)
+        deviceFragment.show(parentFragmentManager, "")
     }
 
     override fun onStart() {
@@ -73,5 +69,8 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
         super.onDestroyView()
         _binding = null
     }
+
+
+
 }
 

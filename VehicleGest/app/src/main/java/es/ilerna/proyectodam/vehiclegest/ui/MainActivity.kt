@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         // Inicializa el objeto auth de Firebase
         auth = Firebase.auth
 
-        // See https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/FirebaseFirestore.html#setLoggingEnabled(boolean)
         FirebaseFirestore.setLoggingEnabled(true)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -43,15 +42,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottonBarMain.bottomNavMenu.setOnItemSelectedListener {
 
             when (it.itemId) {
-
                 R.id.vehicles -> replaceFragment(VehiclesFragment())
                 R.id.itv -> replaceFragment(InspectionsFragment())
                 R.id.services -> replaceFragment(ServicesFragment())
                 R.id.inventory -> replaceFragment(InventoryFragment())
                 R.id.employees -> replaceFragment(EmployeesFragment())
-                else -> {
-
-                }
             }
             true
         }
@@ -60,17 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        //Chequea que el usuario logueado no sea nulo, si lo es vuelve al login
         checkCurrentUser()
-        /*
-         //Escuchador del botón de desconexion, vuelve a la actividad login
-         val btn: MaterialButton = findViewById<View>(R.id.btLogout) as MaterialButton
-         btn.setOnClickListener {
-             Log.d(ContentValues.TAG, "signInWithEmail:Usuario deslogueado")
-             auth.signOut()
-             startActivity(Intent(this, LoginActivity::class.java))
-             finish()
-         }*/
     }
 
     /**

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityLoginBinding
 import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
+
 
 /**
  * Esta es la actividad principal de la aplicación

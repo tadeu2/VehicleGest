@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.backend.Constants
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
+import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehicleDialog
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,6 +66,7 @@ class VehicleRecyclerAdapter(
     interface VehicleAdapterListener {
         fun onVehicleSelected(vehicle: Vehicle?)
     }
+
 
     /**
      * Llamada para devolver el item(VehicleCard) al viewholder por cada objeto de la lista vehiculos

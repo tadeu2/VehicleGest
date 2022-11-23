@@ -40,4 +40,6 @@
     <string name="itv_expiration_date">Caduc. ITV</string>
     <string name="total_distance">Distancia Total</string>
     <string name="model">Modelo</string>
+    <string name="buttondelete">Delete</string>
+    <string name="buttonedit">Edit</string>
 </resources>

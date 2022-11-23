@@ -42,5 +42,7 @@
     <string name="itv_expiration_date">ITV Expiration</string>
     <string name="total_distance">Total Distance</string>
     <string name="model">Model</string>
+    <string name="buttondelete">Delete</string>
+    <string name="buttonedit">Edit</string>
 
 </resources>
