@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         // See https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/FirebaseFirestore.html#setLoggingEnabled(boolean)
-        FirebaseFirestore.setLoggingEnabled(true);
+        FirebaseFirestore.setLoggingEnabled(true)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(VehiclesFragment())

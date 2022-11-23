@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.FirebaseUser
-import es.ilerna.proyectodam.vehiclegest.Backend.Backend
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityLoginBinding
 import es.ilerna.proyectodam.vehiclegest.ui.MainActivity

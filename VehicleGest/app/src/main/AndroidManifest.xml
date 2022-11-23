@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Vehiclegest"
-        android:name=".Backend.Backend"
+        android:name=".backend.Vehiclegest"
         tools:targetApi="31"
 
         >

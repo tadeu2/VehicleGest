@@ -23,16 +23,24 @@
     <string name="username">Username</string>
     <string name="Access">Access</string>
     <string name="password">Password</string>
-    <string name="title_alerts">Alertas</string>
+    <string name="title_alerts">Alerts</string>
     <string name="title_vehicles">Vehicles</string>
     <string name="title_dashboard">Tablón de avisos</string>
-    <string name="content_description_search">Buscar</string>
-    <string name="content_description_favorite">Favorito</string>
-    <string name="content_description_more">Más</string>
+    <string name="content_description_search">Search</string>
+    <string name="content_description_favorite">Favorite</string>
+    <string name="content_description_more">More</string>
     <string name="Logout">Logout</string>
     <string name="edit">Edit</string>
     <string name="dialog_error_title">Wrong credentials</string>
     <string name="dialog_error_text">Check that username and password are correct.</string>
     <string name="authError">Error de autenticación</string>
-    <string name="accept">Aceptar</string>
+    <string name="accept">Agree</string>
+    <string name="dateFormat">MM/dd/yyy</string>
+    <string name="plate_number">Plate Number</string>
+    <string name="car_type">Car type</string>
+    <string name="brand">Brand</string>
+    <string name="itv_expiration_date">ITV Expiration</string>
+    <string name="total_distance">Total Distance</string>
+    <string name="model">Model</string>
+
 </resources>

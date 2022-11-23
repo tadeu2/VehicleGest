@@ -29,8 +29,15 @@
     <string name="content_description_more">Más</string>
     <string name="Logout">Deconectar</string>
     <string name="prompt_password">Contraseña</string>
-    <string name="dialog_error_text">Check that username and password are correct.</string>
+    <string name="dialog_error_text">Comprueba que el usuario y contraseña son correctos.</string>
     <string name="dialog_error_title">Credenciales erróneas</string>
     <string name="authError">Error de autenticación</string>
     <string name="accept">Aceptar</string>
+    <string name="dateFormat">dd/MM//yyyy</string>
+    <string name="plate_number">Matrícula</string>
+    <string name="car_type">Tipo coche</string>
+    <string name="brand">Marca</string>
+    <string name="itv_expiration_date">Caduc. ITV</string>
+    <string name="total_distance">Distancia Total</string>
+    <string name="model">Modelo</string>
 </resources>

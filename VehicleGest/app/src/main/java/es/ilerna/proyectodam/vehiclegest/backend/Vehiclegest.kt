@@ -1,26 +1,32 @@
-package es.ilerna.proyectodam.vehiclegest.Backend
+package es.ilerna.proyectodam.vehiclegest.backend
 
 import android.app.Application
+import android.content.Context
 import android.view.View
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.snackbar.Snackbar
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class Backend : Application() {
+class Vehiclegest : Application() {
 
     init {
-        instancia = this
-
+        instance = this
     }
 
     override fun onCreate() {
         super.onCreate()
+        //Aplicar colores dinámicos según el tema
         DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
     companion object {
-        private lateinit var instancia: Backend
+
+        private var instance: Vehiclegest? = null
+
+        fun appContext(): Context {
+            return instance!!.applicationContext
+        }
 
         fun showSnackbar(view: View, text: String) {
             Snackbar.make(view, text, Snackbar.LENGTH_LONG)

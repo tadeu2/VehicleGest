@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/vehicle_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,11 +28,66 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/vehicle_image"
                 android:layout_width="120dp"
-                android:layout_height="120dp" />
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                tools:ignore="ImageContrastCheck"
+                tools:srcCompat="@drawable/example_car" />
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="@dimen/medium_margin">
+
+                <TextView
+                    android:id="@+id/plate_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/plate_number"
+                    android:text="@string/plate_number"
+                    tools:text="Plate Number" />
+
+                <TextView
+                    android:id="@+id/type_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/car_type"
+                    android:text="@string/car_type"
+                    tools:text="Car type" />
+
+                <TextView
+                    android:id="@+id/brand_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand"
+                    tools:text="Brand" />
+
+                <TextView
+                    android:id="@+id/model_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/model"
+                    tools:text="Model" />
+
+                <TextView
+                    android:id="@+id/expirationdateitv_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/itv_expiration_date"
+                    tools:text="@string/itv_expiration_date" />
+
+                <TextView
+                    android:id="@+id/totaldistance_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/total_distance"
+                    android:text="@string/total_distance"
+                    tools:text="@string/total_distance" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="@dimen/medium_margin">
@@ -39,71 +95,40 @@
                 <TextView
                     android:id="@+id/plate_number"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    tools:text="1234ABC" />
 
                 <TextView
                     android:id="@+id/type"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    tools:text="Berlina" />
 
                 <TextView
                     android:id="@+id/brand"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    tools:text="Audi" />
 
                 <TextView
                     android:id="@+id/model"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-<!--
+                    android:layout_height="wrap_content"
+                    tools:text="A5" />
+
                 <TextView
                     android:id="@+id/expirydateitv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    tools:text="22/12/19" />
+
                 <TextView
                     android:id="@+id/totaldistance"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>-->
+                    android:layout_height="wrap_content"
+                    tools:text="12343Km" />
             </LinearLayout>
-
         </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/edit"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@color/cardview_shadow_start_color"
-            android:insetLeft="0dp"
-            android:insetTop="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            android:paddingStart="9dp"
-            android:paddingEnd="0dp"
-            app:cornerRadius="25dp"
-            app:icon="@drawable/common_google_signin_btn_icon_light"
-            app:iconPadding="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/personal"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="12dp"
-            android:insetLeft="0dp"
-            android:insetTop="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            android:paddingStart="9dp"
-            android:paddingEnd="0dp"
-            app:cornerRadius="25dp"
-            app:icon="@drawable/outline_inventory_24"
-            app:iconPadding="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/edit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
