@@ -1,7 +1,9 @@
 package es.ilerna.proyectodam.vehiclegest.data.entities
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
@@ -15,9 +17,12 @@ class Vehicle : Parcelable {
     var model: String? = null
     var expiryDateITV: Date? = null
     var totalDistance: Int? = 0
+    var licensed: Boolean? = true
+    var description: String? = null
 
     constructor()
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) {
         plateNumber = parcel.readString()
         type = parcel.readString()
@@ -25,6 +30,8 @@ class Vehicle : Parcelable {
         model = parcel.readString()
         expiryDateITV = Timestamp(parcel.readLong(), 0).toDate()
         totalDistance = parcel.readInt()
+        licensed = parcel.readBoolean()
+        description = parcel.readString()
     }
 
     override fun describeContents(): Int {
@@ -38,6 +45,8 @@ class Vehicle : Parcelable {
         dest.writeString(model)
         expiryDateITV?.time?.let { dest.writeLong(it) }
         totalDistance?.let { dest.writeInt(it) }
+        licensed?.let { dest.writeBoolean(it) }
+        dest.writeString(description)
     }
 
     companion object CREATOR : Parcelable.Creator<Vehicle> {

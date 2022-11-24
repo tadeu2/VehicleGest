@@ -1,64 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="@dimen/medium_margin"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="@dimen/medium_margin"
     app:strokeColor="@color/md_theme_dark_surfaceVariant"
     app:strokeWidth="2dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btclose"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/buttonclose"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="0dp"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/ic_baseline_close_48"
+        app:iconPadding="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btdelete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="@string/buttondelete"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="0dp"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/outline_inventory_24"
+        app:iconPadding="0dp"
+        app:layout_constraintEnd_toStartOf="@id/btedit"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btedit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/edit"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="0dp"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/ic_itv_menu_24dp"
+        app:iconPadding="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedview"
+        Of="parent"
         android:layout_width="match_parent"
-        android:layout_height="705dp"
-        android:padding="@dimen/medium_margin">
+        android:layout_height="536dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/divider1"
-            android:layout_width="390dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="18dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vehicle_image" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/vehicle_image"
-            android:layout_width="333dp"
-            android:layout_height="301dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/example_car" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="390dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="18dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vehicle_image" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="352dp" />
 
         <TableLayout
             android:id="@+id/table_details"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline2">
+            app:layout_constraintTop_toBottomOf="@id/vehicle_image">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/vehicle_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/example_car"
+                    tools:srcCompat="@drawable/example_car" />
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
@@ -71,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/plate_number"
-                    android:textAlignment="center"
+                    android:textAlignment="viewStart"
                     tools:text="@string/plate_number" />
 
                 <TextView
@@ -200,87 +242,48 @@
                     android:layout_weight="1"
                     android:textAlignment="center"
                     tools:text="123KM" />
+
+
             </TableRow>
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/label_licensed_detail"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/licensed"
+                    android:textAlignment="center"
+                    tools:text="@string/licensed" />
+
+
+                <CheckBox
+                    android:id="@+id/checkLicensed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:clickable="false" />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/vehicle_description"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="This is a automobile, byname auto, also called motorcar or car,
+                            a usually four-wheeled vehicle designed primarily for passenger
+                            transportation and commonly propelled by an internal-combustion engine
+                            using a volatile fuel. " />
+            </TableRow>
         </TableLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="390dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="18dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vehicle_image" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="525dp" />
-
-        <TextView
-            android:id="@+id/vehicle_description"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAlignment="viewStart"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline1"
-            tools:text="This is a description" />
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="390dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="18dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vehicle_description" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btdelete"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:contentDescription="@string/buttondelete"
-            android:insetLeft="0dp"
-            android:insetTop="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="0dp"
-            app:cornerRadius="25dp"
-            app:icon="@drawable/outline_inventory_24"
-            app:iconPadding="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btedit"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="24dp"
-            android:contentDescription="@string/edit"
-            android:insetLeft="0dp"
-            android:insetTop="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="0dp"
-            app:cornerRadius="25dp"
-            app:icon="@drawable/ic_itv_menu_24dp"
-            app:iconPadding="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btdelete" />
-
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>

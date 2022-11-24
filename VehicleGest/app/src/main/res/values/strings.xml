@@ -44,5 +44,7 @@
     <string name="model">Model</string>
     <string name="buttondelete">Delete</string>
     <string name="buttonedit">Edit</string>
+    <string name="buttonclose">Close</string>
+    <string name="licensed">ITV passed</string>
 
 </resources>

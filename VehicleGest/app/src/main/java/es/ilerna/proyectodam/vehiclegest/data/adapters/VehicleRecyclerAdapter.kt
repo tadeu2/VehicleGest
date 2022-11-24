@@ -47,7 +47,7 @@ class VehicleRecyclerAdapter(
             binding.brand.text = vehicle?.brand.toString()
             binding.model.text = vehicle?.model.toString()
 
-            //Formatea los timestamp a fecha normal dd/mm/aa
+            //Formatea los timestamp según el string de recursos.
             val simpleDateFormat = SimpleDateFormat(
                 Vehiclegest.appContext().resources
                     .getString(R.string.dateFormat), Locale.getDefault()
@@ -63,6 +63,10 @@ class VehicleRecyclerAdapter(
         }
     }
 
+
+    /**
+     * Interfaz para implementar como se comportará al hacer click a una ficha
+     */
     interface VehicleAdapterListener {
         fun onVehicleSelected(vehicle: Vehicle?)
     }
