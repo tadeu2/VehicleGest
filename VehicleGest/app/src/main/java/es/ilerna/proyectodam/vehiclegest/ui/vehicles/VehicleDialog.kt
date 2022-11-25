@@ -1,10 +1,12 @@
 package es.ilerna.proyectodam.vehiclegest.ui.vehicles
 
-import android.app.AlertDialog
+
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.DialogVehicleBinding
@@ -22,9 +24,12 @@ class VehicleDialog(val data: Vehicle) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
-            val builder = AlertDialog.Builder(it)
+            val builder = MaterialAlertDialogBuilder(it)
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_vehicle, null)
+            builder.setView(view)
+            val dialog = builder.create()
+
             binding = DialogVehicleBinding.bind(view)
             binding.plateNumber.text = data.plateNumber
             binding.type.text = data.type
@@ -39,13 +44,9 @@ class VehicleDialog(val data: Vehicle) : DialogFragment() {
             val stamp = data.expiryDateITV?.time
             val date = simpleDateFormat.format(Date(stamp!!))
             binding.totalDistance.text = data.totalDistance.toString()
+            binding.btclose.setOnClickListener(View.OnClickListener { dialog?.dismiss() })
 
-            builder.setNegativeButton("Close") { dialog, which ->
-                    dialog.cancel()
-                }
-
-            builder.setView(view)
-            builder.create()
+            dialog
         } ?: throw IllegalStateException("Dialog cant be null")
     }
 }

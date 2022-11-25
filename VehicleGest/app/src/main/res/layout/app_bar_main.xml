@@ -17,17 +17,23 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:title="@string/app_name"
-            app:subtitle="@string/page_title"
-            app:titleCentered= "true"
-            app:subtitleCentered= "true"
-            app:menu="@menu/app_bar_items"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:navigationIcon="@drawable/common_google_signin_btn_icon_light" />
+            app:menu="@menu/app_bar_items"
+            app:navigationIcon="@mipmap/ic_launcher_round"
+            app:subtitle="@string/page_title"
+            app:subtitleCentered="true"
+            app:title="@string/app_name"
+            app:titleCentered="true" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
