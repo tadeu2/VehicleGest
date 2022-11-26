@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.backend.Constants
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
-import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehicleDialog
+import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehicleDetail
 import java.text.SimpleDateFormat
 import java.util.*
 

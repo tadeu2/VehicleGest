@@ -1,6 +1,8 @@
 <resources>
     <style name="Theme.Vehiclegest" parent="Theme.Material3.Dark.NoActionBar">
 
+        <item name="android:fontFamily">@font/roboto</item>
+
         <!-- MaterialComponents attributes (needed if parent="Theme.AppCompat"). -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>

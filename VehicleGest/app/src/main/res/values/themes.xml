@@ -1,5 +1,7 @@
 <resources>
-    <style name="Theme.Vehiclegest" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Theme.Vehiclegest" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="fontFamily">@font/roboto</item>
 
         <!-- MaterialComponents attributes (needed if parent="Theme.AppCompat"). -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -63,5 +65,26 @@
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
 
+    <style name="Widget.App.Button.TextButton" parent="Widget.Material3.Button.TextButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Vehiclegest.Button.TextButton</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.SmallComponent</item>
+    </style>
 
+    <style name="Widget.Vehiclegest.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Vehiclegest.Button.TextButton</item>
+    </style>
+
+    <style name="Widget.Vehiclegest.Button" parent="Widget.Material3.Button">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Vehiclegest.Button</item>
+    </style>
+
+    <style name="ThemeOverlay.Vehiclegest.Button.TextButton" parent="">
+        <item name="colorPrimary">@color/seed</item>
+    </style>
+
+    <style name="ThemeOverlay.Vehiclegest.Button" parent="">
+        <item name="colorPrimary">@color/seed</item>
+        <item name="colorOnPrimary">@color/seed</item>
+    </style>
 </resources>

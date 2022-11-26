@@ -8,7 +8,7 @@
     tools:menu="@menu/app_bar_items"
     tools:context=".ui.vehicles.VehiclesFragment">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_vehicles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

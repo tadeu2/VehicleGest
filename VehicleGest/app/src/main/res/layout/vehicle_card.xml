@@ -40,7 +40,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/medium_margin">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plate_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     android:text="@string/plate_number"
                     tools:text="Plate Number" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/type_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,28 +56,28 @@
                     android:text="@string/car_type"
                     tools:text="Car type" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/brand_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/brand"
                     tools:text="Brand" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/model_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/model"
                     tools:text="Model" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/expirationdateitv_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/itv_expiration_date"
                     tools:text="@string/itv_expiration_date" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/totaldistance_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -92,37 +92,37 @@
                 android:orientation="vertical"
                 android:padding="@dimen/medium_margin">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plate_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="1234ABC" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Berlina" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/brand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Audi" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/model"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="A5" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/expirydateitv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="22/12/19" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/totaldistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

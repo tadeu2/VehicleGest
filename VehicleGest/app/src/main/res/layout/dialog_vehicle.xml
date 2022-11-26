@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/medium_margin"
+    android:layout_margin="@dimen/small_margin"
     android:clickable="true"
     android:focusable="true"
     app:strokeColor="@color/md_theme_dark_surfaceVariant"
@@ -13,78 +13,60 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btclose"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/buttonclose"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="0dp"
-        app:cornerRadius="25dp"
         app:icon="@drawable/ic_baseline_close_48"
         app:iconPadding="0dp"
+        app:iconSize="36dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btdelete"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/buttondelete"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="0dp"
-        app:cornerRadius="25dp"
         app:icon="@drawable/outline_inventory_24"
         app:iconPadding="0dp"
+        app:iconSize="36dp"
         app:layout_constraintEnd_toStartOf="@id/btedit"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btedit"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/edit"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="0dp"
-        app:cornerRadius="25dp"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/buttonedit"
         app:icon="@drawable/ic_itv_menu_24dp"
         app:iconPadding="0dp"
+        app:iconSize="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/nestedview"
-        Of="parent"
         android:layout_width="match_parent"
-        android:layout_height="536dp"
-        android:layout_marginStart="16dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="3dp"
+        android:fadeScrollbars="true"
+        android:scrollbarFadeDuration="1000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:scrollbars = "vertical">
 
 
         <TableLayout
             android:id="@+id/table_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/tableshape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/vehicle_image">
@@ -99,6 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/example_car"
+                    app:strokeWidth="@dimen/small_margin"
                     tools:srcCompat="@drawable/example_car" />
             </TableRow>
 
@@ -106,22 +89,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_platenumber_detail"
-                    style="@style/TextAppearance.Material3.TitleLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:nestedScrollingEnabled="false"
                     android:text="@string/plate_number"
-                    android:textAlignment="viewStart"
+                    android:textAlignment="textEnd"
                     tools:text="@string/plate_number" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plate_number"
-                    style="@style/TextAppearance.Material3.TitleLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
             </TableRow>
@@ -130,18 +116,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_type_detail"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:text="@string/car_type"
+                    android:textAlignment="textEnd"
                     tools:text="@string/car_type" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/type"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -153,19 +140,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_brand_detail"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/brand"
-                    android:textAlignment="center"
+                    android:textAlignment="textEnd"
                     tools:text="@string/brand" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/brand"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -177,18 +164,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_model_detail"
                     style="@style/TextAppearance.Material3.BodyLarge"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:text="@string/model"
+                    android:textAlignment="textEnd"
                     tools:text="@string/model" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/model"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                   style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -200,19 +188,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_expiring_itv_detail"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/itv_expiration_date"
-                    android:textAlignment="center"
-                    tools:text="@string/itv_expiration_date" />
+                    android:textAlignment="textEnd"
+                    tools:text="Caducidad ITV" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/expiring_itv"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -224,19 +212,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_total_distance_detail"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/total_distance"
-                    android:textAlignment="center"
+                    android:textAlignment="textEnd"
                     tools:text="@string/total_distance" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/total_distance"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -250,14 +238,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_licensed_detail"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/licensed"
-                    android:textAlignment="center"
+                    android:textAlignment="textEnd"
                     tools:text="@string/licensed" />
 
 
@@ -269,21 +257,42 @@
                     android:checked="false"
                     android:clickable="false" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_description"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/total_distance"
+                    android:textAlignment="center"
+                    tools:text="@string/total_distance" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/vehicle_description"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"
+                    android:textAlignment="textStart"
+                    android:lineHeight="10dp"
                     tools:text="This is a automobile, byname auto, also called motorcar or car,
-                            a usually four-wheeled vehicle designed primarily for passenger
-                            transportation and commonly propelled by an internal-combustion engine
-                            using a volatile fuel. " />
+                    a usually four-wheeled vehicle designed primarily for passenger
+                    transportation and commonly propelled by an internal-combustion engine
+                    using a volatile fuel. "
+                    android:scrollbars = "vertical"/>
             </TableRow>
         </TableLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
