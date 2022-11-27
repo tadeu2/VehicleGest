@@ -55,7 +55,11 @@ class VehicleRecyclerAdapter(
             val date = simpleDateFormat.format(Date(stamp!!))
 
             binding.expirydateitv.text = date
-            binding.totaldistance.text = vehicle.totalDistance.toString()
+
+            binding.totaldistance.text = buildString {
+                append(vehicle.totalDistance.toString())
+                append(" KM")
+            }
             binding.vehicleCard.setOnClickListener {
                 listener.onVehicleSelected(vehicle)
             }

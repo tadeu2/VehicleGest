@@ -4,36 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:showIn="@layout/activity_main"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MainActivity"
+    tools:showIn="@layout/activity_main">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:liftOnScroll="true"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/topToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:logo="@drawable/ic_baseline_logout_24"
             app:menu="@menu/app_bar_items"
-            app:navigationIcon="@mipmap/ic_launcher_round"
-            app:subtitle="@string/page_title"
-            app:subtitleCentered="true"
-            app:title="@string/app_name"
-            app:titleCentered="true" />
-
+            app:navigationIcon="@android:drawable/ic_menu_myplaces" />
+        <!--
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Button" />
-
+-->
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -41,16 +38,6 @@
     <include
         android:id="@+id/content_main"
         layout="@layout/content_main" />
-
-    <!-- Note: A RecyclerView can also be used -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <!-- Scrollable content -->
-
-    </androidx.core.widget.NestedScrollView>
 
 
 

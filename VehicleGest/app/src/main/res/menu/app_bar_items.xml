@@ -3,23 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/edit"
-        android:contentDescription="@string/content_description_search"
-        android:title="@string/edit"
-        app:showAsAction="withText" />
-
-    <item
-        android:id="@+id/favorite"
-        android:contentDescription="@string/content_description_favorite"
-        android:icon="@drawable/ic_itv_menu_24dp"
-        android:title="@string/favorite"
-        app:showAsAction="withText" />
-
-    <item
-        android:id="@+id/more"
-        android:contentDescription="@string/content_description_more"
-        android:title="@string/more"
-        app:showAsAction="withText"
-        />
+        android:id="@+id/logout"
+        android:contentDescription="@string/logout"
+        android:enabled="true"
+        android:icon="@drawable/outline_logout_black_24"
+        android:iconTint="#000000"
+        android:tint="?attr/colorControlNormal"
+        android:title="@string/logout"
+        app:showAsAction="ifRoom" />
 
 </menu>

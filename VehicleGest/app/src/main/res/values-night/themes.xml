@@ -1,7 +1,7 @@
-<resources>
-    <style name="Theme.Vehiclegest" parent="Theme.Material3.Dark.NoActionBar">
 
-        <item name="android:fontFamily">@font/roboto</item>
+<resources>
+    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+
 
         <!-- MaterialComponents attributes (needed if parent="Theme.AppCompat"). -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -37,7 +37,6 @@
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
-
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>

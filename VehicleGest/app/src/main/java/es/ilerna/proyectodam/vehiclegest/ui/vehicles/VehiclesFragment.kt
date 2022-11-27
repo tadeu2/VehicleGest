@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
 import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
@@ -50,8 +51,12 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
 
     override fun onVehicleSelected(vehicle: Vehicle?) {
         val deviceFragment = VehicleDetail(vehicle!!)
-        deviceFragment.show(parentFragmentManager, "")
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
+        fragmentTransaction.commit()
     }
+
 
     override fun onStart() {
         super.onStart()

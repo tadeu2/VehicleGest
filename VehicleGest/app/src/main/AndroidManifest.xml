@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/iic_logo_vehicle"
+        android:icon="@mipmap/ic_logo_vehicle"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/iic_logo_vehicle_round"
+        android:roundIcon="@mipmap/ic_logo_vehicle_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Vehiclegest"
         android:name=".backend.Vehiclegest"
@@ -17,7 +17,7 @@
         >
         <activity
             android:name=".ui.MainActivity"
-            android:exported="false">
+            android:exported="true">
             <meta-data
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts" />

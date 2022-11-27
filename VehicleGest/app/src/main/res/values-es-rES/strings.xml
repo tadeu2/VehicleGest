@@ -44,4 +44,6 @@
     <string name="buttonedit">Edit</string>
     <string name="buttonclose">Close</string>
     <string name="licensed">ITV passed</string>
+    <string name="description">Description</string>
+    <string name="logout">Logout</string>
 </resources>

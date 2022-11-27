@@ -14,12 +14,6 @@ class Vehiclegest : Application() {
         instance = this
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        //Aplicar colores dinámicos según el tema
-        DynamicColors.applyToActivitiesIfAvailable(this)
-    }
-
     companion object {
 
         private var instance: Vehiclegest? = null

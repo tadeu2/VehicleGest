@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/md_theme_light_surface"
     tools:context=".ui.login.LoginActivity"
     >
 
@@ -117,6 +118,6 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_10"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@mipmap/ic_logo_vehicle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
