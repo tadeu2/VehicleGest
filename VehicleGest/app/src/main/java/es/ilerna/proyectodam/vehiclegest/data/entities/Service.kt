@@ -1,28 +1,29 @@
 package es.ilerna.proyectodam.vehiclegest.data.entities
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
+import java.util.*
 
 @IgnoreExtraProperties
 class Service : Parcelable {
 
     var plateNumber: String? = null
-    var type: String? = null
-    var brand: String? = null
-    var model: String? = null
-    //var expiryDateITV: Datetime? = null
-    //var totalDistance: Int? = 0
+    var serviceDate: Date? = null
+    var remarks: String? = null
+    var costumer: String? = null
 
     constructor()
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) {
         plateNumber = parcel.readString()
-        type = parcel.readString()
-        brand = parcel.readString()
-        model = parcel.readString()
-        //plateNumber = parcel.readString()
-        //totalDistance = parcel.readInt()
+        serviceDate = Timestamp(parcel.readLong(), 0).toDate()
+        remarks = parcel.readString()
+        costumer = parcel.readString()
     }
 
     override fun describeContents(): Int {
@@ -31,11 +32,9 @@ class Service : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(plateNumber)
-        dest.writeString(type)
-        dest.writeString(brand)
-        dest.writeString(model)
-        //dest?.writeString(title)
-        //dest?.writeInt(totalDistance!!)
+        dest.writeString(remarks)
+        serviceDate?.time?.let { dest.writeLong(it) }
+        dest.writeString(costumer)
     }
 
     companion object CREATOR : Parcelable.Creator<Service> {

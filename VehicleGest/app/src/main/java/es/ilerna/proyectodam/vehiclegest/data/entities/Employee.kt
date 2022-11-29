@@ -1,28 +1,37 @@
 package es.ilerna.proyectodam.vehiclegest.data.entities
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
+import java.util.*
 
 @IgnoreExtraProperties
 class Employee : Parcelable {
 
-    var plateNumber: String? = null
-    var type: String? = null
-    var brand: String? = null
-    var model: String? = null
-    //var expiryDateITV: Datetime? = null
-    //var totalDistance: Int? = 0
+    var dni : String? = null
+    var name: String? = null
+    var surname: String? = null
+    var address: String? = null
+    var email: String? = null
+    var phone: String? = null
+    var birthdate: Date? = null
+    var isAdmin: Boolean? = false
 
     constructor()
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) {
-        plateNumber = parcel.readString()
-        type = parcel.readString()
-        brand = parcel.readString()
-        model = parcel.readString()
-        //plateNumber = parcel.readString()
-        //totalDistance = parcel.readInt()
+        dni = parcel.readString()
+        name = parcel.readString()
+        surname = parcel.readString()
+        address = parcel.readString()
+        email = parcel.readString()
+        phone = parcel.readString()
+        birthdate = Timestamp(parcel.readLong(), 0).toDate()
+        isAdmin = parcel.readBoolean()
     }
 
     override fun describeContents(): Int {
@@ -30,12 +39,13 @@ class Employee : Parcelable {
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(plateNumber)
-        dest.writeString(type)
-        dest.writeString(brand)
-        dest.writeString(model)
-        //dest?.writeString(title)
-        //dest?.writeInt(totalDistance!!)
+        dest.writeString(dni)
+        dest.writeString(name)
+        dest.writeString(surname)
+        dest.writeString(address)
+        dest.writeString(email)
+        birthdate?.time?.let { dest.writeLong(it) }
+       isAdmin?.let { dest.writeBoolean(it) }
     }
 
     companion object CREATOR : Parcelable.Creator<Employee> {

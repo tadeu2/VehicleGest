@@ -9,19 +9,15 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 
 @IgnoreExtraProperties
-class Item : Parcelable {
+class ITV : Parcelable {
 
-    var plateNumber: String? = null
-    var name: String? = null
-    var description: String? = null
+    var dateITV: Date? = null
 
     constructor()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) {
-        plateNumber = parcel.readString()
-        name = parcel.readString()
-        description = parcel.readString()
+        dateITV = Timestamp(parcel.readLong(), 0).toDate()
     }
 
     override fun describeContents(): Int {
@@ -29,17 +25,15 @@ class Item : Parcelable {
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(plateNumber)
-        dest.writeString(name)
-        dest.writeString(description)
+        dateITV?.time?.let { dest.writeLong(it) }
     }
 
-    companion object CREATOR : Parcelable.Creator<Item> {
-        override fun createFromParcel(parcel: Parcel): Item {
-            return Item(parcel)
+    companion object CREATOR : Parcelable.Creator<ITV> {
+        override fun createFromParcel(parcel: Parcel): ITV {
+            return ITV(parcel)
         }
 
-        override fun newArray(size: Int): Array<Item?> {
+        override fun newArray(size: Int): Array<ITV?> {
             return arrayOfNulls(size)
         }
     }

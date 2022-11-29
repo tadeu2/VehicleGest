@@ -1,28 +1,29 @@
 package es.ilerna.proyectodam.vehiclegest.data.entities
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
+import java.util.*
 
 @IgnoreExtraProperties
 class Alert : Parcelable {
 
     var plateNumber: String? = null
-    var type: String? = null
-    var brand: String? = null
-    var model: String? = null
-    //var expiryDateITV: Datetime? = null
-    //var totalDistance: Int? = 0
+    var date: Date? = null
+    var description: String? = null
+    var isResolved:Boolean? = false
 
     constructor()
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) {
         plateNumber = parcel.readString()
-        type = parcel.readString()
-        brand = parcel.readString()
-        model = parcel.readString()
-        //plateNumber = parcel.readString()
-        //totalDistance = parcel.readInt()
+        date = Timestamp(parcel.readLong(), 0).toDate()
+        description = parcel.readString()
+        isResolved = parcel.readBoolean()
     }
 
     override fun describeContents(): Int {
@@ -31,11 +32,9 @@ class Alert : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(plateNumber)
-        dest.writeString(type)
-        dest.writeString(brand)
-        dest.writeString(model)
-        //dest?.writeString(title)
-        //dest?.writeInt(totalDistance!!)
+        dest.writeString(description)
+        date?.time?.let { dest.writeLong(it) }
+        isResolved?.let { dest.writeBoolean(it) }
     }
 
     companion object CREATOR : Parcelable.Creator<Alert> {
