@@ -1,0 +1,98 @@
+plugins {
+    // Add the Google services Gradle plugin
+    id 'com.google.gms.google-services'
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+
+    namespace 'es.ilerna.proyectodam.vehiclegest'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "es.ilerna.proyectodam.vehiclegest"
+        minSdk 29
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures{
+        dataBinding = true
+        viewBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildToolsVersion '30.0.3'
+    buildFeatures {
+        viewBinding true
+    }
+
+    //pongo este exclude porque da error al compilar
+    packagingOptions{
+        pickFirst 'META-INF/DEPENDENCIES'
+        pickFirst 'META-INF/AL2.0'
+        pickFirst 'META-INF/LGPL2.1'
+        pickFirst 'xsd/catalog.xml'
+        pickFirst 'META-INF/LICENSE.md'
+    }
+
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    /*
+
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
+    implementation 'androidx.annotation:annotation:1.5.0'
+    */
+
+    //Navigation fragments
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.fragment:fragment-ktx:1.5.4'
+    runtimeOnly("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    //MATERIAL3
+    implementation 'com.google.android.material:material:1.7.0'
+
+    //FIREBASE
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
+    //firebase auth
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
+    //Firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.1'
+
+    //TEST
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
+
+}

@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name" translatable="false">VehicleGest</string>
+    <string name="page_title" translatable="false">VehicleGest</string>
+    <string name="favorite">Favorite</string>
+    <string name="more">More</string>
+    <string name="vehiculos_menu_inferior">Vehicles</string>
+    <string name="itv_menu_inferior" translatable="false">ITV</string>
+    <string name="servicios_menu_inferior">Services</string>
+    <string name="inventario_menu_inferior">Inventory</string>
+    <string name="personal_menu_inferior">Employees</string>
+    <string name="title_activity_vehiculos">Vehicles</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="title_activity_login">Authentication</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="username">Username</string>
+    <string name="Access">Access</string>
+    <string name="password">Password</string>
+    <string name="title_alerts">Alerts</string>
+    <string name="title_vehicles">Vehicles</string>
+    <string name="title_dashboard">Tablón de avisos</string>
+    <string name="content_description_search">Search</string>
+    <string name="content_description_favorite">Favorite</string>
+    <string name="content_description_more">More</string>
+    <string name="Logout">Logout</string>
+    <string name="edit">Edit</string>
+    <string name="dialog_error_title">Wrong credentials</string>
+    <string name="dialog_error_text">Check that username and password are correct.</string>
+    <string name="authError">Error de autenticación</string>
+    <string name="accept">Agree</string>
+    <string name="dateFormat">MM/dd/yyy</string>
+    <string name="plate_number">Plate Number</string>
+    <string name="car_type">Car type</string>
+    <string name="brand">Brand</string>
+    <string name="itv_expiration_date">ITV Expiration</string>
+    <string name="total_distance">Total Distance</string>
+    <string name="model">Model</string>
+    <string name="buttondelete">Delete</string>
+    <string name="buttonedit">Edit</string>
+    <string name="buttonclose">Close</string>
+    <string name="licensed">ITV passed</string>
+    <string name="description">Description</string>
+    <string name="logout">Logout</string>
+
+</resources>

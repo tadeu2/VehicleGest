@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vehicle_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/medium_margin"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="@dimen/medium_margin"
+    app:strokeColor="@color/md_theme_dark_surfaceVariant"
+    app:strokeWidth="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/large_margin">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/vehicle_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/no_image_available"
+                tools:ignore="ImageContrastCheck"
+                tools:srcCompat="@drawable/no_image_available" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="@dimen/medium_margin">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/plate_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/plate_number"
+                    android:text="@string/plate_number"
+                    tools:text="Plate Number" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/type_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/car_type"
+                    android:text="@string/car_type"
+                    tools:text="Car type" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/brand_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand"
+                    tools:text="Brand" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/model_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/model"
+                    tools:text="Model" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/expirationdateitv_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/itv_expiration_date"
+                    tools:text="@string/itv_expiration_date" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/totaldistance_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/total_distance"
+                    android:text="@string/total_distance"
+                    tools:text="@string/total_distance" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="@dimen/medium_margin">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/plate_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="1234ABC" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Berlina" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Audi" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="A5" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/expirydateitv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="22/12/19" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/totaldistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="12343Km" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
