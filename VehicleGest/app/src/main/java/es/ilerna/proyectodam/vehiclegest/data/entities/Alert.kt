@@ -14,7 +14,7 @@ class Alert : Parcelable {
     var plateNumber: String? = null
     var date: Date? = null
     var description: String? = null
-    var isResolved:Boolean? = false
+    var solved: Boolean? = false
 
     constructor()
 
@@ -23,7 +23,7 @@ class Alert : Parcelable {
         plateNumber = parcel.readString()
         date = Timestamp(parcel.readLong(), 0).toDate()
         description = parcel.readString()
-        isResolved = parcel.readBoolean()
+        solved = parcel.readBoolean()
     }
 
     override fun describeContents(): Int {
@@ -34,7 +34,7 @@ class Alert : Parcelable {
         dest.writeString(plateNumber)
         dest.writeString(description)
         date?.time?.let { dest.writeLong(it) }
-        isResolved?.let { dest.writeBoolean(it) }
+        solved?.let { dest.writeBoolean(it) }
     }
 
     companion object CREATOR : Parcelable.Creator<Alert> {
