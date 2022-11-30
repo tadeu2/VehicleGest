@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/small_margin"
+        android:clickable="true"
+        android:focusable="true"
+        app:strokeColor="@color/md_theme_dark_surfaceVariant"
+        app:strokeWidth="2dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btclose"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/buttonclose"
+            app:icon="@drawable/ic_baseline_close_48"
+            app:iconPadding="0dp"
+            app:iconSize="36dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btdelete"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/buttondelete"
+            app:icon="@drawable/outline_inventory_24"
+            app:iconPadding="0dp"
+            app:iconSize="36dp"
+            app:layout_constraintEnd_toStartOf="@id/btedit"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btedit"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/buttonedit"
+            app:icon="@drawable/ic_itv_menu_24dp"
+            app:iconPadding="0dp"
+            app:iconSize="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TableLayout
+            android:id="@+id/table_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/tableshape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <!--
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/vehicle_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                app:srcCompat="@drawable/example_car"
+                                app:strokeWidth="@dimen/small_margin"
+                                tools:srcCompat="@drawable/example_car" />
+                        </TableRow>
+            -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_platenumber_detail"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:nestedScrollingEnabled="false"
+                    android:text="@string/plate_number"
+                    android:textAlignment="textEnd"
+                    tools:text="@string/plate_number" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/plate_number"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:textAlignment="center"
+                    tools:text="1234ABC" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_date_detail"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:nestedScrollingEnabled="false"
+                    android:text="@string/date"
+                    android:textAlignment="textEnd"
+                    tools:text="@string/date" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/date"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:textAlignment="center"
+                    tools:text="24/12/22" />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_solved_detail"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/licensed"
+                    android:textAlignment="textEnd"
+                    tools:text="@string/licensed" />
+
+
+                <CheckBox
+                    android:id="@+id/checksolved"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:clickable="false" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_description"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/description"
+                    android:textAlignment="center"
+                    tools:text="@string/description" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/alert_description"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineHeight="10dp"
+                    android:nestedScrollingEnabled="true"
+                    android:scrollbars="vertical"
+                    android:textAlignment="textStart"
+                    tools:text="This is a automobile, byname auto, also called motorcar or car,
+                    a usually four-wheeled vehicle designed primarily for passenger
+                    transportation and commonly propelled by an internal-combustion engine
+                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
+                    a usually four-wheeled vehicle designed primarily for passenger
+                    transportation and commonly propelled by an internal-combustion engine
+                    " />
+            </TableRow>
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+
+
+

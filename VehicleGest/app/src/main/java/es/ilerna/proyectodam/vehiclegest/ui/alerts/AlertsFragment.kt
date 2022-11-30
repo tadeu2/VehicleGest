@@ -1,38 +1,72 @@
 package es.ilerna.proyectodam.vehiclegest.ui.alerts
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.data.adapters.AlertRecyclerAdapter
+import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentAlertsBinding
 
-class AlertsFragment : Fragment() {
+/**
+ * Fragmento de listado de alertas
+ */
+class AlertsFragment : Fragment(), AlertRecyclerAdapter.AlertAdapterListener {
 
     private var _binding: FragmentAlertsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var AlertRecyclerAdapter: AlertRecyclerAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var AlertsQuery: Query
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val alertsViewModel =
-            ViewModelProvider(this).get(AlertsViewModel::class.java)
 
+        //Pintar el fragment
         _binding = FragmentAlertsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        //Firestore
+        AlertsQuery = FirebaseFirestore.getInstance().collection("Alert")
 
-        val textView: TextView = binding.textNotifications
-        alertsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        //Pintar el recycler
+        recyclerView = binding.recycleralerts
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
+
+        AlertRecyclerAdapter = AlertRecyclerAdapter(AlertsQuery, this)
+        recyclerView.adapter = AlertRecyclerAdapter
+
         return root
+    }
+
+    override fun onAlertSelected(Alert: Alert?) {
+        val deviceFragment = AlertDetail(Alert!!)
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
+        fragmentTransaction.commit()
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        AlertRecyclerAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        AlertRecyclerAdapter.startListening()
     }
 
     override fun onDestroyView() {
