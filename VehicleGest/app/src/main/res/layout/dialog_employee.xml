@@ -60,46 +60,46 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <!--
+
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal">
 
                             <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/vehicle_image"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                app:srcCompat="@drawable/example_car"
+                                android:id="@+id/employee_image"
+                                android:layout_width="250dp"
+                                android:layout_height="250dp"
+                                app:srcCompat="@drawable/no_image_available"
                                 app:strokeWidth="@dimen/small_margin"
-                                tools:srcCompat="@drawable/example_car" />
+                                tools:srcCompat="@drawable/no_image_available" />
                         </TableRow>
-            -->
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_platenumber_detail"
+                    android:id="@+id/label_dni_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
                     android:nestedScrollingEnabled="false"
-                    android:text="@string/plate_number"
+                    android:text="@string/DNI"
                     android:textAlignment="textEnd"
-                    tools:text="@string/plate_number" />
+                    tools:text="DNI" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/plate_number"
+                    android:id="@+id/employee_dni"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
-                    tools:text="1234ABC" />
+                    tools:text="4423442FDF" />
             </TableRow>
 
             <TableRow
@@ -107,23 +107,23 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_type_detail"
+                    android:id="@+id/label_employee_name"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/car_type"
+                    android:text="@string/name"
                     android:textAlignment="textEnd"
-                    tools:text="@string/car_type" />
+                    tools:text="@string/name" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/type"
+                    android:id="@+id/name"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
-                    tools:text="Berlina" />
+                    tools:text="nombre" />
             </TableRow>
 
             <TableRow
@@ -131,23 +131,23 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_brand_detail"
+                    android:id="@+id/label_surname"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/brand"
+                    android:text="@string/surname"
                     android:textAlignment="textEnd"
-                    tools:text="@string/brand" />
+                    tools:text="@string/surname" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/brand"
+                    android:id="@+id/surname"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
-                    tools:text="AUDI" />
+                    tools:text="Caruncho Serrano" />
             </TableRow>
 
             <TableRow
@@ -155,23 +155,69 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_model_detail"
+                    android:id="@+id/label_address"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/model"
+                    android:text="@string/address"
                     android:textAlignment="textEnd"
-                    tools:text="@string/model" />
+                    tools:text="@string/address" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/model"
+                    android:id="@+id/address"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
-                    tools:text="A5" />
+                    tools:text="C/Pepita nº Alicante" />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_phone"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/phone"
+                    android:textAlignment="textEnd"
+                    tools:text="@string/phone" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/phone"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="652344424" />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_birthdate"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/birthdate"
+                    android:textAlignment="textEnd"
+                    tools:text="Fecha nacimiento" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/birthdate"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    tools:text="12/12/2013" />
             </TableRow>
 
             <TableRow
@@ -179,47 +225,23 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_expiring_itv_detail"
+                    android:id="@+id/label_email"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/itv_expiration_date"
+                    android:text="@string/email"
                     android:textAlignment="textEnd"
-                    tools:text="Caducidad ITV" />
+                    tools:text="@string/email" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/expiring_itv"
+                    android:id="@+id/email"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
-                    tools:text="12/12/2023" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_total_distance_detail"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/total_distance"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/total_distance" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/total_distance"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    tools:text="123KM" />
+                    tools:text="hola@gmail.com" />
 
 
             </TableRow>
@@ -229,18 +251,18 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_licensed_detail"
+                    android:id="@+id/label_admin"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/licensed"
+                    android:text="@string/admin"
                     android:textAlignment="textEnd"
-                    tools:text="@string/licensed" />
+                    tools:text="@string/admin" />
 
 
                 <CheckBox
-                    android:id="@+id/checkLicensed"
+                    android:id="@+id/checkadmin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -248,57 +270,6 @@
                     android:clickable="false" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_description"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/description"
-                    android:textAlignment="center"
-                    tools:text="@string/description" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/vehicle_description"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineHeight="10dp"
-                    android:nestedScrollingEnabled="true"
-                    android:scrollbars="vertical"
-                    android:textAlignment="textStart"
-                    tools:text="This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. " />
-            </TableRow>
         </TableLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
