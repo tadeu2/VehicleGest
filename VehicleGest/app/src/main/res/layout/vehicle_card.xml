@@ -27,8 +27,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/vehicle_image"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/no_image_available"
                 tools:ignore="ImageContrastCheck"
@@ -71,20 +71,6 @@
                     android:text="@string/model"
                     tools:text="Model" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/expirationdateitv_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/itv_expiration_date"
-                    tools:text="@string/itv_expiration_date" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/totaldistance_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/total_distance"
-                    android:text="@string/total_distance"
-                    tools:text="@string/total_distance" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -117,17 +103,6 @@
                     android:layout_height="wrap_content"
                     tools:text="A5" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/expirydateitv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="22/12/19" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/totaldistance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="12343Km" />
             </LinearLayout>
         </LinearLayout>
 

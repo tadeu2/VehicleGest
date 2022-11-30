@@ -11,14 +11,15 @@ import java.util.*
 @IgnoreExtraProperties
 class Employee : Parcelable {
 
-    var dni : String? = null
+    var dni: String? = null
     var name: String? = null
     var surname: String? = null
     var address: String? = null
     var email: String? = null
     var phone: String? = null
     var birthdate: Date? = null
-    var isAdmin: Boolean? = false
+    var photoURL: String? = null
+    var admin: Boolean? = null
 
     constructor()
 
@@ -31,7 +32,8 @@ class Employee : Parcelable {
         email = parcel.readString()
         phone = parcel.readString()
         birthdate = Timestamp(parcel.readLong(), 0).toDate()
-        isAdmin = parcel.readBoolean()
+        photoURL = parcel.readString()
+        admin = parcel.readBoolean()
     }
 
     override fun describeContents(): Int {
@@ -44,8 +46,10 @@ class Employee : Parcelable {
         dest.writeString(surname)
         dest.writeString(address)
         dest.writeString(email)
+        dest.writeString(phone)
         birthdate?.time?.let { dest.writeLong(it) }
-       isAdmin?.let { dest.writeBoolean(it) }
+        dest.writeString(photoURL)
+        admin?.let { dest.writeBoolean(it) }
     }
 
     companion object CREATOR : Parcelable.Creator<Employee> {

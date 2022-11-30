@@ -7,7 +7,7 @@
     <string name="next">Siguiente</string>
     <string name="previous">Anterior</string>
     <string name="title_activity_vehiculos">Vehículos</string>
-    <string name="more">más</string>
+    <string name="more">Más</string>
     <string name="favorite">Favorito</string>
     <string name="inventario_menu_inferior">Inventario</string>
     <string name="username">Nombre de Usuario</string>
@@ -40,10 +40,19 @@
     <string name="itv_expiration_date">Caduc. ITV</string>
     <string name="total_distance">Distancia Total</string>
     <string name="model">Modelo</string>
-    <string name="buttondelete">Delete</string>
-    <string name="buttonedit">Edit</string>
+    <string name="buttondelete">Borrar</string>
+    <string name="buttonedit">Editar</string>
     <string name="buttonclose">Close</string>
-    <string name="licensed">ITV passed</string>
-    <string name="description">Description</string>
-    <string name="logout">Logout</string>
+    <string name="licensed">ITV aprobada</string>
+    <string name="description">Descripcion</string>
+    <string name="logout">Desconectar</string>
+    <string name="name">Nombre</string>
+    <string name="surname">Apellidos</string>
+    <string name="admin">Administrador</string>
+    <string name="DNI">DNI</string>
+    <string name="birthdate">Fecha de Nacimiento</string>
+    <string name="address">Dirección</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="phone">Teléfono</string>
+    <string name="search">Search</string>
 </resources>

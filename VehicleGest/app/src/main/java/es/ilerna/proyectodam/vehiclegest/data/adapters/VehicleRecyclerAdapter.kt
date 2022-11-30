@@ -3,6 +3,7 @@ package es.ilerna.proyectodam.vehiclegest.data.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
@@ -46,20 +47,9 @@ class VehicleRecyclerAdapter(
             binding.brand.text = vehicle?.brand.toString()
             binding.model.text = vehicle?.model.toString()
 
-            //Formatea los timestamp según el string de recursos.
-            val simpleDateFormat = SimpleDateFormat(
-                Vehiclegest.appContext().resources
-                    .getString(R.string.dateFormat), Locale.getDefault()
-            )
-            val stamp = vehicle?.expiryDateITV?.time
-            val date = simpleDateFormat.format(Date(stamp!!))
+            //Foto del vehículo
+            Glide.with(binding.root).load(vehicle?.photoURL).into(binding.vehicleImage);
 
-            binding.expirydateitv.text = date
-
-            binding.totaldistance.text = buildString {
-                append(vehicle.totalDistance.toString())
-                append(" KM")
-            }
             binding.vehicleCard.setOnClickListener {
                 listener.onVehicleSelected(vehicle)
             }

@@ -8,6 +8,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
@@ -56,6 +57,8 @@ class VehicleDetail(val data: Vehicle) : Fragment() {
         binding.totalDistance.text = buildString {
         append(data.totalDistance.toString())
         append(" KM")
+            //Foto del vehículo
+        Glide.with(binding.root).load(data.photoURL).into(binding.vehicleImage);
     }
         binding.btclose.setOnClickListener {
             this.onBtClose()

@@ -60,21 +60,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <!--
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal">
 
-                            <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/vehicle_image"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                app:srcCompat="@drawable/example_car"
-                                app:strokeWidth="@dimen/small_margin"
-                                tools:srcCompat="@drawable/example_car" />
-                        </TableRow>
-            -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/vehicle_image"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    app:srcCompat="@drawable/no_image_available"
+                    app:strokeWidth="@dimen/small_margin"
+                    tools:srcCompat="@drawable/no_image_available" />
+            </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

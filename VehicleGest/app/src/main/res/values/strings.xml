@@ -48,5 +48,14 @@
     <string name="licensed">ITV passed</string>
     <string name="description">Description</string>
     <string name="logout">Logout</string>
+    <string name="DNI">ID</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="admin">Admin</string>
+    <string name="address">Address</string>
+    <string name="email">Email Address</string>
+    <string name="phone">Phone</string>
+    <string name="search">Search</string>
 
 </resources>

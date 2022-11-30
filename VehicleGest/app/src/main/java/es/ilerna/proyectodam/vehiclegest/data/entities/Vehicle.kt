@@ -8,6 +8,9 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 
+/**
+ * Escribe y lee los datos de las entidades vehículo
+ */
 @IgnoreExtraProperties
 class Vehicle : Parcelable {
 
@@ -17,8 +20,9 @@ class Vehicle : Parcelable {
     var model: String? = null
     var expiryDateITV: Date? = null
     var totalDistance: Int? = 0
-    var licensed: Boolean? = true
+    var licensed: Boolean? = null
     var description: String? = null
+    var photoURL: String? = null
 
     constructor()
 
@@ -32,6 +36,7 @@ class Vehicle : Parcelable {
         totalDistance = parcel.readInt()
         licensed = parcel.readBoolean()
         description = parcel.readString()
+        photoURL = parcel.readString()
     }
 
     override fun describeContents(): Int {
@@ -47,6 +52,7 @@ class Vehicle : Parcelable {
         totalDistance?.let { dest.writeInt(it) }
         licensed?.let { dest.writeBoolean(it) }
         dest.writeString(description)
+        dest.writeString(photoURL)
     }
 
     companion object CREATOR : Parcelable.Creator<Vehicle> {
