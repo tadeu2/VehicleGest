@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/navigation_services"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.services.ServicesFragment"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment"
         android:label="@string/title_vehicles"
         tools:layout="@layout/fragment_vehicles">
         <action
@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/navigation_employees"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeesFragment"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeFragment"
         android:label="@string/title_vehicles"
         tools:layout="@layout/fragment_vehicles">
         <action

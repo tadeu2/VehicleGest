@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.inventory
+package es.ilerna.proyectodam.vehiclegest.ui.services
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,18 +10,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.data.adapters.ItemRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.data.entities.Item
-import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
+import es.ilerna.proyectodam.vehiclegest.data.adapters.ServiceRecyclerAdapter
+import es.ilerna.proyectodam.vehiclegest.data.entities.Service
+import es.ilerna.proyectodam.vehiclegest.databinding.FragmentServicesBinding
+import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceDetail
 
-class InventoryFragment : Fragment(), ItemRecyclerAdapter.ItemAdapterListener {
+class ServiceFragment : Fragment(), ServiceRecyclerAdapter.ServiceAdapterListener {
 
-    private var _binding: FragmentInventoryBinding? = null
+    private var _binding: FragmentServicesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var ItemQuery: Query
+    private lateinit var ServiceQuery: Query
 
-    private lateinit var ItemRecyclerAdapter: ItemRecyclerAdapter
+    private lateinit var ServiceRecyclerAdapter: ServiceRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
@@ -31,24 +32,24 @@ class InventoryFragment : Fragment(), ItemRecyclerAdapter.ItemAdapterListener {
     ): View {
 
         //Pintar el fragment
-        _binding = FragmentInventoryBinding.inflate(inflater, container, false)
+        _binding = FragmentServicesBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //Firestore
-        ItemQuery = FirebaseFirestore.getInstance().collection("Items")
+        ServiceQuery = FirebaseFirestore.getInstance().collection("Services")
 
         //Pintar el recycler
-        recyclerView = binding.recycleritems
+        recyclerView = binding.recyclerservices
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
-        ItemRecyclerAdapter = ItemRecyclerAdapter(ItemQuery, this)
-        recyclerView.adapter = ItemRecyclerAdapter
+        ServiceRecyclerAdapter = ServiceRecyclerAdapter(ServiceQuery, this)
+        recyclerView.adapter = ServiceRecyclerAdapter
 
         return root
     }
 
-    override fun onItemSelected(Item: Item?) {
-        val deviceFragment = ItemDetail(Item!!)
+    override fun onServiceSelected(Service: Service?) {
+        val deviceFragment = ServiceDetail(Service!!)
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
@@ -57,12 +58,12 @@ class InventoryFragment : Fragment(), ItemRecyclerAdapter.ItemAdapterListener {
 
     override fun onStart() {
         super.onStart()
-        ItemRecyclerAdapter.startListening()
+        ServiceRecyclerAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        ItemRecyclerAdapter.startListening()
+        ServiceRecyclerAdapter.startListening()
     }
 
     override fun onDestroyView() {

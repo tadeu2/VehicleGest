@@ -48,7 +48,7 @@ class VehicleRecyclerAdapter(
             binding.model.text = vehicle?.model.toString()
 
             //Foto del vehículo
-            Glide.with(binding.root).load(vehicle?.photoURL).into(binding.vehicleImage);
+            Glide.with(binding.root).load(vehicle?.photoURL).into(binding.vehicleImage)
 
             binding.vehicleCard.setOnClickListener {
                 listener.onVehicleSelected(vehicle)

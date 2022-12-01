@@ -12,7 +12,7 @@ import java.util.*
 class Service : Parcelable {
 
     var plateNumber: String? = null
-    var serviceDate: Date? = null
+    var date: Date? = null
     var remarks: String? = null
     var costumer: String? = null
 
@@ -21,7 +21,7 @@ class Service : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) {
         plateNumber = parcel.readString()
-        serviceDate = Timestamp(parcel.readLong(), 0).toDate()
+        date = Timestamp(parcel.readLong(), 0).toDate()
         remarks = parcel.readString()
         costumer = parcel.readString()
     }
@@ -33,7 +33,7 @@ class Service : Parcelable {
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(plateNumber)
         dest.writeString(remarks)
-        serviceDate?.time?.let { dest.writeLong(it) }
+        date?.time?.let { dest.writeLong(it) }
         dest.writeString(costumer)
     }
 

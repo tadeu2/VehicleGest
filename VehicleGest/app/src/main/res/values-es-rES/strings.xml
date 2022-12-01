@@ -57,4 +57,5 @@
     <string name="search">Search</string>
     <string name="date">Date</string>
     <string name="alert">Alert</string>
+    <string name="item_name">Nombre Artículo</string>
 </resources>

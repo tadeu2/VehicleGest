@@ -11,13 +11,13 @@ import java.util.*
 @IgnoreExtraProperties
 class ITV : Parcelable {
 
-    var dateITV: Date? = null
+    var date: Date? = null
 
     constructor()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) {
-        dateITV = Timestamp(parcel.readLong(), 0).toDate()
+        date = Timestamp(parcel.readLong(), 0).toDate()
     }
 
     override fun describeContents(): Int {
@@ -25,7 +25,7 @@ class ITV : Parcelable {
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dateITV?.time?.let { dest.writeLong(it) }
+        date?.time?.let { dest.writeLong(it) }
     }
 
     companion object CREATOR : Parcelable.Creator<ITV> {

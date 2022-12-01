@@ -45,7 +45,7 @@ class EmployeeRecyclerAdapter(
             binding.name.text = employee?.name.toString()
             binding.surname.text = employee?.surname.toString()
             //Foto del vehículo
-            Glide.with(binding.root).load(employee?.photoURL).into(binding.employeeImage);
+            Glide.with(binding.root).load(employee?.photoURL).into(binding.employeeImage)
 
             binding.employeeCard.setOnClickListener {
                 listener.onEmployeeSelected(employee)

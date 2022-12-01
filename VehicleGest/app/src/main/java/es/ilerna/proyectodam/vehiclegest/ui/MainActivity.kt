@@ -16,10 +16,10 @@ import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
+import es.ilerna.proyectodam.vehiclegest.ui.inspections.ITVFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inventory.InventoryFragment
-import es.ilerna.proyectodam.vehiclegest.ui.inventory.inspections.InspectionsFragment
 import es.ilerna.proyectodam.vehiclegest.ui.login.LoginActivity
-import es.ilerna.proyectodam.vehiclegest.ui.services.ServicesFragment
+import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment
 import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment
 
 
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var badgeAlert: BadgeDrawable
     private var alertCount = 0
-    var alertQuery =  FirebaseFirestore.getInstance().collection("alert")
+    var alertQuery = FirebaseFirestore.getInstance().collection("alert")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,8 +67,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomBarMain.bottomNavMenu.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.vehicles -> replaceFragment(VehiclesFragment())
-                R.id.itv -> replaceFragment(InspectionsFragment())
-                R.id.services -> replaceFragment(ServicesFragment())
+                R.id.itv -> replaceFragment(ITVFragment())
+                R.id.services -> replaceFragment(ServiceFragment())
                 R.id.inventory -> replaceFragment(InventoryFragment())
                 R.id.employees -> replaceFragment(EmployeeFragment())
             }

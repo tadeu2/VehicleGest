@@ -1,8 +1,8 @@
 plugins {
     // Add the Google services Gradle plugin
-    id 'com.google.gms.google-services'
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -38,7 +38,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildToolsVersion '30.0.3'
+    buildToolsVersion = "33.0.1"
     buildFeatures {
         viewBinding true
     }

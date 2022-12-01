@@ -60,21 +60,46 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <!--
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal">
 
-                            <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/vehicle_image"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                app:srcCompat="@drawable/example_car"
-                                app:strokeWidth="@dimen/small_margin"
-                                tools:srcCompat="@drawable/example_car" />
-                        </TableRow>
-            -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/item_image"
+                    android:layout_width="240dp"
+                    android:layout_height="240dp"
+                    app:srcCompat="@drawable/no_image_available"
+                    app:strokeWidth="@dimen/small_margin"
+                    tools:srcCompat="@drawable/no_image_available" />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_name_detail"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:nestedScrollingEnabled="false"
+                    android:text="@string/name"
+                    android:textAlignment="textEnd"
+                    tools:text="@string/name" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/name"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:textAlignment="center"
+                    tools:text="Alicates" />
+            </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -102,56 +127,14 @@
                     tools:text="1234ABC" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_date_detail"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:nestedScrollingEnabled="false"
-                    android:text="@string/date"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/date" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/date"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="24/12/22" />
-            </TableRow>
 
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_solved_detail"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/licensed"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/licensed" />
 
-
-                <CheckBox
-                    android:id="@+id/checksolved"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:clickable="false" />
             </TableRow>
 
             <TableRow
@@ -182,13 +165,7 @@
                     android:nestedScrollingEnabled="true"
                     android:scrollbars="vertical"
                     android:textAlignment="textStart"
-                    tools:text="This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    " />
+                    tools:text="This is a tool" />
             </TableRow>
         </TableLayout>
 

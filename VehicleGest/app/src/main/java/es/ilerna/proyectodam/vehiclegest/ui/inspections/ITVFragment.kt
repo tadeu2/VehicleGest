@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.inventory
+package es.ilerna.proyectodam.vehiclegest.ui.inspections
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,45 +10,43 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.data.adapters.ItemRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.data.entities.Item
-import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
+import es.ilerna.proyectodam.vehiclegest.data.adapters.ITVRecyclerAdapter
+import es.ilerna.proyectodam.vehiclegest.data.entities.ITV
+import es.ilerna.proyectodam.vehiclegest.databinding.FragmentItvBinding
 
-class InventoryFragment : Fragment(), ItemRecyclerAdapter.ItemAdapterListener {
+class ITVFragment : Fragment(), ITVRecyclerAdapter.ITVAdapterListener {
 
-    private var _binding: FragmentInventoryBinding? = null
+    private var _binding: FragmentItvBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var ItemQuery: Query
+    private lateinit var ITVQuery: Query
 
-    private lateinit var ItemRecyclerAdapter: ItemRecyclerAdapter
+    private lateinit var ITVRecyclerAdapter: ITVRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         //Pintar el fragment
-        _binding = FragmentInventoryBinding.inflate(inflater, container, false)
+        _binding = FragmentItvBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //Firestore
-        ItemQuery = FirebaseFirestore.getInstance().collection("Items")
+        ITVQuery = FirebaseFirestore.getInstance().collection("ITVs")
 
         //Pintar el recycler
-        recyclerView = binding.recycleritems
+        recyclerView = binding.recycleritv
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
-        ItemRecyclerAdapter = ItemRecyclerAdapter(ItemQuery, this)
-        recyclerView.adapter = ItemRecyclerAdapter
+        ITVRecyclerAdapter = ITVRecyclerAdapter(ITVQuery, this)
+        recyclerView.adapter = ITVRecyclerAdapter
 
         return root
     }
 
-    override fun onItemSelected(Item: Item?) {
-        val deviceFragment = ItemDetail(Item!!)
+    override fun onITVSelected(itv: ITV?) {
+        val deviceFragment = ItvDetail(itv!!)
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
@@ -57,12 +55,12 @@ class InventoryFragment : Fragment(), ItemRecyclerAdapter.ItemAdapterListener {
 
     override fun onStart() {
         super.onStart()
-        ItemRecyclerAdapter.startListening()
+        ITVRecyclerAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        ItemRecyclerAdapter.startListening()
+        ITVRecyclerAdapter.startListening()
     }
 
     override fun onDestroyView() {

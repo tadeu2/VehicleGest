@@ -14,6 +14,7 @@ class Item : Parcelable {
     var plateNumber: String? = null
     var name: String? = null
     var description: String? = null
+    var photoURL: String? = null
 
     constructor()
 
@@ -22,6 +23,7 @@ class Item : Parcelable {
         plateNumber = parcel.readString()
         name = parcel.readString()
         description = parcel.readString()
+        photoURL = parcel.readString()
     }
 
     override fun describeContents(): Int {
@@ -32,6 +34,7 @@ class Item : Parcelable {
         dest.writeString(plateNumber)
         dest.writeString(name)
         dest.writeString(description)
+        dest.writeString(photoURL)
     }
 
     companion object CREATOR : Parcelable.Creator<Item> {
