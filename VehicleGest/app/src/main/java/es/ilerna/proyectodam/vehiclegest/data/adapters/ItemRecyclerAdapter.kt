@@ -28,22 +28,22 @@ class ItemRecyclerAdapter(
         ) : ViewHolder(binding.root) {
 
         fun bind(snapshot: DocumentSnapshot, listener: ItemAdapterListener) {
-            val Item: Item? = snapshot.toObject(Item::class.java)
-            assignData(Item, listener)
+            val item: Item? = snapshot.toObject(Item::class.java)
+            assignData(item, listener)
         }
 
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
-         * @param Item Ficha de cada vehículo
+         * @param item Ficha de cada vehículo
          */
-        private fun assignData(Item: Item?, listener: ItemAdapterListener) {
-            binding.plateNumber.text = Item?.plateNumber.toString()
-            binding.name.text = Item?.name.toString()
-            //Foto del vehículo
-            Glide.with(binding.root).load(Item?.photoURL).into(binding.itemImage)
+        private fun assignData(item: Item?, listener: ItemAdapterListener) {
+            binding.plateNumber.text = item?.plateNumber.toString()
+            binding.name.text = item?.name.toString()
+            //Foto del articulo
+            Glide.with(binding.root).load(item?.photoURL).into(binding.itemImage)
 
             binding.itemCard.setOnClickListener {
-                listener.onItemSelected(Item)
+                listener.onItemSelected(item)
             }
         }
     }
@@ -53,7 +53,7 @@ class ItemRecyclerAdapter(
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
     interface ItemAdapterListener {
-        fun onItemSelected(Item: Item??)
+        fun onItemSelected(item: Item??)
     }
 
 

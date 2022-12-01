@@ -27,19 +27,19 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/service_image"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="47dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/outline_handshake_white_24"
+                app:srcCompat="@drawable/ic_outline_handshake_24"
                 tools:ignore="ImageContrastCheck"
-                tools:srcCompat="@drawable/outline_handshake_white_24" />
+                tools:srcCompat="@drawable/ic_outline_handshake_24" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="@dimen/medium_margin">
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plate_label"
@@ -47,6 +47,8 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/plate_number"
                     android:text="@string/plate_number"
+                    android:textStyle="bold"
+                    android:textAlignment="textEnd"
                     tools:text="@string/plate_number" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -54,6 +56,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
+                    android:textStyle="bold"
+                    android:textAlignment="textEnd"
                     tools:text="@string/date" />
 
             </LinearLayout>
@@ -63,18 +67,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="@dimen/medium_margin">
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plate_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
                     tools:text="1234ABC" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
                     tools:text="24/12/22" />
 
             </LinearLayout>

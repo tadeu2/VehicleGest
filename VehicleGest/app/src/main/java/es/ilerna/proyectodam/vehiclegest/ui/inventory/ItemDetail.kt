@@ -8,8 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -33,26 +32,26 @@ class ItemDetail(val data: Item) : Fragment() {
     private lateinit var navBarBot: BottomNavigationView
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         //Pintar el fragment
         // navBarTop = requireActivity().findViewById(R.id.topToolbar)
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
-        navBarBot.visibility = INVISIBLE
+        navBarBot.visibility = GONE
 
         _binding = DetailItemBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.name.text = data.name
         binding.plateNumber.text = data.plateNumber
+        binding.itemDescription.text = data.description
+
         this.displayImgURL(data.photoURL, binding.itemImage)
         //Foto del vehículo
-        Glide.with(binding.root).load(data.photoURL).into(binding.itemImage)
+        //Glide.with(binding.root).load(data.photoURL).into(binding.itemImage)
 
-        binding.btclose.setOnClickListener {
+        binding.bar.btclose.setOnClickListener {
             this.onBtClose()
         }
 

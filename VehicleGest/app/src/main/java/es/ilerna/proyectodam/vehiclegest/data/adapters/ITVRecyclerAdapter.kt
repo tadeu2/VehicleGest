@@ -5,8 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.ITV
 import es.ilerna.proyectodam.vehiclegest.databinding.ItvCardBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
@@ -27,18 +31,22 @@ class ITVRecyclerAdapter(
         ) : ViewHolder(binding.root) {
 
         fun bind(snapshot: DocumentSnapshot, listener: ITVAdapterListener) {
-            val ITV: ITV? = snapshot.toObject(ITV::class.java)
-            assignData(ITV, listener)
+            val itv: ITV? = snapshot.toObject(ITV::class.java)
+            assignData(itv, listener)
         }
 
         /**
          * Rellena cada ITV de la tarjeta con los datos del objeto vehiculo
-         * @param ITV Ficha de cada vehículo
+         * @param itv Ficha de cada vehículo
          */
-        private fun assignData(ITV: ITV?, listener: ITVAdapterListener) {
-            binding
+        private fun assignData(itv: ITV?, listener: ITVAdapterListener) {
+
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            binding.date.text = itv?.date?.time?.let { Vehiclegest.customDateFormat(it) }
+
             binding.itvCard.setOnClickListener {
-                listener.onITVSelected(ITV)
+                listener.onITVSelected(itv)
             }
         }
     }

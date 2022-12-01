@@ -4,11 +4,11 @@ package es.ilerna.proyectodam.vehiclegest.ui.alerts
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.EntityFragment
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
@@ -37,21 +37,21 @@ class AlertDetail(val data: Alert) : EntityFragment() {
         //Pintar el fragment
         // navBarTop = requireActivity().findViewById(R.id.topToolbar)
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
-        navBarBot.visibility = INVISIBLE
+        navBarBot.visibility = GONE
 
         _binding = DetailAlertBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
         binding.plateNumber.text = data.plateNumber
         binding.alertDescription.text = data.description
         binding.checksolved.isChecked = data.solved == false
+
         //Formatea los timestamp a fecha normal dd/mm/aa
-        val simpleDateFormat = SimpleDateFormat(
-            getString(R.string.dateFormat), Locale.getDefault()
-        )
-        val stamp = data.date?.time
-        val date = simpleDateFormat.format(Date(stamp!!))
-        binding.date.text = date.toString()
-        binding.btclose.setOnClickListener {
+        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+        //El formato se puede modificar en strings.xml
+        binding.date.text = data.date?.time?.let { Vehiclegest.customDateFormat(it) }
+
+        binding.bar.btclose.setOnClickListener {
             this.onBtClose()
         }
 

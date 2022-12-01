@@ -46,6 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/DNI"
+                    android:textStyle="bold"
                     tools:text="DNI" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -54,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/name"
                     android:text="@string/name"
+                    android:textStyle="bold"
                     tools:text="Name" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -62,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/surname"
                     android:text="@string/surname"
+                    android:textStyle="bold"
                     tools:text="Surname" />
 
 

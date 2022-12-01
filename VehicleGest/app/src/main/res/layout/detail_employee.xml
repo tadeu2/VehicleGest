@@ -14,42 +14,13 @@
         app:strokeColor="@color/md_theme_dark_surfaceVariant"
         app:strokeWidth="2dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btclose"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/buttonclose"
-            app:icon="@drawable/ic_baseline_close_48"
-            app:iconPadding="0dp"
-            app:iconSize="36dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btdelete"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/bar"
+            layout="@layout/bar_detail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/buttondelete"
-            app:icon="@drawable/outline_inventory_24"
-            app:iconPadding="0dp"
-            app:iconSize="36dp"
-            app:layout_constraintEnd_toStartOf="@id/btedit"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btedit"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/buttonedit"
-            app:icon="@drawable/ic_itv_menu_24dp"
-            app:iconPadding="0dp"
-            app:iconSize="36dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
 
         <TableLayout
             android:id="@+id/table_details"
@@ -61,19 +32,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
 
-                            <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/employee_image"
-                                android:layout_width="250dp"
-                                android:layout_height="250dp"
-                                app:srcCompat="@drawable/no_image_available"
-                                app:strokeWidth="@dimen/small_margin"
-                                tools:srcCompat="@drawable/no_image_available" />
-                        </TableRow>
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/employee_image"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    app:srcCompat="@drawable/no_image_available"
+                    app:strokeWidth="@dimen/small_margin"
+                    tools:srcCompat="@drawable/no_image_available" />
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
@@ -173,6 +144,7 @@
                     android:textAlignment="center"
                     tools:text="C/Pepita nº Alicante" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -196,6 +168,7 @@
                     android:textAlignment="center"
                     tools:text="652344424" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

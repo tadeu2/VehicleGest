@@ -20,11 +20,11 @@ abstract class EntityFragment : Fragment() {
     fun edit(entity: Objects) {}
     fun delEntity(id: String) {}
 
-    private fun onBtClose() {
+    private fun onBtClose(fragment: Fragment) {
         navBarBot.visibility = View.VISIBLE
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, AlertsFragment())
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment)
         fragmentTransaction.commit()
     }
 }

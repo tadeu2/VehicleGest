@@ -114,6 +114,6 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_10"
-        app:srcCompat="@mipmap/ic_logo_vehicle" />
+        app:srcCompat="@mipmap/ic_vehiclegest_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

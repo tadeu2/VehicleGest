@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import es.ilerna.proyectodam.vehiclegest.FullscreenFragment
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
@@ -22,18 +23,25 @@ import es.ilerna.proyectodam.vehiclegest.ui.login.LoginActivity
 import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment
 import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment
 
-
+/**
+ * Actividad principal de la aplicación
+ */
 class MainActivity : AppCompatActivity() {
 
+    //Variables principales de la actividad
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var badgeAlert: BadgeDrawable
+
+    //Variables para crear el contador de alertas
     private var alertCount = 0
     var alertQuery = FirebaseFirestore.getInstance().collection("alert")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Bindeamos el xml con la actividad y lo inflamos
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.topToolbar)
@@ -43,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         // Inicializa el objeto auth de Firebase
         auth = Firebase.auth
+        //Activamos el logueo de Firestore para debuggear fallos en el logcat
         FirebaseFirestore.setLoggingEnabled(true)
 
         //Carga el fragmento de vehículos como inicial
@@ -54,51 +63,53 @@ class MainActivity : AppCompatActivity() {
                 R.id.logout_icon -> {
                     Firebase.auth.signOut()
                     checkCurrentUser()
-                    /*val mainIntent = Intent(this, LoginActivity::class.java)
-                    startActivity(mainIntent)
-                    finish()*/
                 }
                 R.id.alert_icon -> replaceFragment(AlertsFragment())
             }
             true
         }
 
-        //Escuchador del menú inferior
+        /*Escuchador del menú inferior, al hacer click en cada uno de los iconos se cargar
+        un fragmento*/
         binding.bottomBarMain.bottomNavMenu.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.vehicles -> replaceFragment(VehiclesFragment())
                 R.id.itv -> replaceFragment(ITVFragment())
                 R.id.services -> replaceFragment(ServiceFragment())
                 R.id.inventory -> replaceFragment(InventoryFragment())
-                R.id.employees -> replaceFragment(EmployeeFragment())
+                R.id.employees -> replaceFragment(FullscreenFragment())
             }
             true
         }
 
     }
 
+    //Cuando es visible para el usuario
     override fun onStart() {
         super.onStart()
+        //Chequea si el usuario está logueado
         checkCurrentUser()
     }
 
     /**
-     * Aoscia la barra de herramientas superior de la actividad principal
+     * Asocia la barra de herramientas superior de la actividad principal
+     * @param menu Asocia un menú a la actividad
      */
     @ExperimentalBadgeUtils
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        //Crea una subrutina para contar las alartas y actualizar el contador de la campana
-        alertQuery.get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    alertCount = 0
-                    for (document in task.result) {
-                        alertCount++
-                    }
+        //Crea una subrutina para contar los documentos de alerta y actualiza el contador de la campana
+        alertQuery.get().addOnCompleteListener { task ->
+            //Cada la tarea se completa se reinicia el contador
+            if (task.isSuccessful) {
+                alertCount = 0
+                //Se ejecuta un bucle que cuenta cada documento de la tarea
+                for (document in task.result) {
+                    alertCount++
                 }
             }
-
+        }
+        //Asigna al contador de alertas la variable creada en la tarea
         badgeAlert.number = alertCount
 
         //Pinta la barra superior
@@ -110,13 +121,11 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-
     /**
      * Navega entre los fragmentos dentro del layout
      * @param fragment Fragmento que se le pasa para cambiarlo en destino
      */
     fun replaceFragment(fragment: Fragment) {
-
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment)

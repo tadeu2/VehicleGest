@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
+import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,28 +32,21 @@ class AlertRecyclerAdapter(
         ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(snapshot: DocumentSnapshot, listener: AlertAdapterListener) {
-            val Alert: Alert? = snapshot.toObject(Alert::class.java)
-            assignData(Alert, listener)
+            val alert: Alert? = snapshot.toObject(Alert::class.java)
+            assignData(alert, listener)
         }
 
         /**
-         * Rellena cada item de la tarjeta con los datos del objeto vehiculo
-         * @param Alert Ficha de cada vehículo
+         * Rellena cada item de la tarjeta con los datos del objeto alerta
+         * @param Alert Ficha de cada alerta
          */
-        private fun assignData(Alert: Alert?, listener: AlertAdapterListener) {
-            binding.plateNumber.text = Alert?.plateNumber.toString()
-
-            //Formatea los timestamp según el string de recursos.
-            val simpleDateFormat = SimpleDateFormat(
-                Vehiclegest.appContext().resources
-                    .getString(R.string.dateFormat), Locale.getDefault()
-            )
-            val stamp = Alert?.date?.time
-            val date = simpleDateFormat.format(Date(stamp!!))
-
-            binding.date.text = date
+        private fun assignData(alert: Alert?, listener: AlertAdapterListener) {
+            binding.plateNumber.text = alert?.plateNumber.toString()
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            binding.date.text = alert?.date?.time?.let { Vehiclegest.customDateFormat(it) }
             binding.alertCard.setOnClickListener {
-                listener.onAlertSelected(Alert)
+                listener.onAlertSelected(alert)
             }
         }
     }
@@ -67,7 +61,7 @@ class AlertRecyclerAdapter(
 
 
     /**
-     * Llamada para devolver el item(AlertCard) al viewholder por cada objeto de la lista vehiculos
+     * Llamada para devolver el item(AlertCard) al viewholder por cada objeto de la lista alertas
      *
      */
     @Override

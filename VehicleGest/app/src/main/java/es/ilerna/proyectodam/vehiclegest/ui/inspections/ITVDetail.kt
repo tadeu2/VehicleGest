@@ -4,8 +4,7 @@ package es.ilerna.proyectodam.vehiclegest.ui.inspections
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,7 +35,7 @@ class ItvDetail(val data: ITV) : Fragment() {
         //Pintar el fragment
         // navBarTop = requireActivity().findViewById(R.id.topToolbar)
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
-        navBarBot.visibility = INVISIBLE
+        navBarBot.visibility =  GONE
 
         _binding = DetailItvBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -48,7 +47,7 @@ class ItvDetail(val data: ITV) : Fragment() {
         val date = simpleDateFormat.format(Date(stamp!!))
         binding.date.text = date.toString()
 
-        binding.btclose.setOnClickListener {
+        binding.bar.btclose.setOnClickListener {
             this.onBtClose()
         }
 

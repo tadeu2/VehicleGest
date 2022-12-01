@@ -34,7 +34,7 @@ class InventoryFragment : Fragment(), ItemRecyclerAdapter.ItemAdapterListener {
         _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //Firestore
-        ItemQuery = FirebaseFirestore.getInstance().collection("Items")
+        ItemQuery = FirebaseFirestore.getInstance().collection("inventory")
 
         //Pintar el recycler
         recyclerView = binding.recycleritems

@@ -3,11 +3,14 @@ package es.ilerna.proyectodam.vehiclegest.data.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Service
 import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
@@ -36,10 +39,15 @@ class ServiceRecyclerAdapter(
          * Rellena cada Service de la tarjeta con los datos del objeto vehiculo
          * @param Service Ficha de cada vehículo
          */
-        private fun assignData(Service: Service?, listener: ServiceAdapterListener) {
-            binding.plateNumber.text = Service?.plateNumber.toString()
+        private fun assignData(service: Service?, listener: ServiceAdapterListener) {
+
+            binding.plateNumber.text = service?.plateNumber.toString()
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            binding.date.text = service?.date?.time?.let { Vehiclegest.customDateFormat(it) }
+
             binding.serviceCard.setOnClickListener {
-                listener.onServiceSelected(Service)
+                listener.onServiceSelected(service)
             }
         }
     }

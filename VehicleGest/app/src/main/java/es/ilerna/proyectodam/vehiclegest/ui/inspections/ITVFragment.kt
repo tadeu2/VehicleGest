@@ -12,11 +12,12 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.data.adapters.ITVRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.data.entities.ITV
-import es.ilerna.proyectodam.vehiclegest.databinding.FragmentItvBinding
+import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInspectionBinding
+
 
 class ITVFragment : Fragment(), ITVRecyclerAdapter.ITVAdapterListener {
 
-    private var _binding: FragmentItvBinding? = null
+    private var _binding: FragmentInspectionBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var ITVQuery: Query
@@ -29,10 +30,10 @@ class ITVFragment : Fragment(), ITVRecyclerAdapter.ITVAdapterListener {
     ): View {
 
         //Pintar el fragment
-        _binding = FragmentItvBinding.inflate(inflater, container, false)
+        _binding = FragmentInspectionBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //Firestore
-        ITVQuery = FirebaseFirestore.getInstance().collection("ITVs")
+        ITVQuery = FirebaseFirestore.getInstance().collection("ITV")
 
         //Pintar el recycler
         recyclerView = binding.recycleritv
@@ -46,10 +47,10 @@ class ITVFragment : Fragment(), ITVRecyclerAdapter.ITVAdapterListener {
     }
 
     override fun onITVSelected(itv: ITV?) {
-        val deviceFragment = ItvDetail(itv!!)
+        val itvFragment = ItvDetail(itv!!)
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, itvFragment)
         fragmentTransaction.commit()
     }
 

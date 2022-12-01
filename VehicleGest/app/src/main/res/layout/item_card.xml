@@ -17,22 +17,28 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/large_margin">
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/item_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:layout_constraintEnd_toStartOf="@id/linear1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/no_image_available"
+            tools:ignore="ImageContrastCheck"
+            tools:srcCompat="@drawable/no_image_available" />
+
         <LinearLayout
+            android:id="@+id/linear1"
+
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_image"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/item_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/no_image_available"
-                tools:ignore="ImageContrastCheck"
-                tools:srcCompat="@drawable/no_image_available" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -40,14 +46,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="@dimen/medium_margin">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/plate_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/plate_number"
-                    android:text="@string/plate_number"
-                    tools:text="Plate Number" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/name_label"
@@ -55,35 +53,27 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/item_name"
                     android:text="@string/item_name"
+                    android:textStyle="bold"
                     tools:text="@string/item_name" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/brand_label"
+                    android:id="@+id/plate_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/brand"
-                    tools:text="Brand" />
+                    android:contentDescription="@string/plate_number"
+                    android:text="@string/plate_number"
+                    android:textStyle="bold"
+                    tools:text="@string/plate_number" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/model_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/model"
-                    tools:text="Model" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="@dimen/medium_margin">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/plate_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="1234ABC" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/name"
@@ -92,20 +82,37 @@
                     tools:text="Alicates" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/brand"
+                    android:id="@+id/plate_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Audi" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/model"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="A5" />
+                    tools:text="1234ABC" />
 
             </LinearLayout>
+
         </LinearLayout>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/description_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toBottomOf="@id/linear1"
+            tools:text="@string/description" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toBottomOf="@id/description_label"
+            tools:text="Está dentro del vehículo en la guantera" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

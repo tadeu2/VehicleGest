@@ -6,13 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
-import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehicleDetail
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview

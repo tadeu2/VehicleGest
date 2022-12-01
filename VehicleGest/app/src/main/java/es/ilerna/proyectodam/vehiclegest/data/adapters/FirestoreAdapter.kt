@@ -3,8 +3,6 @@ package es.ilerna.proyectodam.vehiclegest.data.adapters
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.EventListener
-import java.util.*
 
 abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
     private val query: Query

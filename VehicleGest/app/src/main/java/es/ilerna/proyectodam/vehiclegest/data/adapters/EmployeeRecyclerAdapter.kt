@@ -8,9 +8,6 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
 import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
-import es.ilerna.proyectodam.vehiclegest.databinding.FragmentEmployeesBinding
-import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
-import java.util.*
 
 
 /**
@@ -37,14 +34,14 @@ class EmployeeRecyclerAdapter(
         }
 
         /**
-         * Rellena cada item de la tarjeta con los datos del objeto vehiculo
-         * @param employee Ficha de cada vehículo
+         * Rellena cada item de la tarjeta con los datos del objeto empleado
+         * @param employee Ficha de cada empleado
          */
         private fun assignData(employee: Employee?, listener: EmployeeAdapterListener) {
-            binding.dni.text= employee?.dni.toString()
+            binding.dni.text = employee?.dni.toString()
             binding.name.text = employee?.name.toString()
             binding.surname.text = employee?.surname.toString()
-            //Foto del vehículo
+            //Foto del empleado
             Glide.with(binding.root).load(employee?.photoURL).into(binding.employeeImage)
 
             binding.employeeCard.setOnClickListener {

@@ -54,8 +54,10 @@
     <string name="address">Dirección</string>
     <string name="email">Correo Electrónico</string>
     <string name="phone">Teléfono</string>
-    <string name="search">Search</string>
-    <string name="date">Date</string>
-    <string name="alert">Alert</string>
+    <string name="search">Buscar</string>
+    <string name="date">Fecha</string>
+    <string name="alert">Alerta</string>
     <string name="item_name">Nombre Artículo</string>
+    <string name="costumer">Cliente</string>
+    <string name="solved_alert">Alerta solventada</string>
 </resources>

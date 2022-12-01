@@ -59,6 +59,10 @@
     <string name="search">Search</string>
     <string name="date">Date</string>
     <string name="alert">Alert</string>
-    <string name="item_name">Nombre Artículo</string>
+    <string name="item_name">Item Name</string>
+    <string name="costumer">Costumer</string>
+    <string name="solved_alert">Solved alert</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

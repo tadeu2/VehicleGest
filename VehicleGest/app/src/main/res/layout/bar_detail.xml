@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btclose"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        app:icon="@drawable/ic_baseline_close_48"
+        app:iconPadding="0dp"
+        app:iconSize="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/buttonclose" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btdelete"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        app:icon="@drawable/ic_baseline_delete_outline_24"
+        app:iconPadding="0dp"
+        app:iconSize="36dp"
+        app:layout_constraintEnd_toStartOf="@id/btedit"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/buttondelete" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btedit"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        app:icon="@drawable/ic_outline_edit_24"
+        app:iconPadding="0dp"
+        app:iconSize="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/buttonedit" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

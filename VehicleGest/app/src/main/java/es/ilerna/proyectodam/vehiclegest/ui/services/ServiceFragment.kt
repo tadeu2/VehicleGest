@@ -35,7 +35,7 @@ class ServiceFragment : Fragment(), ServiceRecyclerAdapter.ServiceAdapterListene
         _binding = FragmentServicesBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //Firestore
-        ServiceQuery = FirebaseFirestore.getInstance().collection("Services")
+        ServiceQuery = FirebaseFirestore.getInstance().collection("service")
 
         //Pintar el recycler
         recyclerView = binding.recyclerservices
