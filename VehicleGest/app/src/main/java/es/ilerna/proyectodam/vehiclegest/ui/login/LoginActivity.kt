@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
                     MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.authError))
                         .setMessage(task.exception?.message.toString())
                         .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                        }.setIcon(R.drawable.outline_error_black_48).show()
+                        }.setIcon(R.drawable.outline_error_24).show()
                 }
             }
     }

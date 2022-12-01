@@ -3,11 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/logout"
+        android:id="@+id/alert_icon"
+        android:contentDescription="@string/alert"
+        android:enabled="true"
+        android:icon="@drawable/outline_notifications_white_24"
+        android:tint="?attr/colorControlNormal"
+        android:title="@string/alert"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/logout_icon"
         android:contentDescription="@string/logout"
         android:enabled="true"
-        android:icon="@drawable/outline_logout_black_24"
-        android:iconTint="#000000"
+        android:icon="@drawable/outline_logout_white_24"
         android:tint="?attr/colorControlNormal"
         android:title="@string/logout"
         app:showAsAction="ifRoom" />

@@ -13,8 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
-import es.ilerna.proyectodam.vehiclegest.databinding.DialogEmployeeBinding
-import es.ilerna.proyectodam.vehiclegest.databinding.DialogVehicleBinding
+import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +23,7 @@ import java.util.*
  */
 class EmployeeDetail(val data: Employee) : Fragment() {
 
-    private var _binding: DialogEmployeeBinding? = null
+    private var _binding: DetailEmployeeBinding? = null
     private val binding get() = _binding!!
 
     // private lateinit var navBarTop: MaterialToolbar
@@ -41,7 +40,7 @@ class EmployeeDetail(val data: Employee) : Fragment() {
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = INVISIBLE
 
-        _binding = DialogEmployeeBinding.inflate(inflater, container, false)
+        _binding = DetailEmployeeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         binding.employeeDni.text = data.dni
         binding.name.text = data.name

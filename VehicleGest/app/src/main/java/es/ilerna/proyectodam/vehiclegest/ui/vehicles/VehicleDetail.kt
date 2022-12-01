@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
-import es.ilerna.proyectodam.vehiclegest.databinding.DialogVehicleBinding
+import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,7 +22,7 @@ import java.util.*
  */
 class VehicleDetail(val data: Vehicle) : Fragment() {
 
-    private var _binding: DialogVehicleBinding? = null
+    private var _binding: DetailVehicleBinding? = null
     private val binding get() = _binding!!
 
     // private lateinit var navBarTop: MaterialToolbar
@@ -39,7 +39,7 @@ class VehicleDetail(val data: Vehicle) : Fragment() {
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = INVISIBLE
 
-        _binding = DialogVehicleBinding.inflate(inflater, container, false)
+        _binding = DetailVehicleBinding.inflate(inflater, container, false)
         val root: View = binding.root
         binding.plateNumber.text = data.plateNumber
         binding.type.text = data.type

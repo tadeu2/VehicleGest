@@ -11,16 +11,25 @@
 
     <include
         android:id="@+id/app_bar_main"
-        layout="@layout/app_bar_main"
+        layout="@layout/top_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content" />
 
-
+    <include
+        android:id="@+id/content_main"
+        layout="@layout/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_main"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bar_main"
+        tools:layout_editor_absoluteX="21dp" />
 
     <include
         android:id="@+id/bottom_bar_main"
         layout="@layout/bottom_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="-2dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

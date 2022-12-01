@@ -57,5 +57,7 @@
     <string name="email">Email Address</string>
     <string name="phone">Phone</string>
     <string name="search">Search</string>
+    <string name="date">Date</string>
+    <string name="alert">Alert</string>
 
 </resources>

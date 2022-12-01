@@ -21,9 +21,11 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:logo="@drawable/ic_baseline_logout_24"
+            app:logo="@mipmap/ic_logo_vehicle_round"
             app:menu="@menu/app_bar_items"
-            app:navigationIcon="@android:drawable/ic_menu_myplaces" />
+            app:title="Vehiclegest"
+            app:titleTextColor="@color/md_theme_light_surface"
+             />
         <!--
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/button"
@@ -33,12 +35,5 @@
 -->
 
     </com.google.android.material.appbar.AppBarLayout>
-
-
-    <include
-        android:id="@+id/content_main"
-        layout="@layout/content_main" />
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

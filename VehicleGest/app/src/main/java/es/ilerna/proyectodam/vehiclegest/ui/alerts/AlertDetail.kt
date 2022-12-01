@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.Vehiclegest.ui.alerts
+package es.ilerna.proyectodam.vehiclegest.ui.alerts
 
 
 import android.os.Bundle
@@ -11,6 +11,7 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.EntityFragment
 import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
+import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import java.text.SimpleDateFormat
 import java.util.*
 

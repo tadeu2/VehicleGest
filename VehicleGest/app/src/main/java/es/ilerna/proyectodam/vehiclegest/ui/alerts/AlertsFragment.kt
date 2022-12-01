@@ -1,6 +1,7 @@
 package es.ilerna.proyectodam.vehiclegest.ui.alerts
 
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,9 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.data.adapters.AlertRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
+import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentAlertsBinding
+import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
 
 /**
  * Fragmento de listado de alertas
@@ -23,7 +26,7 @@ class AlertsFragment : Fragment(), AlertRecyclerAdapter.AlertAdapterListener {
     private var _binding: FragmentAlertsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var AlertRecyclerAdapter: AlertRecyclerAdapter
+    private lateinit var alertRecyclerAdapter: AlertRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var AlertsQuery: Query
 
@@ -37,15 +40,15 @@ class AlertsFragment : Fragment(), AlertRecyclerAdapter.AlertAdapterListener {
         _binding = FragmentAlertsBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //Firestore
-        AlertsQuery = FirebaseFirestore.getInstance().collection("Alert")
+        AlertsQuery = FirebaseFirestore.getInstance().collection("alert")
 
         //Pintar el recycler
         recyclerView = binding.recycleralerts
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
-        AlertRecyclerAdapter = AlertRecyclerAdapter(AlertsQuery, this)
-        recyclerView.adapter = AlertRecyclerAdapter
+        alertRecyclerAdapter = AlertRecyclerAdapter(AlertsQuery, this)
+        recyclerView.adapter = alertRecyclerAdapter
 
         return root
     }
@@ -61,12 +64,12 @@ class AlertsFragment : Fragment(), AlertRecyclerAdapter.AlertAdapterListener {
 
     override fun onStart() {
         super.onStart()
-        AlertRecyclerAdapter.startListening()
+        alertRecyclerAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        AlertRecyclerAdapter.startListening()
+        alertRecyclerAdapter.startListening()
     }
 
     override fun onDestroyView() {
