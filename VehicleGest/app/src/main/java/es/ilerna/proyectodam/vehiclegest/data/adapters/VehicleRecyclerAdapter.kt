@@ -48,15 +48,18 @@ class VehicleRecyclerAdapter(
             binding.vehicleCard.setOnClickListener {
                 listener.onVehicleSelected(vehicle)
             }
+
         }
+
+
     }
 
-
     /**
-     * Interfaz para implementar como se comportará al hacer click a una ficha
+     * Interfaz para implementar como se comportará al hacer click a una ficha o al botón de añadir
      */
     interface VehicleAdapterListener {
         fun onVehicleSelected(vehicle: Vehicle?)
+        fun onAddButtonClick(vehicle:Vehicle)
     }
 
 

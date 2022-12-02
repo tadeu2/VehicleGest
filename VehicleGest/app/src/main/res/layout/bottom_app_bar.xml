@@ -16,7 +16,6 @@
         style="@style/Widget.Material3.BottomAppBar"
         app:menu="@menu/bottom_navigation_menu" />
 
-<!--
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
@@ -26,5 +25,5 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_input_add" />
--->
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

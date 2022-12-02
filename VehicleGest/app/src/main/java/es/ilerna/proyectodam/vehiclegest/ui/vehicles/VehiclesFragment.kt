@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,10 +47,29 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
         vehicleRecyclerAdapter = VehicleRecyclerAdapter(vehiclesQuery,this)
         recyclerView.adapter = vehicleRecyclerAdapter
 
+
+
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.findViewById<Button>(R.id.addButton)?.setOnClickListener(){
+
+        }
+
+    }
+
     override fun onVehicleSelected(vehicle: Vehicle?) {
+        val deviceFragment = VehicleDetail(vehicle!!)
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
+        fragmentTransaction.commit()
+    }
+
+    override fun onAddButtonClick(vehicle: Vehicle) {
         val deviceFragment = VehicleDetail(vehicle!!)
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
