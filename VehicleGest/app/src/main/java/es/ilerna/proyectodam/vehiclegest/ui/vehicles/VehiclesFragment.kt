@@ -1,15 +1,17 @@
 package es.ilerna.proyectodam.vehiclegest.ui.vehicles
 
 import android.os.Bundle
+import android.os.ParcelUuid
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
 import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerAdapter
@@ -27,27 +29,33 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
     private lateinit var recyclerView: RecyclerView
     private lateinit var vehiclesQuery: Query
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Consulta a firestore db de la colección de vehiculos
+        vehiclesQuery = Firebase.firestore.collection("vehicle")
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        //Pintar el fragment
+        //Enlaza el fragmento a el xml y lo infla
         _binding = FragmentVehiclesBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        //Firestore
-        vehiclesQuery = FirebaseFirestore.getInstance().collection("vehicle")
 
-        //Pintar el recycler
+        //Pintar el recyclerview
+        //Enlaza el recycler a la variable
         recyclerView = binding.recyclerVehicles
+        //Le asigna un manager lineal en el contexto de este fragmento
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
+        //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
         vehicleRecyclerAdapter = VehicleRecyclerAdapter(vehiclesQuery,this)
+        //Asigna ese adapter al recyclerview
         recyclerView.adapter = vehicleRecyclerAdapter
-
-
 
         return root
     }
@@ -55,28 +63,27 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.findViewById<Button>(R.id.addButton)?.setOnClickListener(){
+        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener(){
 
         }
 
     }
 
-    override fun onVehicleSelected(vehicle: Vehicle?) {
-        val deviceFragment = VehicleDetail(vehicle!!)
+    override fun onVehicleSelected(uuid: ParcelUuid,vehicle: Vehicle?) {
+        val vehicleFragment = VehicleDetail(uuid, vehicle!!)
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, vehicleFragment)
         fragmentTransaction.commit()
     }
 
     override fun onAddButtonClick(vehicle: Vehicle) {
-        val deviceFragment = VehicleDetail(vehicle!!)
+/*        val vehicleFragment = VehicleDetail(vehicle!!)
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
-        fragmentTransaction.commit()
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, vehicleFragment)
+        fragmentTransaction.commit()*/
     }
-
 
     override fun onStart() {
         super.onStart()

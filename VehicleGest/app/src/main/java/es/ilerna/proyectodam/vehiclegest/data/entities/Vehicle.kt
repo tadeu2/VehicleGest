@@ -12,22 +12,21 @@ import java.util.*
  * Escribe y lee los datos de las entidades vehículo
  */
 @IgnoreExtraProperties
-class Vehicle : Parcelable {
-
-    var plateNumber: String? = null
-    var type: String? = null
-    var brand: String? = null
-    var model: String? = null
-    var expiryDateITV: Date? = null
-    var totalDistance: Int? = 0
-    var licensed: Boolean? = null
-    var description: String? = null
+data class Vehicle(
+    var plateNumber: String? = null,
+    var type: String? = null,
+    var brand: String? = null,
+    var model: String? = null,
+    var expiryDateITV: Date? = null,
+    var totalDistance: Int? = 0,
+    var licensed: Boolean? = null,
+    var description: String? = null,
     var photoURL: String? = null
+) : Parcelable {
 
-    constructor()
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private constructor(parcel: Parcel) {
+    private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
         type = parcel.readString()
         brand = parcel.readString()

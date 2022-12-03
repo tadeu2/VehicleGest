@@ -61,12 +61,14 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/plate_number" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/plate_number"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="false"
+                    android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
@@ -86,12 +88,14 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/car_type" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/type"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="false"
+                    android:focusable="false"
                     android:textAlignment="center"
                     tools:text="Berlina" />
             </TableRow>
@@ -110,12 +114,14 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/brand" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/brand"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="false"
+                    android:focusable="false"
                     android:textAlignment="center"
                     tools:text="AUDI" />
             </TableRow>
@@ -134,12 +140,14 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/model" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/model"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="false"
+                    android:focusable="false"
                     android:textAlignment="center"
                     tools:text="A5" />
             </TableRow>
@@ -158,13 +166,16 @@
                     android:textAlignment="textEnd"
                     tools:text="Caducidad ITV" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/expiring_itv"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:onClick="showDatePickerDialog"
                     tools:text="12/12/2023" />
             </TableRow>
 
@@ -182,12 +193,14 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/total_distance" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/total_distance"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="false"
+                    android:focusable="false"
                     android:textAlignment="center"
                     tools:text="123KM" />
 
@@ -215,7 +228,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="false"
-                    android:clickable="false" />
+                    android:clickable="false"
+                    android:focusable="false"/>
             </TableRow>
 
             <TableRow
@@ -238,12 +252,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/vehicle_description"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineHeight="10dp"
+                    android:enabled="false"
+                    android:focusable="false"
                     android:nestedScrollingEnabled="true"
                     android:scrollbars="vertical"
                     android:textAlignment="textStart"

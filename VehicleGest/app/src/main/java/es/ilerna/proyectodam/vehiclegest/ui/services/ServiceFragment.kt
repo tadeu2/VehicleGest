@@ -20,9 +20,9 @@ class ServiceFragment : Fragment(), ServiceRecyclerAdapter.ServiceAdapterListene
     private var _binding: FragmentServicesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var ServiceQuery: Query
+    private lateinit var serviceQuery: Query
 
-    private lateinit var ServiceRecyclerAdapter: ServiceRecyclerAdapter
+    private lateinit var serviceRecyclerAdapter: ServiceRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
@@ -35,15 +35,15 @@ class ServiceFragment : Fragment(), ServiceRecyclerAdapter.ServiceAdapterListene
         _binding = FragmentServicesBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //Firestore
-        ServiceQuery = FirebaseFirestore.getInstance().collection("service")
+        serviceQuery = FirebaseFirestore.getInstance().collection("service")
 
         //Pintar el recycler
         recyclerView = binding.recyclerservices
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
-        ServiceRecyclerAdapter = ServiceRecyclerAdapter(ServiceQuery, this)
-        recyclerView.adapter = ServiceRecyclerAdapter
+        serviceRecyclerAdapter = ServiceRecyclerAdapter(serviceQuery, this)
+        recyclerView.adapter = serviceRecyclerAdapter
 
         return root
     }
@@ -58,12 +58,12 @@ class ServiceFragment : Fragment(), ServiceRecyclerAdapter.ServiceAdapterListene
 
     override fun onStart() {
         super.onStart()
-        ServiceRecyclerAdapter.startListening()
+        serviceRecyclerAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        ServiceRecyclerAdapter.startListening()
+        serviceRecyclerAdapter.startListening()
     }
 
     override fun onDestroyView() {

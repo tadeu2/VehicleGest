@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
 
@@ -18,6 +20,8 @@ class VehicleRecyclerAdapter(
     private val listener: VehicleAdapterListener
 ) : FirestoreAdapter<VehicleRecyclerAdapter.VehicleViewHolder>(query) {
 
+
+
     /**
      * nested class
      * El holder se encarga de pintar las celdas
@@ -26,6 +30,8 @@ class VehicleRecyclerAdapter(
         private val binding: VehicleCardBinding,
 
         ) : RecyclerView.ViewHolder(binding.root) {
+
+        val db = FirebaseFirestore.getInstance()
 
         fun bind(snapshot: DocumentSnapshot, listener: VehicleAdapterListener) {
             val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
@@ -42,11 +48,12 @@ class VehicleRecyclerAdapter(
             binding.brand.text = vehicle?.brand.toString()
             binding.model.text = vehicle?.model.toString()
 
+            
             //Foto del vehículo
             Glide.with(binding.root).load(vehicle?.photoURL).into(binding.vehicleImage)
 
             binding.vehicleCard.setOnClickListener {
-                listener.onVehicleSelected(vehicle)
+                listener.onVehicleSelected(db.collection("vehicle").document()., vehicle)
             }
 
         }
@@ -58,6 +65,7 @@ class VehicleRecyclerAdapter(
      * Interfaz para implementar como se comportará al hacer click a una ficha o al botón de añadir
      */
     interface VehicleAdapterListener {
+        abstract val uuid: ParcelUuid
         fun onVehicleSelected(vehicle: Vehicle?)
         fun onAddButtonClick(vehicle:Vehicle)
     }

@@ -12,6 +12,7 @@ import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.imageview.ShapeableImageView
 import es.ilerna.proyectodam.vehiclegest.R
@@ -29,14 +30,16 @@ class ItemDetail(val data: Item) : Fragment() {
     private var _binding: DetailItemBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var navBarTop: MaterialToolbar
     private lateinit var navBarBot: BottomNavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
-        //Pintar el fragment
-        // navBarTop = requireActivity().findViewById(R.id.topToolbar)
+        //Esconde barras de navegación
+        navBarTop = requireActivity().findViewById(R.id.topToolbar)
+        navBarTop.visibility = GONE
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = GONE
 

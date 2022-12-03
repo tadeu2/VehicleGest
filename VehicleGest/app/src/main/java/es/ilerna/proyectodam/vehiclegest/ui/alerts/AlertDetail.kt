@@ -6,27 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.backend.EntityFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
-import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AlertDetail(val data: Alert) : EntityFragment() {
+class AlertDetail(val data: Alert) : Fragment() {
 
     private var _binding: DetailAlertBinding? = null
     private val binding get() = _binding!!
 
-    // private lateinit var navBarTop: MaterialToolbar
-    //
-    // private lateinit var navBarBot: BottomNavigationView
+    private lateinit var navBarTop: MaterialToolbar
+    private lateinit var navBarBot: BottomNavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,10 +32,12 @@ class AlertDetail(val data: Alert) : EntityFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        //Pintar el fragment
-        // navBarTop = requireActivity().findViewById(R.id.topToolbar)
+        //Esconde barras de navegación
+        navBarTop = requireActivity().findViewById(R.id.topToolbar)
+        navBarTop.visibility = GONE
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = GONE
+
 
         _binding = DetailAlertBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -57,6 +57,12 @@ class AlertDetail(val data: Alert) : EntityFragment() {
 
         return root
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //La barra superior vuelve a ser visible al destruirse el fragmento
+        navBarTop.visibility = VISIBLE
     }
 
     private fun onBtClose() {

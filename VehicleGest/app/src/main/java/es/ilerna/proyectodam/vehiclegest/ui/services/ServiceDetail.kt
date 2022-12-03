@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
@@ -22,7 +23,7 @@ class ServiceDetail(val data: Service) : Fragment() {
     private var _binding: DetailServiceBinding? = null
     private val binding get() = _binding!!
 
-    // private lateinit var navBarTop: MaterialToolbar
+    private lateinit var navBarTop: MaterialToolbar
     private lateinit var navBarBot: BottomNavigationView
 
     override fun onCreateView(
@@ -31,8 +32,9 @@ class ServiceDetail(val data: Service) : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        //Pintar el fragment
-        // navBarTop = requireActivity().findViewById(R.id.topToolbar)
+        //Esconde barras de navegación
+        navBarTop = requireActivity().findViewById(R.id.topToolbar)
+        navBarTop.visibility = View.GONE
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = View.GONE
 
@@ -54,13 +56,16 @@ class ServiceDetail(val data: Service) : Fragment() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        //La barra superior vuelve a ser visible al destruirse el fragmento
+        navBarTop.visibility = VISIBLE
+    }
+
     private fun onBtClose() {
-        navBarBot.visibility = VISIBLE
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main, ServiceFragment())
         fragmentTransaction.commit()
     }
-
-
 }

@@ -1,6 +1,5 @@
 package es.ilerna.proyectodam.vehiclegest.ui
 
-import EmployeeFragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -11,7 +10,9 @@ import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.FullscreenFragment
 import es.ilerna.proyectodam.vehiclegest.R
@@ -31,12 +32,12 @@ class MainActivity : AppCompatActivity() {
     //Variables principales de la actividad
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var badgeAlert: BadgeDrawable
+    private lateinit var db: FirebaseFirestore
 
     //Variables para crear el contador de alertas
-    private var alertCount = 0
-    var alertQuery = FirebaseFirestore.getInstance().collection("alert")
-
+    private var alertCount: Int = 0
+    private lateinit var alertQuery: CollectionReference
+    private lateinit var badgeAlert: BadgeDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +47,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.topToolbar)
 
-        //Inicializa el icono de alerta
-        badgeAlert = BadgeDrawable.create(this)
-
-        // Inicializa el objeto auth de Firebase
-        auth = Firebase.auth
+        // Inicializa Firebase
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
         //Activamos el logueo de Firestore para debuggear fallos en el logcat
         FirebaseFirestore.setLoggingEnabled(true)
+
+        //Inicializa el icono de alerta
+        alertQuery = db.collection("alert")
+        badgeAlert = BadgeDrawable.create(this)
 
         //Carga el fragmento de vehículos como inicial
         replaceFragment(VehiclesFragment())
@@ -61,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.topToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.logout_icon -> {
-                    Firebase.auth.signOut()
+                    auth.signOut()
                     checkCurrentUser()
                 }
                 R.id.alert_icon -> replaceFragment(AlertsFragment())
@@ -84,7 +87,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //Cuando es visible para el usuario
+    /**
+     * Cuando la actividad visible para el usuario en el ciclo de vida
+     */
     override fun onStart() {
         super.onStart()
         //Chequea si el usuario está logueado
@@ -125,7 +130,7 @@ class MainActivity : AppCompatActivity() {
      * Navega entre los fragmentos dentro del layout
      * @param fragment Fragmento que se le pasa para cambiarlo en destino
      */
-    fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment)

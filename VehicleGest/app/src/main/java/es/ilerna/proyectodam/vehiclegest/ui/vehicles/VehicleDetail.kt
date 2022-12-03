@@ -1,86 +1,107 @@
 package es.ilerna.proyectodam.vehiclegest.ui.vehicles
 
-
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.ParcelUuid
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
 import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
-import java.text.SimpleDateFormat
-import java.util.*
-
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class VehicleDetail(val data: Vehicle) : Fragment() {
+class VehicleDetail(uuid: ParcelUuid, val vehicle: Vehicle) : DetailFragment() {
 
     private var _binding: DetailVehicleBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var navBarTop: NavigationBarView
-    private lateinit var navBarBot: BottomNavigationView
+    val handler = Handler(Looper.getMainLooper())
+    var image: Bitmap? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
 
-        //Pintar el fragment
+        //Esconde barras de navegación
         navBarTop = requireActivity().findViewById(R.id.topToolbar)
-        navBarTop.visibility= GONE
+        navBarTop.visibility = View.GONE
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
-        navBarBot.visibility = GONE
+        navBarBot.visibility = View.GONE
 
+        //Enlaza al XML del formulario y lo infla
         _binding = DetailVehicleBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        bindData()
 
+        //Llama a la función que rellena los datos en el formulario
+        bindData()
         return root
     }
 
-    private fun bindData() {
+    /**
+     * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
+     */
+    override fun bindData() {
 
-        binding.plateNumber.text = data.plateNumber
-        binding.type.text = data.type
-        binding.brand.text = data.brand
-        binding.model.text = data.model
-        binding.vehicleDescription.text = data.description
-        binding.checkLicensed.isChecked = data.licensed == false
+        try {
+            binding.plateNumber.setText(vehicle.plateNumber)
+            binding.type.setText(vehicle?.type)
+            binding.brand.setText(vehicle.brand)
+            binding.model.setText(vehicle.model)
+            binding.vehicleDescription.setText(vehicle?.description)
+            binding.checkLicensed.isChecked = vehicle?.licensed == false
 
-        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-        //El formato se puede modificar en strings.xml
-        binding.expiringItv.text =
-            data.expiryDateITV?.time?.let { Vehiclegest.customDateFormat(it) }
-        Glide.with(binding.root).load(data.photoURL).into(binding.vehicleImage)
-        //Añade la cadena km de kilometros al final del número
-        binding.totalDistance.text = buildString {
-            append(data.totalDistance.toString())
-            append(" KM")
-            //Foto del vehículo
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            binding.expiringItv.setText(vehicle?.expiryDateITV?.time?.let {
+                Vehiclegest.customDateFormat(
+                    it
+                )
+            })
+            //Añade la cadena km de kilometros al final del número
+            binding.totalDistance.setText(buildString {
+                append(vehicle.totalDistance.toString())
+                append(" KM")
+            })
+            //Carga la foto en el formulario a partir de la URL almacenada
+            val im = java.net.URL(vehicle?.photoURL).openStream()
+            image = BitmapFactory.decodeStream(im)
+
+            handler.post {
+                binding.vehicleImage.setImageBitmap(image)
+            }
         }
-        binding.bar.btclose.setOnClickListener {
-            this.onBtClose()
+
+        catch (e: Exception) {
+            e.printStackTrace()
         }
+    }
+
+    override fun editDocument(data: Vehicle) {
+        TODO("Not yet implemented")
+    }
+
+    override fun delDocument(data: Vehicle) {
+/*
+        db.collection("vehicle").document(data)
+            .delete()
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+*/
 
     }
 
-    private fun onBtEdit() {}
-
-    private fun onBtClose() {
-        navBarBot.visibility = VISIBLE
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, VehiclesFragment())
-        fragmentTransaction.commit()
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
-
 
 }
