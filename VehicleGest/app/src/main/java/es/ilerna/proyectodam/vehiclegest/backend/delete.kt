@@ -15,7 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
 
 
-class UpdateCourse : AppCompatActivity() {
+/*class UpdateCourse : AppCompatActivity() {
     // creating variables for our edit text
     private var courseNameEdt: EditText? = null
     private var courseDurationEdt: EditText? = null
@@ -73,7 +73,7 @@ class UpdateCourse : AppCompatActivity() {
         }
     }
 
-    private fun deleteCourse(courses: Courses?) {
+  *//*  private fun deleteCourse(courses: Courses?) {
         // below line is for getting the collection
         // where we are storing our courses.
         db!!.collection("Courses").document
@@ -104,7 +104,7 @@ class UpdateCourse : AppCompatActivity() {
             }
         }
     }
-
+*//*
     private fun updateCourses(
         courses: Courses?,
         courseName: String,
@@ -136,6 +136,6 @@ class UpdateCourse : AppCompatActivity() {
         {
             Toast.makeText(this@UpdateCourse, "Fail to update the data..", Toast.LENGTH_SHORT)
                 .show()
-        })
-    }
-}
+ }       })
+    }*/
+

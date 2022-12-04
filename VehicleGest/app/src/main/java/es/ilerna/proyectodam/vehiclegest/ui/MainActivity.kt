@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     //Variables principales de la actividad
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
+    lateinit var db: FirebaseFirestore
 
     //Variables para crear el contador de alertas
     private var alertCount: Int = 0
@@ -72,8 +72,10 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        /*Escuchador del menú inferior, al hacer click en cada uno de los iconos se cargar
-        un fragmento*/
+        /**
+         * Escuchador del menú inferior, al hacer click en cada uno de los iconos se cargar
+         *un fragmento
+         **/
         binding.bottomBarMain.bottomNavMenu.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.vehicles -> replaceFragment(VehiclesFragment())

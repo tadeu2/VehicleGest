@@ -5,12 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
-import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -44,7 +41,7 @@ class AlertRecyclerAdapter(
             binding.plateNumber.text = alert?.plateNumber.toString()
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            binding.date.text = alert?.date?.time?.let { Vehiclegest.customDateFormat(it) }
+            binding.date.text = alert?.date?.let { Vehiclegest.customDateFormat(it) }
             binding.alertCard.setOnClickListener {
                 listener.onAlertSelected(alert)
             }

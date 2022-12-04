@@ -5,11 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Service
 import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -44,7 +42,7 @@ class ServiceRecyclerAdapter(
             binding.plateNumber.text = service?.plateNumber.toString()
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            binding.date.text = service?.date?.time?.let { Vehiclegest.customDateFormat(it) }
+            binding.date.text = service?.date?.let { Vehiclegest.customDateFormat(it) }
 
             binding.serviceCard.setOnClickListener {
                 listener.onServiceSelected(service)

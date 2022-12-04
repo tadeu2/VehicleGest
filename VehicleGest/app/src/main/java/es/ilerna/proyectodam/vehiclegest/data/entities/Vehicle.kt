@@ -24,7 +24,6 @@ data class Vehicle(
     var photoURL: String? = null
 ) : Parcelable {
 
-
     @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
@@ -42,6 +41,7 @@ data class Vehicle(
         return 0
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(plateNumber)
         dest.writeString(type)
@@ -55,6 +55,7 @@ data class Vehicle(
     }
 
     companion object CREATOR : Parcelable.Creator<Vehicle> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): Vehicle {
             return Vehicle(parcel)
         }

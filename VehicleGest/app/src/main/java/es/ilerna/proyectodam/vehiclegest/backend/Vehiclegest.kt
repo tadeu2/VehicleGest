@@ -26,22 +26,22 @@ class Vehiclegest : Application() {
             return instance!!.applicationContext
         }
 
-
-        //Recupera los formatos custom de fecha almacenados en los xml de cadenas string.xml
-        fun customDateFormat(time:Long): String {
-           val simpleDateFormat = SimpleDateFormat(
+        /**
+         * Recupera los formatos custom de fecha almacenados en los xml de cadenas string.xml
+         */
+        fun customDateFormat(time: Date): String {
+            val simpleDateFormat = SimpleDateFormat(
                 instance!!.resources
                     .getString(R.string.dateFormat), Locale.getDefault()
             )
-            return simpleDateFormat.format(Date(time!!))
+            return simpleDateFormat.format(time!!)
         }
 
         /**
          * Interfaz para implementar como se comportará al hacer click a una ficha
          */
         interface AdapterListener {
-            fun onSelected(o:Any)
+            fun onSelected(o: Any)
         }
-
     }
 }

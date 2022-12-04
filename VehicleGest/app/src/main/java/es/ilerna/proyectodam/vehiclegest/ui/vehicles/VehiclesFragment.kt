@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -28,7 +29,6 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
     private lateinit var vehicleRecyclerAdapter:VehicleRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var vehiclesQuery: Query
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,25 +64,25 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
         super.onViewCreated(view, savedInstanceState)
 
         activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener(){
-
+            onAddButtonClick()
         }
 
     }
 
-    override fun onVehicleSelected(uuid: ParcelUuid,vehicle: Vehicle?) {
-        val vehicleFragment = VehicleDetail(uuid, vehicle!!)
+    override fun onVehicleSelected(s: DocumentSnapshot?) {
+        val vehicleDetail = VehicleDetail(s!!)
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, vehicleFragment)
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, vehicleDetail)
         fragmentTransaction.commit()
     }
 
-    override fun onAddButtonClick(vehicle: Vehicle) {
-/*        val vehicleFragment = VehicleDetail(vehicle!!)
+    fun onAddButtonClick() {
+       val addFragment = AddVehicle()
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, vehicleFragment)
-        fragmentTransaction.commit()*/
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, addFragment)
+        fragmentTransaction.commit()
     }
 
     override fun onStart() {
@@ -99,6 +99,7 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
         super.onDestroyView()
         _binding = null
     }
+
 
 
 
