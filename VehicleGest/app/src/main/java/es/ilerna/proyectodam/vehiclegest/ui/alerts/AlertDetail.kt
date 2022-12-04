@@ -13,7 +13,7 @@ import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AlertDetail(val data: Alert) : DetailFragment() {
+class AlertDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
     private var _binding: DetailAlertBinding? = null
     private val binding get() = _binding!!
@@ -22,17 +22,21 @@ class AlertDetail(val data: Alert) : DetailFragment() {
      *
      */
     override fun bindData() {
-        binding.plateNumber.text = data.plateNumber
-        binding.alertDescription.text = data.description
-        binding.checksolved.isChecked = data.solved == false
 
-        //Formatea los timestamp a fecha normal dd/mm/aa
-        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-        //El formato se puede modificar en strings.xml
-        binding.date.text = data.date?.let { Vehiclegest.customDateFormat(it) }
+        try {
+            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+            val alert: Alert? = s.toObject(Alert::class.java)
+            binding.plateNumber.setText(alert?.plateNumber)
+            binding.alertDescription.setText(alert?.description)
+            binding.checksolved.isChecked = alert?.solved == false
 
-        binding.bar.btclose.setOnClickListener {
-            this.onBtClose(AlertsFragment())
+            //Formatea los timestamp a fecha normal dd/mm/aa
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            binding.date.setText(alert?.date?.let { Vehiclegest.customDateFormat(it) })
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -40,13 +44,6 @@ class AlertDetail(val data: Alert) : DetailFragment() {
      *
      */
     override fun editDocument(s: DocumentSnapshot) {
-        TODO("Not yet implemented")
-    }
-
-    /**
-     *
-     */
-    override fun delDocument(s: DocumentSnapshot) {
         TODO("Not yet implemented")
     }
 
@@ -59,6 +56,10 @@ class AlertDetail(val data: Alert) : DetailFragment() {
         _binding = DetailAlertBinding.inflate(inflater, container, false)
         val root: View = binding.root
         bindData()
+
+        binding.bar.btclose.setOnClickListener {
+            fragmentReplacer(AlertsFragment())
+        }
         return root
     }
 }

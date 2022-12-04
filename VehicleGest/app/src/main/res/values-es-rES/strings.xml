@@ -60,4 +60,5 @@
     <string name="item_name">Nombre Artículo</string>
     <string name="costumer">Cliente</string>
     <string name="solved_alert">Alerta solventada</string>
+    <string name="imgurl">imgurl</string>
 </resources>

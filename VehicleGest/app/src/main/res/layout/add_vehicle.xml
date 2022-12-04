@@ -17,7 +17,7 @@
 
         <include
             android:id="@+id/bar"
-            layout="@layout/bar_detail"
+            layout="@layout/bar_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,26 +53,26 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_url_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
+                    android:inputType="textUri"
                     android:nestedScrollingEnabled="false"
-                    android:text="@string/plate_number"
+                    android:text="@string/imgurl"
                     android:textAlignment="textEnd"
-                    tools:text="@string/plate_number" />
+                    tools:text="@string/imgurl" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/url"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
+                    android:layout_width="500dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:enabled="false"
-                    android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
-                    tools:text="1234ABC" />
+                    android:maxLines="1"
+                    tools:text="http://img.jpg" />
             </TableRow>
 
             <TableRow
@@ -82,7 +82,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_platenumber_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
@@ -94,11 +94,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/plate_number"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
+                    android:layout_width="500dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:enabled="false"
-                    android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
@@ -111,7 +109,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_type_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/car_type"
@@ -121,11 +119,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/type"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
+                    android:layout_width="500dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:enabled="false"
-                    android:focusable="false"
+                    android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="Berlina" />
             </TableRow>
@@ -137,7 +134,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_brand_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/brand"
@@ -147,11 +144,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/brand"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
+                    android:layout_width="500dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:enabled="false"
-                    android:focusable="false"
+                    android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="AUDI" />
             </TableRow>
@@ -163,7 +159,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_model_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/model"
@@ -173,10 +169,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/model"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
+                    android:layout_width="500dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:focusable="false"
+                    android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="A5" />
             </TableRow>
@@ -188,7 +184,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_expiring_itv_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/itv_expiration_date"
@@ -198,12 +194,12 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/expiring_itv"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:focusable="false"
-                    android:onClick="showDatePickerDialog"
+                    android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="12/12/2023" />
             </TableRow>
@@ -215,7 +211,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_total_distance_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/total_distance"
@@ -225,14 +221,12 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/total_distance"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
+                    android:layout_width="500dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:enabled="false"
-                    android:focusable="false"
+                    android:maxLines="1"
                     android:textAlignment="center"
-                    />
-
+                    tools:text="A5" />
 
             </TableRow>
 
@@ -249,7 +243,6 @@
                     android:text="@string/licensed"
                     android:textAlignment="textEnd"
                     tools:text="@string/licensed" />
-
 
                 <CheckBox
                     android:id="@+id/checkLicensed"
@@ -269,33 +262,27 @@
                     android:id="@+id/label_description"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:text="@string/description"
                     android:textAlignment="center"
-                    android:textStyle="bold"
-                     />
+                    android:textStyle="bold"/>
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/vehicle_description"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:lineHeight="10dp"
-                    android:nestedScrollingEnabled="true"
-                    android:scrollbars="vertical"
-                    android:textAlignment="textStart"
-                    />
-            </TableRow>
         </TableLayout>
-
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/vehicle_description"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineHeight="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table_details"
+            android:nestedScrollingEnabled="true"
+            android:scrollbars="vertical"
+            android:textAlignment="textStart"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

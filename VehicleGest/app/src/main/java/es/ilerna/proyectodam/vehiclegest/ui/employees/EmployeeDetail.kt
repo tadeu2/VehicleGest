@@ -16,37 +16,36 @@ import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class EmployeeDetail(val data: Employee) : DetailFragment() {
+class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
     private var _binding: DetailEmployeeBinding? = null
     private val binding get() = _binding!!
 
     override fun bindData() {
-        binding.employeeDni.text = data.dni
-        binding.name.text = data.name
-        binding.surname.text = data.surname
-        binding.phone.text = data.phone
-        binding.address.text = data.address
-        binding.email.text = data.email
-        binding.checkadmin.isChecked = data.admin!!
+        try {
+            val employee: Employee? = s.toObject(Employee::class.java)
+            binding.url.setText(employee?.photoURL)
+            binding.employeeDni.setText(employee?.dni)
+            binding.name.setText(employee?.name)
+            binding.surname.setText(employee?.surname)
+            binding.phone.setText(employee?.phone)
+            binding.address.setText(employee?.address)
+            binding.email.setText(employee?.email)
+            binding.checkadmin.isChecked = employee?.admin == false
 
-        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-        //El formato se puede modificar en strings.xml
-        binding.birthdate.text = data.birthdate?.let { Vehiclegest.customDateFormat(it) }
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            binding.birthdate.setText(employee?.birthdate?.let { Vehiclegest.customDateFormat(it) })
 
-        //Carga la foto en el formulario a partir de la URL almacenada
-        displayImgURL(data.photoURL, binding.employeeImage)
+            //Carga la foto en el formulario a partir de la URL almacenada
+            Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
 
-        binding.bar.btclose.setOnClickListener {
-            onBtClose(EmployeeFragment())
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     override fun editDocument(s: DocumentSnapshot) {
-        TODO("Not yet implemented")
-    }
-
-    override fun delDocument(s: DocumentSnapshot) {
         TODO("Not yet implemented")
     }
 

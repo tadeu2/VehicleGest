@@ -51,10 +51,39 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_url_detail"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:nestedScrollingEnabled="false"
+                    android:text="@string/imgurl"
+                    android:textAlignment="textEnd"
+                    tools:text="@string/imgurl" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/url"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="600dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:fontFamily="@font/roboto"
+                    android:textAlignment="center"
+                    tools:text="1234ABC" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_platenumber_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="1dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
                     android:nestedScrollingEnabled="false"
@@ -65,10 +94,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/plate_number"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="600dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:enabled="false"
+                    android:clickable="false"
                     android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
@@ -82,8 +111,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_type_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="1dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/car_type"
                     android:textAlignment="textEnd"
@@ -92,10 +121,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/type"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="600dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:enabled="false"
+                    android:clickable="false"
                     android:focusable="false"
                     android:textAlignment="center"
                     tools:text="Berlina" />
@@ -108,8 +137,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_brand_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="1dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/brand"
                     android:textAlignment="textEnd"
@@ -118,10 +147,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/brand"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="600dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:enabled="false"
+                    android:clickable="false"
                     android:focusable="false"
                     android:textAlignment="center"
                     tools:text="AUDI" />
@@ -134,8 +163,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_model_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="1dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/model"
                     android:textAlignment="textEnd"
@@ -144,10 +173,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/model"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="600dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:enabled="false"
+                    android:clickable="false"
                     android:focusable="false"
                     android:textAlignment="center"
                     tools:text="A5" />
@@ -161,7 +190,7 @@
                     android:id="@+id/label_expiring_itv_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/itv_expiration_date"
                     android:textAlignment="textEnd"
@@ -171,7 +200,7 @@
                     android:id="@+id/expiring_itv"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:enabled="false"
                     android:focusable="false"
@@ -188,7 +217,7 @@
                     android:id="@+id/label_total_distance_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/total_distance"
                     android:textAlignment="textEnd"
@@ -198,9 +227,9 @@
                     android:id="@+id/total_distance"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:enabled="false"
+                    android:clickable="false"
                     android:focusable="false"
                     android:textAlignment="center"
                     tools:text="123KM" />
@@ -210,13 +239,13 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="48dp">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_licensed_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/licensed"
                     android:textAlignment="textEnd"
@@ -226,7 +255,7 @@
                 <CheckBox
                     android:id="@+id/checkLicensed"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:checked="false"
                     android:clickable="false"
@@ -241,7 +270,7 @@
                     android:id="@+id/label_description"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/description"
                     android:textAlignment="center"
@@ -249,22 +278,24 @@
                     tools:text="@string/description" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        </TableLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/vehicle_description"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:lineHeight="10dp"
-                    android:nestedScrollingEnabled="true"
-                    android:scrollbars="vertical"
-                    android:textAlignment="textStart"
-                    tools:text="This is a automobile, byname auto, also called motorcar or car,
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/vehicle_description"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/table_details"
+                android:clickable="false"
+                android:focusable="false"
+                android:lineHeight="10dp"
+                android:nestedScrollingEnabled="true"
+                android:scrollbars="vertical"
+                android:textAlignment="textStart"
+
+                tools:text="This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine
                     using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
@@ -286,9 +317,6 @@
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine
                     using a volatile fuel. " />
-            </TableRow>
-        </TableLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

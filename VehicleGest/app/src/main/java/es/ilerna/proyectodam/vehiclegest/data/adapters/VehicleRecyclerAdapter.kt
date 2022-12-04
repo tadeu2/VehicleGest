@@ -13,6 +13,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
 import java.util.concurrent.Executors
@@ -34,34 +35,30 @@ class VehicleRecyclerAdapter(
 
         ) : RecyclerView.ViewHolder(binding.root) {
 
-        val handler = Handler(Looper.getMainLooper())
-        var image: Bitmap? = null
-
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
          * @param vehicle Ficha de cada vehículo
          */
         fun bind(snapshot: DocumentSnapshot, listener: VehicleAdapterListener) {
-            //Crea un hilo paralelo para descargar las imagenes de una URL
-            val executor = Executors.newSingleThreadExecutor()
-            executor.execute {
-                val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
-                binding.plateNumber.text = vehicle?.plateNumber.toString()
-                binding.type.text = vehicle?.type.toString()
-                binding.brand.text = vehicle?.brand.toString()
-                binding.model.text = vehicle?.model.toString()
 
-                //Carga la foto en el formulario a partir de la URL almacenada
-                val im = java.net.URL(vehicle?.photoURL).openStream()
-                image = BitmapFactory.decodeStream(im)
+            try {//Crea un hilo paralelo para descargar las imagenes de una URL
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
+                    val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
+                    binding.plateNumber.text = vehicle?.plateNumber.toString()
+                    binding.type.text = vehicle?.type.toString()
+                    binding.brand.text = vehicle?.brand.toString()
+                    binding.model.text = vehicle?.model.toString()
 
-                handler.post {
-                    binding.vehicleImage.setImageBitmap(image)
+                    //Carga la foto en el formulario a partir de la URL almacenada
+                    Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
+
+                    binding.vehicleCard.setOnClickListener {
+                        listener.onVehicleSelected(snapshot)
+                    }
                 }
-                binding.vehicleCard.setOnClickListener {
-                    Log.d("", "");
-                    listener.onVehicleSelected(snapshot)
-                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

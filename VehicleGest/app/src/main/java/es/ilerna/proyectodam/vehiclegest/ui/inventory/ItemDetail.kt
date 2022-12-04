@@ -18,6 +18,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Item
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
 import java.net.URL
@@ -37,8 +38,9 @@ class ItemDetail(val data: Item) : DetailFragment() {
             binding.name.text = data.name
             binding.plateNumber.text = data.plateNumber
             binding.itemDescription.text = data.description
+
             //Carga la foto en el formulario a partir de la URL almacenada
-            displayImgURL(data.photoURL, binding.itemImage)
+            Vehiclegest.displayImgURL(data.photoURL, binding.itemImage)
 
             binding.bar.btclose.setOnClickListener {
                 onBtClose(InventoryFragment())

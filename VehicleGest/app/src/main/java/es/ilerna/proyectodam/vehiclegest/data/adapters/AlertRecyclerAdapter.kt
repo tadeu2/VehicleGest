@@ -1,5 +1,6 @@
 package es.ilerna.proyectodam.vehiclegest.data.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,8 +8,10 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
+import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
 import java.util.*
+import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
@@ -30,30 +33,30 @@ class AlertRecyclerAdapter(
 
         fun bind(snapshot: DocumentSnapshot, listener: AlertAdapterListener) {
             val alert: Alert? = snapshot.toObject(Alert::class.java)
-            assignData(alert, listener)
-        }
+            try {
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
+                    val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
+                    binding.plateNumber.text = alert?.plateNumber.toString()
+                    //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                    //El formato se puede modificar en strings.xml
+                    binding.date.text = alert?.date?.let { Vehiclegest.customDateFormat(it) }
 
-        /**
-         * Rellena cada item de la tarjeta con los datos del objeto alerta
-         * @param Alert Ficha de cada alerta
-         */
-        private fun assignData(alert: Alert?, listener: AlertAdapterListener) {
-            binding.plateNumber.text = alert?.plateNumber.toString()
-            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-            //El formato se puede modificar en strings.xml
-            binding.date.text = alert?.date?.let { Vehiclegest.customDateFormat(it) }
-            binding.alertCard.setOnClickListener {
-                listener.onAlertSelected(alert)
+                    binding.alertCard.setOnClickListener {
+                        listener.onAlertSelected(snapshot)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
-
 
     /**
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
     interface AlertAdapterListener {
-        fun onAlertSelected(Alert: Alert?)
+        fun onAlertSelected(s: DocumentSnapshot?)
     }
 
 

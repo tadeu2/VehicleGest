@@ -1,27 +1,24 @@
 package es.ilerna.proyectodam.vehiclegest.ui.alerts
 
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.data.adapters.AlertRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
-import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentAlertsBinding
-import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
 
 /**
  * Fragmento de listado de alertas
  */
-class AlertsFragment : Fragment(), AlertRecyclerAdapter.AlertAdapterListener {
+class AlertsFragment : ModelFragment(), AlertRecyclerAdapter.AlertAdapterListener {
 
     private var _binding: FragmentAlertsBinding? = null
     private val binding get() = _binding!!
@@ -53,12 +50,9 @@ class AlertsFragment : Fragment(), AlertRecyclerAdapter.AlertAdapterListener {
         return root
     }
 
-    override fun onAlertSelected(Alert: Alert?) {
-        val deviceFragment = AlertDetail(Alert!!)
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
-        fragmentTransaction.commit()
+    override fun onAlertSelected(s: DocumentSnapshot?) {
+        val deviceFragment = AlertDetail(s!!)
+        fragmentReplacer(deviceFragment, parentFragmentManager)
     }
 
 

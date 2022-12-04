@@ -1,11 +1,9 @@
 package es.ilerna.proyectodam.vehiclegest.ui.vehicles
 
 import android.os.Bundle
-import android.os.ParcelUuid
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -14,19 +12,20 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
+import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
+import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
 
 /**
  * Fragmento de listado de vehículos
  */
-class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListener {
+class VehiclesFragment : ModelFragment(), VehicleRecyclerAdapter.VehicleAdapterListener {
 
     private var _binding: FragmentVehiclesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var vehicleRecyclerAdapter:VehicleRecyclerAdapter
+    private lateinit var vehicleRecyclerAdapter: VehicleRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var vehiclesQuery: Query
 
@@ -35,6 +34,7 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
         //Consulta a firestore db de la colección de vehiculos
         vehiclesQuery = Firebase.firestore.collection("vehicle")
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,7 +53,7 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
         recyclerView.setHasFixedSize(true)
 
         //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-        vehicleRecyclerAdapter = VehicleRecyclerAdapter(vehiclesQuery,this)
+        vehicleRecyclerAdapter = VehicleRecyclerAdapter(vehiclesQuery, this)
         //Asigna ese adapter al recyclerview
         recyclerView.adapter = vehicleRecyclerAdapter
 
@@ -63,7 +63,7 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener(){
+        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
             onAddButtonClick()
         }
 
@@ -71,18 +71,12 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
 
     override fun onVehicleSelected(s: DocumentSnapshot?) {
         val vehicleDetail = VehicleDetail(s!!)
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, vehicleDetail)
-        fragmentTransaction.commit()
+        fragmentReplacer(vehicleDetail, parentFragmentManager)
     }
 
-    fun onAddButtonClick() {
-       val addFragment = AddVehicle()
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, addFragment)
-        fragmentTransaction.commit()
+    private fun onAddButtonClick() {
+        val addFragment = AddVehicle()
+        fragmentReplacer(addFragment, parentFragmentManager)
     }
 
     override fun onStart() {
@@ -99,8 +93,6 @@ class VehiclesFragment : Fragment(),VehicleRecyclerAdapter.VehicleAdapterListene
         super.onDestroyView()
         _binding = null
     }
-
-
 
 
 }

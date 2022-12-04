@@ -65,12 +65,15 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/date" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/date"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="24/12/22" />
@@ -84,7 +87,7 @@
                     android:id="@+id/label_platenumber_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
                     android:nestedScrollingEnabled="false"
@@ -92,12 +95,16 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/plate_number" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/plate_number"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:enabled="false"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:maxLines="1"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
@@ -106,13 +113,13 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="48dp">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_solved_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/solved_alert"
                     android:textAlignment="textEnd"
@@ -122,7 +129,7 @@
                 <CheckBox
                     android:id="@+id/checksolved"
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:checked="false"
                     android:clickable="false" />
@@ -130,7 +137,8 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_description"
@@ -143,24 +151,21 @@
                     tools:text="@string/description" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/alert_description"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineHeight="10dp"
-                    android:nestedScrollingEnabled="true"
-                    android:padding="5dp"
-                    android:scrollbars="vertical"
-                    android:textAlignment="textStart"
-                    tools:text="Esto es una alerta por fecha caduca de ITV" />
-            </TableRow>
         </TableLayout>
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/alert_description"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:nestedScrollingEnabled="true"
+            android:padding="10dp"
+            android:scrollbars="vertical"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table_details"
+            tools:text="Esto es una alerta por fecha caduca de ITV" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 
