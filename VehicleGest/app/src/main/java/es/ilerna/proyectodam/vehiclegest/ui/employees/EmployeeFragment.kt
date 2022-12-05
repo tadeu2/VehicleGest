@@ -17,7 +17,6 @@ import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.adapters.EmployeeRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentEmployeesBinding
-import es.ilerna.proyectodam.vehiclegest.ui.services.AddService
 
 /**
  * Fragmento de listado de empleados
@@ -67,8 +66,8 @@ class EmployeeFragment : ModelFragment(), EmployeeRecyclerAdapter.EmployeeAdapte
     }
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onEmployeeSelected(s: DocumentSnapshot?) {
-        Vehiclegest.fragmentReplacer(EmployeeDetail(s!!), parentFragmentManager)
+    override fun onEmployeeSelected(snapshot: DocumentSnapshot?) {
+        Vehiclegest.fragmentReplacer(EmployeeDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {

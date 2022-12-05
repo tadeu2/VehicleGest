@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
@@ -19,7 +20,7 @@ import java.util.concurrent.Executors
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddItv : Fragment() {
+class AddItv : AddFragment() {
 
     private var _binding: AddItvBinding? = null
     private val binding get() = _binding!!
@@ -62,7 +63,7 @@ class AddItv : Fragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    private fun addData() {
+    override fun addData() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             try {

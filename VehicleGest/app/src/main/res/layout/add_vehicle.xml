@@ -68,6 +68,9 @@
                     android:layout_width="500dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     android:maxLines="1"
@@ -96,6 +99,9 @@
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
@@ -146,6 +152,9 @@
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="AUDI" />
@@ -171,6 +180,9 @@
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="A5" />
@@ -198,6 +210,7 @@
                     android:layout_weight="1"
                     android:enabled="true"
                     android:focusable="false"
+                    android:clickable="true"
                     android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="12/12/2023" />
@@ -223,7 +236,11 @@
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:maxLines="1"
+                    android:inputType="number"
                     android:textAlignment="center"
                     tools:text="12344" />
 
@@ -249,8 +266,9 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:checked="false"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:clickable="true" />
             </TableRow>
 
             <TableRow

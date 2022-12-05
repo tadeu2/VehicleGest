@@ -30,7 +30,6 @@ class ITVRecyclerAdapter(
 
         /**
          * Rellena cada ITV de la tarjeta con los datos del objeto vehiculo
-         * @param itv Ficha de cada vehículo
          */
         fun bind(
             snapshot: DocumentSnapshot,

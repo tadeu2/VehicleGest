@@ -38,7 +38,7 @@
     <string name="car_type">Tipo coche</string>
     <string name="brand">Marca</string>
     <string name="itv_expiration_date">Caduc. ITV</string>
-    <string name="total_distance">Distancia Total</string>
+    <string name="total_distance">Dist. Total</string>
     <string name="model">Modelo</string>
     <string name="buttondelete">Borrar</string>
     <string name="buttonedit">Editar</string>
@@ -50,16 +50,20 @@
     <string name="surname">Apellidos</string>
     <string name="admin">Administrador</string>
     <string name="DNI">DNI</string>
-    <string name="birthdate">Fecha de Nacimiento</string>
+    <string name="birthdate">Fecha Nac.</string>
     <string name="address">Dirección</string>
-    <string name="email">Correo Electrónico</string>
+    <string name="email">Email</string>
     <string name="phone">Teléfono</string>
     <string name="search">Buscar</string>
     <string name="date">Fecha</string>
     <string name="alert">Alerta</string>
-    <string name="item_name">Nombre Artículo</string>
+    <string name="item_name">Artículo</string>
     <string name="costumer">Cliente</string>
     <string name="solved_alert">Alerta solventada</string>
-    <string name="imgurl">Dirección URL</string>
+    <string name="imgurl">Dir. URL</string>
     <string name="remarks">Observaciones</string>
+    <string name="match_password">Las contraseñas deben coincidir.</string>
+    <string name="register">Registrar</string>
+    <string name="repeat_password">Repetir password</string>
+    <string name="register_error">Error de registro</string>
 </resources>

@@ -1,14 +1,18 @@
 package es.ilerna.proyectodam.vehiclegest.backend
 
 import android.app.Application
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.imageview.ShapeableImageView
 import es.ilerna.proyectodam.vehiclegest.R
+import java.net.MalformedURLException
+import java.net.URISyntaxException
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
@@ -69,22 +73,43 @@ class Vehiclegest : Application() {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
-                    val u = URL(url)
-                    //Declaramos un manejador que asigne la imagen al objecto imagen
-                    val handler = Handler(Looper.getMainLooper())
 
-                    //Creamos el objecto imagen vacio y le asignamos por stream a otra variable
-                    val im = u.openStream()
-                    val image = BitmapFactory.decodeStream(im)
+                    if (isUrlValid(url)) {
+                        val u: URL = URL(url);
 
-                    //Para hacer cambios en la interfaz
-                    handler.post {
-                        imgView?.setImageBitmap(image)
+                        //Declaramos un manejador que asigne la imagen al objecto imagen
+                        val handler = Handler(Looper.getMainLooper())
+
+                        //Creamos el objecto imagen vacio y le asignamos por stream a otra variable
+                        val im = u.openStream()
+                        val image = BitmapFactory.decodeStream(im)
+
+                        //Para hacer cambios en la interfaz
+                        handler.post {
+                            imgView?.setImageBitmap(image)
+                        }
+                    } else {
+                        Log.d(TAG, "BAD URL FORMAT")
                     }
+
                 }
             } catch (e: Exception) {
-                //TODO Lanzar mensaje de error en popup
-                e.printStackTrace()
+                throw e
+            }
+        }
+
+        /**
+         * Prueba si la URL en texto es válida o no
+         */
+        fun isUrlValid(url: String?): Boolean {
+            return try {
+                val obj = URL(url)
+                obj.toURI()
+                true
+            } catch (e: MalformedURLException) {
+                false
+            } catch (e: URISyntaxException) {
+                false
             }
         }
 

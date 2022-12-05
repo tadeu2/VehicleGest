@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.ITV
@@ -26,7 +27,7 @@ class ItvDetail(s: DocumentSnapshot) : DetailFragment(s) {
     ): View {
         //Enlaza al XML del formulario y lo infla
         _binding = DetailItvBinding.inflate(inflater, container, false)
-        //db = FirebaseFirestore.getInstance().collection("vehicle");
+        db = FirebaseFirestore.getInstance().collection("ITV");
         val root: View = binding.root
 
         //Escuchador del boton cerrar

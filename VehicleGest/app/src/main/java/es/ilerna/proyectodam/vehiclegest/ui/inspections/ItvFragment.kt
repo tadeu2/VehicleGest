@@ -16,7 +16,6 @@ import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.adapters.ITVRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInspectionBinding
-import es.ilerna.proyectodam.vehiclegest.ui.services.AddService
 
 /**
  * Fragmento de listado de itv
@@ -66,8 +65,8 @@ class ItvFragment : ModelFragment(), ITVRecyclerAdapter.ITVAdapterListener {
     }
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onITVSelected(s: DocumentSnapshot?) {
-        Vehiclegest.fragmentReplacer(ItvDetail(s!!), parentFragmentManager)
+    override fun onITVSelected(snapshot: DocumentSnapshot?) {
+        Vehiclegest.fragmentReplacer(ItvDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {

@@ -40,7 +40,7 @@
     <string name="car_type">Car type</string>
     <string name="brand">Brand</string>
     <string name="itv_expiration_date">ITV Expiration</string>
-    <string name="total_distance">Total Distance</string>
+    <string name="total_distance">Total Dist.</string>
     <string name="model">Model</string>
     <string name="buttondelete">Delete</string>
     <string name="buttonedit">Edit</string>
@@ -54,17 +54,21 @@
     <string name="birthdate">Birthdate</string>
     <string name="admin">Admin</string>
     <string name="address">Address</string>
-    <string name="email">Email Address</string>
+    <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="search">Search</string>
     <string name="date">Date</string>
     <string name="alert">Alert</string>
-    <string name="item_name">Item Name</string>
+    <string name="item_name">Name</string>
     <string name="costumer">Costumer</string>
     <string name="solved_alert">Solved alert</string>
     <string name="dummy_button" translatable="false">Dummy Button</string>
     <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
     <string name="imgurl">URL Address</string>
     <string name="remarks">Remarks</string>
+    <string name="match_password">Password fields must match.</string>
+    <string name="register">Register</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="register_error">Register error</string>
 
 </resources>

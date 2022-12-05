@@ -16,7 +16,6 @@ import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.adapters.ItemRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
-import es.ilerna.proyectodam.vehiclegest.ui.services.AddService
 
 class InventoryFragment : ModelFragment(), ItemRecyclerAdapter.ItemAdapterListener {
 
@@ -30,7 +29,7 @@ class InventoryFragment : ModelFragment(), ItemRecyclerAdapter.ItemAdapterListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Consulta a firestore db de la colección de vehiculos
-        itemQuery = Firebase.firestore.collection("vehicle")
+        itemQuery = Firebase.firestore.collection("inventory")
 
         //Crea un escuchador para el botón flotante que abre el formulario de creacion
         activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
@@ -64,8 +63,8 @@ class InventoryFragment : ModelFragment(), ItemRecyclerAdapter.ItemAdapterListen
         return root
     }
 
-    override fun onItemSelected(s: DocumentSnapshot?) {
-        Vehiclegest.fragmentReplacer(ItemDetail(s!!), parentFragmentManager)
+    override fun onItemSelected(snapshot: DocumentSnapshot?) {
+        Vehiclegest.fragmentReplacer(ItemDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {

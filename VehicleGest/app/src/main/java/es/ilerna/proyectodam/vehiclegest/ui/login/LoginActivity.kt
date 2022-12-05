@@ -53,6 +53,10 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
+
+        binding.btRegister.setOnClickListener{
+            navigateRegister()
+        }
     }
 
     /**
@@ -90,6 +94,15 @@ class LoginActivity : AppCompatActivity() {
             putExtra("currentUser", user)
         }
         startActivity(mainIntent)
+        finish()
+    }
+
+    /**
+     * Lanza la actividad register
+     *
+     */
+    private fun navigateRegister() {
+        startActivity(Intent(this, RegisterActivity::class.java))
         finish()
     }
 

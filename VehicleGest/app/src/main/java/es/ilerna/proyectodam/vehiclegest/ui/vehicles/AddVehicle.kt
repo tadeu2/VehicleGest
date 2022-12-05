@@ -6,10 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
+import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
@@ -20,7 +20,7 @@ import java.util.concurrent.Executors
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddVehicle : Fragment() {
+class AddVehicle : AddFragment() {
 
     private var _binding: AddVehicleBinding? = null
     private val binding get() = _binding!!
@@ -32,13 +32,12 @@ class AddVehicle : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        dbVehicle = FirebaseFirestore.getInstance().collection("vehicle");
+        dbVehicle = FirebaseFirestore.getInstance().collection("vehicle")
 
         //Enlaza al XML del formulario y lo infla
         _binding = AddVehicleBinding.inflate(inflater, container, false)
 
-        binding.url.doOnTextChanged { text, start, count, after ->
-            //Carga la foto en el formulario a partir de la URL almacenada
+        binding.url.doAfterTextChanged {
             Vehiclegest.displayImgURL(binding.url.text.toString(), binding.vehicleImage)
         }
 
@@ -68,7 +67,7 @@ class AddVehicle : Fragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    private fun addData() {
+    override fun addData() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             try {
@@ -96,7 +95,7 @@ class AddVehicle : Fragment() {
                     }
 
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.w(TAG, "Error en los datos", e)
             }
         }
     }

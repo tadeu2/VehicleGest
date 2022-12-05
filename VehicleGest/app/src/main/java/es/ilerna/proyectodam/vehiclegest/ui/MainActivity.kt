@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         // Inicializa Firebase
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+        binding.appBarMain.topToolbar.subtitle = auth.currentUser?.email.toString()
+
         //Activamos el logueo de Firestore para debuggear fallos en el logcat
         FirebaseFirestore.setLoggingEnabled(true)
 

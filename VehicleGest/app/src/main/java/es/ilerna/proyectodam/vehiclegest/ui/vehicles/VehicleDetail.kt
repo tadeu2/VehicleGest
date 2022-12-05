@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
@@ -25,7 +28,7 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
     ): View {
         //Enlaza al XML del formulario y lo infla
         _binding = DetailVehicleBinding.inflate(inflater, container, false)
-        //db = FirebaseFirestore.getInstance().collection("vehicle");
+        db = FirebaseFirestore.getInstance().collection("vehicle");
         val root: View = binding.root
 
         //Escuchador del boton cerrar
@@ -51,6 +54,7 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
         try {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
             val vehicle: Vehicle? = s.toObject(Vehicle::class.java)
+            binding.url.setText(vehicle?.photoURL)
             binding.plateNumber.setText(vehicle?.plateNumber)
             binding.type.setText(vehicle?.type)
             binding.brand.setText(vehicle?.brand)

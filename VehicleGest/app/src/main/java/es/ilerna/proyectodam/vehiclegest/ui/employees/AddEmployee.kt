@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.customReverseDateFormat
@@ -21,7 +23,7 @@ import java.util.concurrent.Executors
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddEmployee : Fragment() {
+class AddEmployee : AddFragment() {
 
     private var _binding: AddEmployeeBinding? = null
     private val binding get() = _binding!!
@@ -38,8 +40,8 @@ class AddEmployee : Fragment() {
         //Enlaza al XML del formulario y lo infla
         _binding = AddEmployeeBinding.inflate(inflater, container, false)
 
-        binding.url.doOnTextChanged { text, start, count, after ->
-            //Carga la foto en el formulario a partir de la URL almacenada
+        //Carga la foto en el formulario a partir de la URL almacenada
+        binding.url.doAfterTextChanged {
             Vehiclegest.displayImgURL(binding.url.text.toString(), binding.employeeImage)
         }
 
@@ -69,7 +71,7 @@ class AddEmployee : Fragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    private fun addData() {
+    override fun addData() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             try {
@@ -96,7 +98,7 @@ class AddEmployee : Fragment() {
                     }
 
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.w(TAG, "Error en los datos", e)
             }
         }
     }

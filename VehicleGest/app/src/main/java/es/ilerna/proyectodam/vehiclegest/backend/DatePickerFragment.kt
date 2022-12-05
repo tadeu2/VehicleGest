@@ -7,7 +7,10 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
-//Es la encargada de iniciar y mostrar el datePicker.
+/**
+ * Clase encargada de iniciar y mostrar el datePicker para selecionar las fechas
+ */
+
 class DatePickerFragment(val listener: (day: Int, month: Int, year: Int) -> Unit) :
     DialogFragment(), DatePickerDialog.OnDateSetListener {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -16,7 +19,7 @@ class DatePickerFragment(val listener: (day: Int, month: Int, year: Int) -> Unit
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         val dialog = DatePickerDialog(requireContext(), this, year, month, day)
-        dialog.datePicker.maxDate = c.timeInMillis
+        //dialog.datePicker.maxDate = c.timeInMillis
         return dialog;
     }
 

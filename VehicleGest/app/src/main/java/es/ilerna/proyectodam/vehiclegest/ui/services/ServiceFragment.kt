@@ -65,8 +65,8 @@ class ServiceFragment : ModelFragment(), ServiceRecyclerAdapter.ServiceAdapterLi
     }
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onServiceSelected(s: DocumentSnapshot?) {
-        fragmentReplacer(ServiceDetail(s!!), parentFragmentManager)
+    override fun onServiceSelected(snapshot: DocumentSnapshot?) {
+        fragmentReplacer(ServiceDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {

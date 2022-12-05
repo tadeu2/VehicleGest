@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.MainActivity"
     tools:showIn="@layout/activity_main">
 
@@ -13,26 +13,25 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:liftOnScroll="true">
+        app:liftOnScroll="true"
+        >
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:elevation="0dp"
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:logo="@mipmap/ic_launcher_round"
-            app:menu="@menu/app_bar_items"
-            app:title="Vehiclegest"
-            app:titleTextColor="@color/md_theme_light_surface"
-             />
-        <!--
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
--->
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:logo="@mipmap/ic_launcher_round"
+                app:menu="@menu/app_bar_items"
+                app:subtitle="Login"
+                app:subtitleCentered="true"
+                app:title="Vehiclegest"
+                app:titleCentered="true"
+                app:titleTextColor="@color/md_theme_light_surface">
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
