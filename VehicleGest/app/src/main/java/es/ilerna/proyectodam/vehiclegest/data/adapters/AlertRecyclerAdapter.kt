@@ -1,6 +1,5 @@
 package es.ilerna.proyectodam.vehiclegest.data.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,9 +7,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
-import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
-import java.util.*
 import java.util.concurrent.Executors
 
 /**
@@ -31,17 +28,22 @@ class AlertRecyclerAdapter(
 
         ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(snapshot: DocumentSnapshot, listener: AlertAdapterListener) {
-            val alert: Alert? = snapshot.toObject(Alert::class.java)
+        fun bind(
+            snapshot: DocumentSnapshot,
+            listener: AlertAdapterListener
+        ) {
             try {
+                //Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
-                    val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
+                    //Inicializamos un objeto a partir de una instántanea
+                    val alert: Alert? = snapshot.toObject(Alert::class.java)
                     binding.plateNumber.text = alert?.plateNumber.toString()
                     //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                     //El formato se puede modificar en strings.xml
                     binding.date.text = alert?.date?.let { Vehiclegest.customDateFormat(it) }
 
+                    //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.alertCard.setOnClickListener {
                         listener.onAlertSelected(snapshot)
                     }

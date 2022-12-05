@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.ITV
 import es.ilerna.proyectodam.vehiclegest.databinding.ItvCardBinding
+import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
@@ -27,33 +28,42 @@ class ITVRecyclerAdapter(
 
         ) : ViewHolder(binding.root) {
 
-        fun bind(snapshot: DocumentSnapshot, listener: ITVAdapterListener) {
-            val itv: ITV? = snapshot.toObject(ITV::class.java)
-            assignData(itv, listener)
-        }
-
         /**
          * Rellena cada ITV de la tarjeta con los datos del objeto vehiculo
          * @param itv Ficha de cada vehículo
          */
-        private fun assignData(itv: ITV?, listener: ITVAdapterListener) {
+        fun bind(
+            snapshot: DocumentSnapshot,
+            listener: ITVAdapterListener
+        ) {
+            try {
+                //Crea un hilo paralelo para descargar las imagenes de una URL
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
 
-            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-            //El formato se puede modificar en strings.xml
-            binding.date.text = itv?.date?.let { Vehiclegest.customDateFormat(it) }
+                    //Inicializamos un objeto a partir de una instántanea
+                    val itv: ITV? = snapshot.toObject(ITV::class.java)
 
-            binding.itvCard.setOnClickListener {
-                listener.onITVSelected(itv)
+                    //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                    //El formato se puede modificar en strings.xml
+                    binding.date.text = itv?.date?.let { Vehiclegest.customDateFormat(it) }
+
+                    //Iniciamos el escuchador que accionamos al pulsar una ficha
+                    binding.itvCard.setOnClickListener {
+                        listener.onITVSelected(snapshot)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
-
 
     /**
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
     interface ITVAdapterListener {
-        fun onITVSelected(itv: ITV?)
+        fun onITVSelected(snapshot: DocumentSnapshot?)
     }
 
 

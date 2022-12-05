@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.vehicles
+package es.ilerna.proyectodam.vehiclegest.ui.inspections
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,27 +13,27 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
+import es.ilerna.proyectodam.vehiclegest.data.adapters.ITVRecyclerAdapter
+import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInspectionBinding
+import es.ilerna.proyectodam.vehiclegest.ui.services.AddService
 
 /**
- * Fragmento de listado de vehículos
+ * Fragmento de listado de itv
  */
-class VehiclesFragment : ModelFragment(), VehicleRecyclerAdapter.VehicleAdapterListener {
+class ItvFragment : ModelFragment(), ITVRecyclerAdapter.ITVAdapterListener {
 
-    //Variables de fragmento
-    private var _binding: FragmentVehiclesBinding? = null
+    private var _binding: FragmentInspectionBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var vehicleRecyclerAdapter: VehicleRecyclerAdapter
+    private lateinit var ITVRecyclerAdapter: ITVRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var vehiclesQuery: Query
+    private lateinit var itvQuery: Query
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Consulta a firestore db de la colección de vehiculos
-        vehiclesQuery = Firebase.firestore.collection("vehicle")
+        itvQuery = Firebase.firestore.collection("ITV")
 
         //Crea un escuchador para el botón flotante que abre el formulario de creacion
         activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
@@ -43,49 +43,45 @@ class VehiclesFragment : ModelFragment(), VehicleRecyclerAdapter.VehicleAdapterL
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
-        //Enlaza el fragmento a el xml y lo infla
-        _binding = FragmentVehiclesBinding.inflate(inflater, container, false)
+        //Pintar el fragment
+        _binding = FragmentInspectionBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         //Pintar el recyclerview
         //Enlaza el recycler a la variable
-        recyclerView = binding.recyclerVehicles
+        recyclerView = binding.recycleritv
         //Le asigna un manager lineal en el contexto de este fragmento
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
         //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-        vehicleRecyclerAdapter = VehicleRecyclerAdapter(vehiclesQuery, this)
+        ITVRecyclerAdapter = ITVRecyclerAdapter(itvQuery, this)
         //Asigna ese adapter al recyclerview
-        recyclerView.adapter = vehicleRecyclerAdapter
+        recyclerView.adapter = ITVRecyclerAdapter
 
         return root
     }
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onVehicleSelected(s: DocumentSnapshot?) {
-        fragmentReplacer(VehicleDetail(s!!), parentFragmentManager)
+    override fun onITVSelected(s: DocumentSnapshot?) {
+        Vehiclegest.fragmentReplacer(ItvDetail(s!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {
-        fragmentReplacer(AddVehicle(), parentFragmentManager)
+        Vehiclegest.fragmentReplacer(AddItv(), parentFragmentManager)
     }
 
-    //Inicia el escuchador de los cambios en la lista de instantáneas
     override fun onStart() {
         super.onStart()
-        vehicleRecyclerAdapter.startListening()
+        ITVRecyclerAdapter.startListening()
     }
 
-    //Para de escuchar los cambios
     override fun onStop() {
         super.onStop()
-        vehicleRecyclerAdapter.stopListening()
+        ITVRecyclerAdapter.stopListening()
     }
 
     override fun onDestroyView() {
@@ -94,4 +90,3 @@ class VehiclesFragment : ModelFragment(), VehicleRecyclerAdapter.VehicleAdapterL
         _binding = null
     }
 }
-

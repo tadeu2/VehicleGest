@@ -62,8 +62,9 @@
     <string name="item_name">Item Name</string>
     <string name="costumer">Costumer</string>
     <string name="solved_alert">Solved alert</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="imgurl">imgurl</string>
+    <string name="dummy_button" translatable="false">Dummy Button</string>
+    <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
+    <string name="imgurl">URL Address</string>
+    <string name="remarks">Remarks</string>
 
 </resources>

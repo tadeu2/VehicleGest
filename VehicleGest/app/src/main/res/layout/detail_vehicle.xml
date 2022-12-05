@@ -204,7 +204,6 @@
                     android:layout_weight="1"
                     android:enabled="false"
                     android:focusable="false"
-                    android:onClick="showDatePickerDialog"
                     android:textAlignment="center"
                     tools:text="12/12/2023" />
             </TableRow>

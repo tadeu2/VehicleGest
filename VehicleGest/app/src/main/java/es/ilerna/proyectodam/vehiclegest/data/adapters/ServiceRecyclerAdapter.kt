@@ -8,7 +8,7 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Service
 import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
-import java.util.*
+import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
@@ -28,24 +28,33 @@ class ServiceRecyclerAdapter(
 
         ) : ViewHolder(binding.root) {
 
-        fun bind(snapshot: DocumentSnapshot, listener: ServiceAdapterListener) {
-            val Service: Service? = snapshot.toObject(Service::class.java)
-            assignData(Service, listener)
-        }
-
         /**
-         * Rellena cada Service de la tarjeta con los datos del objeto vehiculo
-         * @param Service Ficha de cada vehículo
+         * Rellena cada Service de la tarjeta con los datos del objeto
          */
-        private fun assignData(service: Service?, listener: ServiceAdapterListener) {
+        fun bind(
+            snapshot: DocumentSnapshot,
+            listener: ServiceAdapterListener
+        ) {
+            try {
 
-            binding.plateNumber.text = service?.plateNumber.toString()
-            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-            //El formato se puede modificar en strings.xml
-            binding.date.text = service?.date?.let { Vehiclegest.customDateFormat(it) }
+                //Crea un hilo paralelo para descargar las imagenes de una URL
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
 
-            binding.serviceCard.setOnClickListener {
-                listener.onServiceSelected(service)
+                    //Inicializamos un objeto a partir de una instántanea
+                    val service: Service? = snapshot.toObject(Service::class.java)
+                    //La asignamos a los datos del formulario
+                    binding.plateNumber.text = service?.plateNumber.toString()
+                    //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                    //El formato se puede modificar en strings.xml
+                    binding.date.text = service?.date?.let { Vehiclegest.customDateFormat(it) }
+
+                    binding.serviceCard.setOnClickListener {
+                        listener.onServiceSelected(snapshot)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -55,7 +64,7 @@ class ServiceRecyclerAdapter(
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
     interface ServiceAdapterListener {
-        fun onServiceSelected(Service: Service??)
+        fun onServiceSelected(snapshot: DocumentSnapshot?)
     }
 
 

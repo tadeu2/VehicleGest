@@ -11,12 +11,13 @@
         android:layout_margin="@dimen/small_margin"
         android:clickable="true"
         android:focusable="true"
+        android:minHeight="48dp"
         app:strokeColor="@color/md_theme_dark_surfaceVariant"
         app:strokeWidth="2dp">
 
         <include
             android:id="@+id/bar"
-            layout="@layout/bar_detail"
+            layout="@layout/bar_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,20 +32,48 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!--       <TableRow
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:gravity="center_horizontal">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
 
-                       <com.google.android.material.imageview.ShapeableImageView
-                           android:id="@+id/service_image"
-                           android:layout_width="wrap_content"
-                           android:layout_height="match_parent"
-                           app:srcCompat="@drawable/example_car"
-                           app:strokeWidth="@dimen/small_margin"
-                           tools:srcCompat="@drawable/outline_handshake_24" />
-                   </TableRow>
-       -->
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/item_image"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    app:srcCompat="@drawable/no_image_available"
+                    app:strokeWidth="@dimen/small_margin"
+                    tools:srcCompat="@drawable/no_image_available" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_url_detail"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="50dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:nestedScrollingEnabled="false"
+                    android:text="@string/imgurl"
+                    android:textAlignment="textEnd"
+                    tools:text="@string/imgurl" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/url"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="500dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:textAlignment="center"
+                    android:maxLines="1"
+                    tools:text="http://img.jpg" />
+            </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -64,11 +93,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/plate_number"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="200dp"
+                    android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
@@ -79,58 +106,26 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_costumer_detail"
+                    android:id="@+id/label_name_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
+                    android:layout_width="1dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:nestedScrollingEnabled="false"
-                    android:text="@string/costumer"
+                    android:text="@string/name"
                     android:textAlignment="textEnd"
-                    tools:text="@string/costumer" />
+                    tools:text="@string/name" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/costumer"
+                    android:id="@+id/name"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="200dp"
+                    android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:fontFamily="@font/roboto"
+                    android:maxLines="1"
                     android:textAlignment="center"
-                    tools:text="Alcampo" />
+                    tools:text="Alicates" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_date_detail"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:nestedScrollingEnabled="false"
-                    android:text="@string/date"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/date" />
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/date"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="200dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="24/12/22" />
-            </TableRow>
 
 
             <TableRow
@@ -138,41 +133,31 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_ramarks"
+                    android:id="@+id/label_description"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/description"
                     android:textAlignment="center"
-                    tools:text="@string/description" />
+                    android:textStyle="bold"/>
             </TableRow>
 
         </TableLayout>
-
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/remarks"
+            android:id="@+id/item_description"
             style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:lineHeight="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/table_details"
-            android:clickable="false"
-            android:focusable="false"
-            android:lineHeight="10dp"
             android:nestedScrollingEnabled="true"
-            android:padding="10dp"
             android:scrollbars="vertical"
             android:textAlignment="textStart"
-
-            tools:text="This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    " />
+            android:hint="@string/remarks"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

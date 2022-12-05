@@ -54,7 +54,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_name_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
@@ -63,12 +63,14 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/name" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="Alicates" />
@@ -81,7 +83,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_platenumber_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
@@ -90,23 +92,17 @@
                     android:textAlignment="textEnd"
                     tools:text="@string/plate_number" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/plate_number"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
-            </TableRow>
-
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
             </TableRow>
 
             <TableRow
@@ -128,17 +124,22 @@
 
         </TableLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/item_description"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineHeight="10dp"
-                android:nestedScrollingEnabled="true"
-                android:scrollbars="vertical"
-                android:textAlignment="textStart"
-                app:layout_constraintTop_toBottomOf="@id/table_details"
-                tools:text="This is a tool" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/item_description"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:lineHeight="10dp"
+            android:minHeight="48dp"
+            android:nestedScrollingEnabled="true"
+            android:scrollbars="vertical"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table_details"
+            tools:text="This is a tool" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

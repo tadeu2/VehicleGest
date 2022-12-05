@@ -1,27 +1,46 @@
+package es.ilerna.proyectodam.vehiclegest.ui.employees
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.adapters.EmployeeRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentEmployeesBinding
-import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeDetail
+import es.ilerna.proyectodam.vehiclegest.ui.services.AddService
 
-class EmployeeFragment : Fragment(), EmployeeRecyclerAdapter.EmployeeAdapterListener {
+/**
+ * Fragmento de listado de empleados
+ */
+class EmployeeFragment : ModelFragment(), EmployeeRecyclerAdapter.EmployeeAdapterListener {
 
     private var _binding: FragmentEmployeesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var employeeQuery: Query
-
     private lateinit var employeeRecyclerAdapter: EmployeeRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var employeeQuery: Query
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Consulta a firestore db de la colección
+        employeeQuery = Firebase.firestore.collection("employees")
+
+        //Crea un escuchador para el botón flotante que abre el formulario de creacion
+        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
+            onAddButtonClick()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,13 +48,14 @@ class EmployeeFragment : Fragment(), EmployeeRecyclerAdapter.EmployeeAdapterList
         savedInstanceState: Bundle?
     ): View {
 
-        //Pintar el fragment
+        //Enlaza el fragmento a el xml y lo infla
         _binding = FragmentEmployeesBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //Firestore
         employeeQuery = FirebaseFirestore.getInstance().collection("employees")
 
-        //Pintar el recycler
+        //Pintar el recyclerview
+        //Enlaza el recycler a la variable
         recyclerView = binding.recyclerEmployees
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
@@ -46,27 +66,30 @@ class EmployeeFragment : Fragment(), EmployeeRecyclerAdapter.EmployeeAdapterList
         return root
     }
 
-    override fun onEmployeeSelected(employee: Employee?) {
-        val deviceFragment = EmployeeDetail(employee!!)
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
-        fragmentTransaction.commit()
+    //Al seleccionar un item de la lista se abre el fragmento de detalle
+    override fun onEmployeeSelected(s: DocumentSnapshot?) {
+        Vehiclegest.fragmentReplacer(EmployeeDetail(s!!), parentFragmentManager)
     }
 
+    override fun onAddButtonClick() {
+        Vehiclegest.fragmentReplacer(AddEmployee(), parentFragmentManager)
+    }
+
+    //Inicia el escuchador de los cambios en la lista de instantáneas
     override fun onStart() {
         super.onStart()
         employeeRecyclerAdapter.startListening()
     }
 
+    //Para de escuchar los cambios
     override fun onStop() {
         super.onStop()
-        employeeRecyclerAdapter.startListening()
+        employeeRecyclerAdapter.stopListening()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        //Vaciamos la variable de enlace al xml
         _binding = null
     }
-
 }

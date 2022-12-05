@@ -9,17 +9,16 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 
 @IgnoreExtraProperties
-class Service : Parcelable {
-
-    var plateNumber: String? = null
-    var date: Date? = null
-    var remarks: String? = null
+data class Service(
+    var plateNumber: String? = null,
+    var date: Date? = null,
+    var remarks: String? = null,
     var costumer: String? = null
+) : Parcelable {
 
-    constructor()
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private constructor(parcel: Parcel) {
+    private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
         date = Timestamp(parcel.readLong(), 0).toDate()
         remarks = parcel.readString()

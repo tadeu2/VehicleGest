@@ -4,25 +4,40 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.adapters.ItemRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.data.entities.Item
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
+import es.ilerna.proyectodam.vehiclegest.ui.services.AddService
 
-class InventoryFragment : Fragment(), ItemRecyclerAdapter.ItemAdapterListener {
+class InventoryFragment : ModelFragment(), ItemRecyclerAdapter.ItemAdapterListener {
 
     private var _binding: FragmentInventoryBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var ItemQuery: Query
-
-    private lateinit var ItemRecyclerAdapter: ItemRecyclerAdapter
+    private lateinit var itemRecyclerAdapter: ItemRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var itemQuery: Query
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Consulta a firestore db de la colección de vehiculos
+        itemQuery = Firebase.firestore.collection("vehicle")
+
+        //Crea un escuchador para el botón flotante que abre el formulario de creacion
+        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
+            onAddButtonClick()
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,41 +48,44 @@ class InventoryFragment : Fragment(), ItemRecyclerAdapter.ItemAdapterListener {
         //Pintar el fragment
         _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        //Firestore
-        ItemQuery = FirebaseFirestore.getInstance().collection("inventory")
 
-        //Pintar el recycler
+        //Pintar el recyclerview
+        //Enlaza el recycler a la variable
         recyclerView = binding.recycleritems
+        //Le asigna un manager lineal en el contexto de este fragmento
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
-        ItemRecyclerAdapter = ItemRecyclerAdapter(ItemQuery, this)
-        recyclerView.adapter = ItemRecyclerAdapter
+        //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
+        itemRecyclerAdapter = ItemRecyclerAdapter(itemQuery, this)
+        //Asigna ese adapter al recyclerview
+        recyclerView.adapter = itemRecyclerAdapter
 
         return root
     }
 
-    override fun onItemSelected(Item: Item?) {
-        val deviceFragment = ItemDetail(Item!!)
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, deviceFragment)
-        fragmentTransaction.commit()
+    override fun onItemSelected(s: DocumentSnapshot?) {
+        Vehiclegest.fragmentReplacer(ItemDetail(s!!), parentFragmentManager)
+    }
+
+    override fun onAddButtonClick() {
+        Vehiclegest.fragmentReplacer(AddItem(), parentFragmentManager)
     }
 
     override fun onStart() {
         super.onStart()
-        ItemRecyclerAdapter.startListening()
+        itemRecyclerAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        ItemRecyclerAdapter.startListening()
+        itemRecyclerAdapter.stopListening()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        //Vaciamos la variable de enlace al xml
         _binding = null
-    }
 
+    }
 }

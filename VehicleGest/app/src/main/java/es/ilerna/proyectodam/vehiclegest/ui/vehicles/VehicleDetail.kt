@@ -1,18 +1,14 @@
 package es.ilerna.proyectodam.vehiclegest.ui.vehicles
 
-import android.content.ContentValues
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
-import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
@@ -21,6 +17,32 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
     private var _binding: DetailVehicleBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        //Enlaza al XML del formulario y lo infla
+        _binding = DetailVehicleBinding.inflate(inflater, container, false)
+        //db = FirebaseFirestore.getInstance().collection("vehicle");
+        val root: View = binding.root
+
+        //Escuchador del boton cerrar
+        binding.bar.btclose.setOnClickListener {
+            fragmentReplacer(VehiclesFragment())
+        }
+
+        //Escuchador del boton cerrar
+        binding.bar.btdelete.setOnClickListener {
+            delDocument(s)
+            fragmentReplacer(VehiclesFragment())
+        }
+
+        bindData()
+        //Llama a la función que rellena los datos en el formulario
+        return root
+    }
 
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
@@ -60,18 +82,9 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
         TODO("Not yet implemented")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        //Enlaza al XML del formulario y lo infla
-        _binding = DetailVehicleBinding.inflate(inflater, container, false)
-        db = FirebaseFirestore.getInstance().collection("vehicle");
-        val root: View = binding.root
-        bindData()
-
-        //Llama a la función que rellena los datos en el formulario
-        return root
+    override fun onDestroyView() {
+        super.onDestroyView()
+        //Vaciamos la variable de enlace al xml
+        _binding = null
     }
 }

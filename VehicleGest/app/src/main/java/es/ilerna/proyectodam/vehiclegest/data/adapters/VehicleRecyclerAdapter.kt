@@ -1,18 +1,10 @@
 package es.ilerna.proyectodam.vehiclegest.data.adapters
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
@@ -23,7 +15,8 @@ import java.util.concurrent.Executors
  * Implementa a RecyclerView.Adapter
  */
 class VehicleRecyclerAdapter(
-    query: Query, private val listener: VehicleAdapterListener
+    query: Query,
+    private val listener: VehicleAdapterListener
 ) : FirestoreAdapter<VehicleRecyclerAdapter.VehicleViewHolder>(query) {
 
     /**
@@ -33,18 +26,22 @@ class VehicleRecyclerAdapter(
     class VehicleViewHolder(
         private val binding: VehicleCardBinding,
 
-        ) : RecyclerView.ViewHolder(binding.root) {
+        ) : ViewHolder(binding.root) {
 
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
-         * @param vehicle Ficha de cada vehículo
+         *
          */
-        fun bind(snapshot: DocumentSnapshot, listener: VehicleAdapterListener) {
-
+        fun bind(
+            snapshot: DocumentSnapshot,
+            listener: VehicleAdapterListener
+        ) {
             try {//Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
+                    //Inicializamos un objeto vehículo a partir de una instántanea
                     val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
+                    //La asignamos a los datos del formulario
                     binding.plateNumber.text = vehicle?.plateNumber.toString()
                     binding.type.text = vehicle?.type.toString()
                     binding.brand.text = vehicle?.brand.toString()
@@ -53,6 +50,7 @@ class VehicleRecyclerAdapter(
                     //Carga la foto en el formulario a partir de la URL almacenada
                     Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
 
+                    //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.vehicleCard.setOnClickListener {
                         listener.onVehicleSelected(snapshot)
                     }
@@ -71,7 +69,7 @@ class VehicleRecyclerAdapter(
     }
 
     /**
-     * Llamada para devolver el item(VehicleCard) al viewholder por cada objeto de la lista vehiculos
+     * Llamada para devolver el item al viewholder por cada objeto de la lista
      */
     @Override
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VehicleViewHolder {

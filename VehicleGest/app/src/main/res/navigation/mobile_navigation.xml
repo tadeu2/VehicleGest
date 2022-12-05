@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/navigation_itv"
-        android:name="es.ilerna.proyectodam.vehiclegest.ui.inspections.ITVFragment"
+        android:name="es.ilerna.proyectodam.vehiclegest.ui.inspections.ItvFragment"
         android:label="@string/title_vehicles"
         tools:layout="@layout/fragment_vehicles">
         <action

@@ -11,12 +11,13 @@
         android:layout_margin="@dimen/small_margin"
         android:clickable="true"
         android:focusable="true"
+        android:minHeight="48dp"
         app:strokeColor="@color/md_theme_dark_surfaceVariant"
         app:strokeWidth="2dp">
 
         <include
             android:id="@+id/bar"
-            layout="@layout/bar_detail"
+            layout="@layout/bar_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,20 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!--       <TableRow
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:gravity="center_horizontal">
 
-                       <com.google.android.material.imageview.ShapeableImageView
-                           android:id="@+id/service_image"
-                           android:layout_width="wrap_content"
-                           android:layout_height="match_parent"
-                           app:srcCompat="@drawable/example_car"
-                           app:strokeWidth="@dimen/small_margin"
-                           tools:srcCompat="@drawable/outline_handshake_24" />
-                   </TableRow>
-       -->
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -64,11 +52,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/plate_number"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="200dp"
+                    android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
@@ -79,13 +65,11 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_costumer_detail"
+                    android:id="@+id/label_type_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="50dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:nestedScrollingEnabled="false"
                     android:text="@string/costumer"
                     android:textAlignment="textEnd"
                     tools:text="@string/costumer" />
@@ -93,12 +77,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/costumer"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="200dp"
+                    android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:fontFamily="@font/roboto"
+                    android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="Alcampo" />
             </TableRow>
@@ -113,8 +95,6 @@
                     android:layout_width="50dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:nestedScrollingEnabled="false"
                     android:text="@string/date"
                     android:textAlignment="textEnd"
                     tools:text="@string/date" />
@@ -122,30 +102,29 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/date"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="200dp"
+                    android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
+                    android:enabled="true"
                     android:focusable="false"
-                    android:fontFamily="@font/roboto"
+                    android:maxLines="1"
                     android:textAlignment="center"
-                    tools:text="24/12/22" />
+                    tools:text="12/12/2023" />
             </TableRow>
-
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_ramarks"
+                    android:id="@+id/label_remarks"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/description"
+                    android:text="@string/remarks"
                     android:textAlignment="center"
-                    tools:text="@string/description" />
+                    android:textStyle="bold" />
             </TableRow>
 
         </TableLayout>
@@ -153,26 +132,15 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/remarks"
             style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/table_details"
-            android:clickable="false"
-            android:focusable="false"
             android:lineHeight="10dp"
             android:nestedScrollingEnabled="true"
-            android:padding="10dp"
             android:scrollbars="vertical"
             android:textAlignment="textStart"
-
-            tools:text="This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    " />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table_details" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

@@ -8,9 +8,9 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.auth.FirebaseUser
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityLoginBinding
 import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
@@ -65,18 +65,18 @@ class LoginActivity : AppCompatActivity() {
     private fun userAuthentication(username: String, password: String) {
         // TODO: password complexity - Backend.isValidPassword(password)
         auth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.d(ContentValues.TAG, "signInWithEmail: login success")
-                    navigateMain(auth.currentUser)
-                } else {
-                    Log.w(ContentValues.TAG, "signInWithEmail:login failure", task.exception)
-                    //Backend.showSnackbar(binding.root, task.exception?.message.toString())
-                    MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.authError))
-                        .setMessage(task.exception?.message.toString())
-                        .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                        }.setIcon(R.drawable.outline_error_24).show()
-                }
+            if (task.isSuccessful) {
+                Log.d(ContentValues.TAG, "signInWithEmail: login success")
+                navigateMain(auth.currentUser)
+            } else {
+                Log.w(ContentValues.TAG, "signInWithEmail:login failure", task.exception)
+                //Backend.showSnackbar(binding.root, task.exception?.message.toString())
+                MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.authError))
+                    .setMessage(task.exception?.message.toString())
+                    .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                    }.setIcon(R.drawable.outline_error_24).show()
             }
+        }
     }
 
     /**

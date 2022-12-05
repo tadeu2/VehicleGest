@@ -1,50 +1,63 @@
 package es.ilerna.proyectodam.vehiclegest.ui.inventory
 
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.DocumentSnapshot
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Item
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
-import java.net.URL
-import java.util.concurrent.Executors
+import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment
 
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class ItemDetail(val data: Item) : DetailFragment() {
+class ItemDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
     private var _binding: DetailItemBinding? = null
     private val binding get() = _binding!!
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        //Enlaza al XML del formulario y lo infla
+        _binding = DetailItemBinding.inflate(inflater, container, false)
+        //db = FirebaseFirestore.getInstance().collection("inventory");
+        val root: View = binding.root
+
+        //Escuchador del boton cerrar
+        binding.bar.btclose.setOnClickListener {
+            fragmentReplacer(InventoryFragment())
+        }
+
+        //Escuchador del boton borrar
+        binding.bar.btdelete.setOnClickListener {
+            delDocument(s)
+            fragmentReplacer(InventoryFragment())
+        }
+
+        bindData()
+        //Llama a la función que rellena los datos en el formulario
+        return root
+    }
+
     override fun bindData() {
         try {
-            binding.name.text = data.name
-            binding.plateNumber.text = data.plateNumber
-            binding.itemDescription.text = data.description
+            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+            val item: Item? = s.toObject(Item::class.java)
+            binding.name.setText(item?.name)
+            binding.plateNumber.setText(item?.plateNumber)
+            binding.itemDescription.setText(item?.description)
 
             //Carga la foto en el formulario a partir de la URL almacenada
-            Vehiclegest.displayImgURL(data.photoURL, binding.itemImage)
+            Vehiclegest.displayImgURL(item?.photoURL, binding.itemImage)
 
-            binding.bar.btclose.setOnClickListener {
-                onBtClose(InventoryFragment())
-            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -54,17 +67,9 @@ class ItemDetail(val data: Item) : DetailFragment() {
         TODO("Not yet implemented")
     }
 
-    override fun delDocument(s: DocumentSnapshot) {
-        TODO("Not yet implemented")
+    override fun onDestroyView() {
+        super.onDestroyView()
+        //Vaciamos la variable de enlace al xml
+        _binding = null
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = DetailItemBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        bindData()
-        return root
-    }
-
 }

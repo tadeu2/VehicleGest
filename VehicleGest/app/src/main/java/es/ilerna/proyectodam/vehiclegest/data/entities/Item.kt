@@ -4,22 +4,19 @@ import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.RequiresApi
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 
 @IgnoreExtraProperties
-class Item : Parcelable {
-
-    var plateNumber: String? = null
-    var name: String? = null
-    var description: String? = null
+data class Item(
+    var plateNumber: String? = null,
+    var name: String? = null,
+    var description: String? = null,
     var photoURL: String? = null
-
-    constructor()
+) : Parcelable {
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private constructor(parcel: Parcel) {
+    private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
         name = parcel.readString()
         description = parcel.readString()

@@ -1,25 +1,20 @@
 package es.ilerna.proyectodam.vehiclegest.data.entities
 
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 
 @IgnoreExtraProperties
-class Alert : Parcelable {
-
-    var plateNumber: String? = null
-    var date: Date? = null
-    var description: String? = null
+class Alert(
+    var plateNumber: String? = null,
+    var date: Date? = null,
+    var description: String? = null,
     var solved: Boolean? = false
+) : Parcelable {
 
-    constructor()
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private constructor(parcel: Parcel) {
+    private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
         date = Timestamp(parcel.readLong(), 0).toDate()
         description = parcel.readString()

@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.vehicles
+package es.ilerna.proyectodam.vehiclegest.ui.services
 
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -6,25 +6,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
-import es.ilerna.proyectodam.vehiclegest.databinding.AddVehicleBinding
+import es.ilerna.proyectodam.vehiclegest.data.entities.Service
+import es.ilerna.proyectodam.vehiclegest.databinding.AddServiceBinding
 import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddVehicle : Fragment() {
+class AddService : Fragment() {
 
-    private var _binding: AddVehicleBinding? = null
+    private var _binding: AddServiceBinding? = null
     private val binding get() = _binding!!
-    private lateinit var dbVehicle: CollectionReference
+    private lateinit var dbService: CollectionReference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,26 +31,21 @@ class AddVehicle : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        dbVehicle = FirebaseFirestore.getInstance().collection("vehicle");
+        dbService = FirebaseFirestore.getInstance().collection("service");
 
         //Enlaza al XML del formulario y lo infla
-        _binding = AddVehicleBinding.inflate(inflater, container, false)
-
-        binding.url.doOnTextChanged { text, start, count, after ->
-            //Carga la foto en el formulario a partir de la URL almacenada
-            Vehiclegest.displayImgURL(binding.url.text.toString(), binding.vehicleImage)
-        }
+        _binding = AddServiceBinding.inflate(inflater, container, false)
 
         binding.bar.btsave.setOnClickListener() {
             addData()
-            fragmentReplacer(VehiclesFragment(), parentFragmentManager)
+            fragmentReplacer(ServiceFragment(), parentFragmentManager)
         }
 
         binding.bar.btclose.setOnClickListener() {
-            fragmentReplacer(VehiclesFragment(), parentFragmentManager)
+            fragmentReplacer(ServiceFragment(), parentFragmentManager)
         }
 
-        binding.expiringItv.setOnClickListener() {
+        binding.date.setOnClickListener() {
             val newFragment =
                 DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
             newFragment.show(parentFragmentManager, "datePicker")
@@ -62,7 +56,7 @@ class AddVehicle : Fragment() {
     }
 
     private fun onDateSelected(day: Int, month: Int, year: Int) {
-        binding.expiringItv.setText(String.format("$day/$month/$year"))
+        binding.date.setText(String.format("$day/$month/$year"))
     }
 
     /**
@@ -73,21 +67,14 @@ class AddVehicle : Fragment() {
         executor.execute {
             try {
                 val plateNumber = binding.plateNumber.text.toString()
-                val type = binding.type.text.toString()
-                val brand = binding.brand.text.toString()
-                val model = binding.model.text.toString()
-                val expiryDateITV =
-                    Vehiclegest.customReverseDateFormat(binding.expiringItv.text.toString())
-                val description = binding.vehicleDescription.text.toString()
-                val licensed = binding.checkLicensed.isChecked
-                val totalDistance = Integer.parseInt(binding.totalDistance.text.toString())
-                val photoURL = binding.url.text.toString()
+                val date = Vehiclegest.customReverseDateFormat(binding.date.text.toString())
+                val remarks = binding.remarks.text.toString()
+                val costumer = binding.costumer.text.toString()
 
-                val vehicle = Vehicle(
-                    plateNumber, type, brand, model, expiryDateITV,
-                    totalDistance, licensed, description, photoURL
+                val service = Service(
+                    plateNumber, date, remarks, costumer
                 )
-                dbVehicle.add(vehicle)
+                dbService.add(service)
                     .addOnSuccessListener { documentReference ->
                         Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
                     }
@@ -99,6 +86,12 @@ class AddVehicle : Fragment() {
                 e.printStackTrace()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        //Vaciamos la variable de enlace al xml
+        _binding = null
     }
 
 }

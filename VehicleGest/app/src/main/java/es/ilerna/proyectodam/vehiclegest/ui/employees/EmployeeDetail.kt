@@ -1,7 +1,5 @@
 package es.ilerna.proyectodam.vehiclegest.ui.employees
 
-
-import EmployeeFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +9,42 @@ import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
-
+import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment
 
 /**
- * Abre una ventana diálogo con los detalles del vehículo
+ * Abre una ventana diálogo con los detalles
  */
 class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
     private var _binding: DetailEmployeeBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        //Enlaza al XML del formulario y lo infla
+        _binding = DetailEmployeeBinding.inflate(inflater, container, false)
+        //db = FirebaseFirestore.getInstance().collection("employee");
+        val root: View = binding.root
+
+        //Escuchador del boton cerrar
+        binding.bar.btclose.setOnClickListener {
+            fragmentReplacer(EmployeeFragment())
+        }
+
+        //Escuchador del boton borrar
+        binding.bar.btdelete.setOnClickListener {
+            delDocument(s)
+            fragmentReplacer(EmployeeFragment())
+        }
+
+        //Llama a la función que rellena los datos en el formulario
+        bindData()
+        return root
+    }
 
     override fun bindData() {
         try {
@@ -49,13 +74,9 @@ class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
         TODO("Not yet implemented")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-
-        _binding = DetailEmployeeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        bindData()
-        return root
+    override fun onDestroyView() {
+        super.onDestroyView()
+        //Vaciamos la variable de enlace al xml
+        _binding = null
     }
 }

@@ -3,11 +3,12 @@ package es.ilerna.proyectodam.vehiclegest.data.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
 import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
+import java.util.concurrent.Executors
 
 
 /**
@@ -28,39 +29,49 @@ class EmployeeRecyclerAdapter(
 
         ) : ViewHolder(binding.root) {
 
-        fun bind(snapshot: DocumentSnapshot, listener: EmployeeAdapterListener) {
-            val employee: Employee? = snapshot.toObject(Employee::class.java)
-            assignData(employee, listener)
-        }
-
         /**
          * Rellena cada item de la tarjeta con los datos del objeto empleado
-         * @param employee Ficha de cada empleado
          */
-        private fun assignData(employee: Employee?, listener: EmployeeAdapterListener) {
-            binding.dni.text = employee?.dni.toString()
-            binding.name.text = employee?.name.toString()
-            binding.surname.text = employee?.surname.toString()
-            //Foto del empleado
-            Glide.with(binding.root).load(employee?.photoURL).into(binding.employeeImage)
+        fun bind(
+            snapshot: DocumentSnapshot,
+            listener: EmployeeAdapterListener
+        ) {
+            try {
 
-            binding.employeeCard.setOnClickListener {
-                listener.onEmployeeSelected(employee)
+                //Crea un hilo paralelo para descargar las imagenes de una URL
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
+
+                    //Inicializamos un objeto a partir de una instántanea
+                    val employee: Employee? = snapshot.toObject(Employee::class.java)
+                    //La asignamos a los datos del formulario
+                    binding.dni.text = employee?.dni.toString()
+                    binding.name.text = employee?.name.toString()
+                    binding.surname.text = employee?.surname.toString()
+
+                    //Carga la foto en el formulario a partir de la URL almacenada
+                    Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
+
+                    //Iniciamos el escuchador que accionamos al pulsar una ficha
+                    binding.employeeCard.setOnClickListener {
+                        listener.onEmployeeSelected(snapshot)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
-
 
     /**
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
     interface EmployeeAdapterListener {
-        fun onEmployeeSelected(employee: Employee??)
+        fun onEmployeeSelected(snapshot: DocumentSnapshot?)
     }
 
-
     /**
-     * Llamada para devolver el item(VehicleCard) al viewholder por cada objeto de la lista vehiculos
+     * Llamada para devolver el item al viewholder por cada objeto de la lista s
      *
      */
     @Override

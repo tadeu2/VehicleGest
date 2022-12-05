@@ -9,22 +9,21 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 
 @IgnoreExtraProperties
-class Employee : Parcelable {
-
-    var dni: String? = null
-    var name: String? = null
-    var surname: String? = null
-    var address: String? = null
-    var email: String? = null
-    var phone: String? = null
-    var birthdate: Date? = null
-    var photoURL: String? = null
+data class Employee(
+    var dni: String? = null,
+    var name: String? = null,
+    var surname: String? = null,
+    var address: String? = null,
+    var email: String? = null,
+    var phone: String? = null,
+    var birthdate: Date? = null,
+    var photoURL: String? = null,
     var admin: Boolean? = null
+) : Parcelable {
 
-    constructor()
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private constructor(parcel: Parcel) {
+    private constructor(parcel: Parcel) : this() {
         dni = parcel.readString()
         name = parcel.readString()
         surname = parcel.readString()

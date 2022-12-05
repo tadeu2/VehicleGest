@@ -3,11 +3,12 @@ package es.ilerna.proyectodam.vehiclegest.data.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Item
 import es.ilerna.proyectodam.vehiclegest.databinding.ItemCardBinding
+import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
@@ -27,23 +28,32 @@ class ItemRecyclerAdapter(
 
         ) : ViewHolder(binding.root) {
 
-        fun bind(snapshot: DocumentSnapshot, listener: ItemAdapterListener) {
-            val item: Item? = snapshot.toObject(Item::class.java)
-            assignData(item, listener)
-        }
-
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
-         * @param item Ficha de cada vehículo
          */
-        private fun assignData(item: Item?, listener: ItemAdapterListener) {
-            binding.plateNumber.text = item?.plateNumber.toString()
-            binding.name.text = item?.name.toString()
-            //Foto del articulo
-            Glide.with(binding.root).load(item?.photoURL).into(binding.itemImage)
+        fun bind(
+            snapshot: DocumentSnapshot,
+            listener: ItemAdapterListener
+        ) {
+            try {
+                //Crea un hilo paralelo para descargar las imagenes de una URL
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
+                    //Inicializamos un objeto a partir de una instántanea
+                    val item: Item? = snapshot.toObject(Item::class.java)
+                    //La asignamos a los datos del formulario
+                    binding.plateNumber.text = item?.plateNumber.toString()
+                    binding.name.text = item?.name.toString()
 
-            binding.itemCard.setOnClickListener {
-                listener.onItemSelected(item)
+                    //Carga la foto en el formulario a partir de la URL almacenada
+                    Vehiclegest.displayImgURL(item?.photoURL.toString(), binding.itemImage)
+                    //Iniciamos el escuchador que accionamos al pulsar una ficha
+                    binding.itemCard.setOnClickListener {
+                        listener.onItemSelected(snapshot)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -53,9 +63,8 @@ class ItemRecyclerAdapter(
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
     interface ItemAdapterListener {
-        fun onItemSelected(item: Item??)
+        fun onItemSelected(snapshot: DocumentSnapshot?)
     }
-
 
     /**
      * Llamada para devolver el item(ItemCard) al viewholder por cada objeto de la lista vehiculos

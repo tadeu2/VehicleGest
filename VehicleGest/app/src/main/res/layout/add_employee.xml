@@ -38,12 +38,40 @@
                 android:gravity="center_horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/vehicle_image"
+                    android:id="@+id/employee_image"
                     android:layout_width="300dp"
                     android:layout_height="300dp"
                     app:srcCompat="@drawable/no_image_available"
                     app:strokeWidth="@dimen/small_margin"
                     tools:srcCompat="@drawable/no_image_available" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_dni_detail"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="50dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:nestedScrollingEnabled="false"
+                    android:text="@string/DNI"
+                    android:textAlignment="textEnd"
+                    tools:text="@string/DNI" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/dni"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="500dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:textAlignment="center"
+                    android:maxLines="1"
+                    tools:text="344555234G" />
             </TableRow>
 
             <TableRow
@@ -79,26 +107,26 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_platenumber_detail"
+                    android:id="@+id/label_name_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="50dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
                     android:nestedScrollingEnabled="false"
-                    android:text="@string/plate_number"
+                    android:text="@string/name"
                     android:textAlignment="textEnd"
-                    tools:text="@string/plate_number" />
+                    tools:text="@string/name" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/plate_number"
+                    android:id="@+id/name"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
-                    tools:text="1234ABC" />
+                    tools:text="Carlos" />
             </TableRow>
 
             <TableRow
@@ -106,24 +134,24 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_type_detail"
+                    android:id="@+id/label_surname_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="1dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:text="@string/car_type"
+                    android:text="@string/surname"
                     android:textAlignment="textEnd"
-                    tools:text="@string/car_type" />
+                    tools:text="@string/surname" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/type"
+                    android:id="@+id/surname"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:textAlignment="center"
-                    tools:text="Berlina" />
+                    tools:text="Caruncho Serrano" />
             </TableRow>
 
             <TableRow
@@ -131,24 +159,24 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_brand_detail"
+                    android:id="@+id/label_address_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="50dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:text="@string/brand"
+                    android:text="@string/address"
                     android:textAlignment="textEnd"
-                    tools:text="@string/brand" />
+                    tools:text="@string/address" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/brand"
+                    android:id="@+id/address"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:textAlignment="center"
-                    tools:text="AUDI" />
+                    tools:text="Calle casassas" />
             </TableRow>
 
             <TableRow
@@ -156,24 +184,24 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_model_detail"
+                    android:id="@+id/label_email_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="50dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:text="@string/model"
+                    android:text="@string/email"
                     android:textAlignment="textEnd"
-                    tools:text="@string/model" />
+                    tools:text="@string/email" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/model"
+                    android:id="@+id/email"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:textAlignment="center"
-                    tools:text="A5" />
+                    tools:text="prueba@prueba.com" />
             </TableRow>
 
             <TableRow
@@ -181,17 +209,17 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_expiring_itv_detail"
+                    android:id="@+id/label_birthdate_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="50dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:text="@string/itv_expiration_date"
+                    android:text="@string/birthdate"
                     android:textAlignment="textEnd"
-                    tools:text="@string/itv_expiration_date" />
+                    tools:text="@string/birthdate" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/expiring_itv"
+                    android:id="@+id/birthdate"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
@@ -208,24 +236,24 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_total_distance_detail"
+                    android:id="@+id/label_phone_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="50dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:text="@string/total_distance"
+                    android:text="@string/phone"
                     android:textAlignment="textEnd"
-                    tools:text="@string/total_distance" />
+                    tools:text="@string/phone" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/total_distance"
+                    android:id="@+id/phone"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:textAlignment="center"
-                    tools:text="12344" />
+                    tools:text="626623444" />
 
             </TableRow>
 
@@ -234,17 +262,17 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_licensed_detail"
+                    android:id="@+id/label_admin_detail"
                     style="@style/TextAppearance.Material3.TitleSmall"
                     android:layout_width="50dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:text="@string/licensed"
+                    android:text="@string/admin"
                     android:textAlignment="textEnd"
-                    tools:text="@string/licensed" />
+                    tools:text="@string/admin" />
 
                 <CheckBox
-                    android:id="@+id/checkLicensed"
+                    android:id="@+id/checkadmin"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
@@ -252,37 +280,8 @@
                     android:clickable="true"
                     android:focusable="true" />
             </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_description"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:text="@string/description"
-                    android:textAlignment="center"
-                    android:textStyle="bold"/>
-            </TableRow>
-
         </TableLayout>
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/vehicle_description"
-            style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:lineHeight="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/table_details"
-            android:nestedScrollingEnabled="true"
-            android:scrollbars="vertical"
-            android:textAlignment="textStart"
-            android:hint="@string/remarks"
-            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

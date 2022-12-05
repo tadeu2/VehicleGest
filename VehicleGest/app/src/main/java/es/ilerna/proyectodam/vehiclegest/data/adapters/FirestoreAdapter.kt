@@ -4,19 +4,28 @@ import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
 
+/**
+ * Adaptador de firestore
+ * @param query
+ */
+
 abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
     private val query: Query
 ) : RecyclerView.Adapter<fireStoreViewHolder>(), EventListener<QuerySnapshot> {
 
     private var registration: ListenerRegistration? = null
+
+    //Variable de instantaneas de documento
     private val snapshots = ArrayList<DocumentSnapshot>()
 
+    //Iniciar escuchador para ver si se ha agregado un item al query
     open fun startListening() {
         if (registration == null) {
             registration = query.addSnapshotListener(this)
         }
     }
 
+    //Parar escuchador
     open fun stopListening() {
         if (registration != null) {
             registration!!.remove()
@@ -55,11 +64,11 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
 
     protected open fun onDocumentModified(change: DocumentChange) {
         if (change.oldIndex == change.newIndex) {
-            // Item changed but remained in same position
+            // Item modidicado pero se queda en el mismo lugar
             snapshots[change.oldIndex] = change.document
             notifyItemChanged(change.oldIndex)
         } else {
-            // Item changed and changed position
+            // Item modidicado pero cambia el lugar
             snapshots.removeAt(change.oldIndex)
             snapshots.add(change.newIndex, change.document)
             notifyItemMoved(change.oldIndex, change.newIndex)

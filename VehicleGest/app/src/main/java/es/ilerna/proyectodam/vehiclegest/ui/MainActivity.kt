@@ -9,16 +9,13 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import es.ilerna.proyectodam.vehiclegest.FullscreenFragment
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
-import es.ilerna.proyectodam.vehiclegest.ui.inspections.ITVFragment
+import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeFragment
+import es.ilerna.proyectodam.vehiclegest.ui.inspections.ItvFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inventory.InventoryFragment
 import es.ilerna.proyectodam.vehiclegest.ui.login.LoginActivity
 import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment
@@ -79,10 +76,10 @@ class MainActivity : AppCompatActivity() {
         binding.bottomBarMain.bottomNavMenu.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.vehicles -> replaceFragment(VehiclesFragment())
-                R.id.itv -> replaceFragment(ITVFragment())
+                R.id.itv -> replaceFragment(ItvFragment())
                 R.id.services -> replaceFragment(ServiceFragment())
                 R.id.inventory -> replaceFragment(InventoryFragment())
-                R.id.employees -> replaceFragment(FullscreenFragment())
+                R.id.employees -> replaceFragment(EmployeeFragment())
             }
             true
         }

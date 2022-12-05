@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.ui.alerts
+package es.ilerna.proyectodam.vehiclegest.ui.inspections
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
-import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
+import es.ilerna.proyectodam.vehiclegest.data.entities.ITV
+import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
 import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment
 
 /**
- * Abre una ventana diálogo con los detalles del vehículo
+ * Abre una ventana diálogo con los detalles
  */
-class AlertDetail(s: DocumentSnapshot) : DetailFragment(s) {
+class ItvDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
-    private var _binding: DetailAlertBinding? = null
+    private var _binding: DetailItvBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -24,52 +24,44 @@ class AlertDetail(s: DocumentSnapshot) : DetailFragment(s) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         //Enlaza al XML del formulario y lo infla
-        _binding = DetailAlertBinding.inflate(inflater, container, false)
+        _binding = DetailItvBinding.inflate(inflater, container, false)
+        //db = FirebaseFirestore.getInstance().collection("vehicle");
         val root: View = binding.root
 
         //Escuchador del boton cerrar
         binding.bar.btclose.setOnClickListener {
-            fragmentReplacer(AlertsFragment())
+            fragmentReplacer(ItvFragment())
         }
 
         //Escuchador del boton borrar
         binding.bar.btdelete.setOnClickListener {
             delDocument(s)
-            fragmentReplacer(AlertsFragment())
+            fragmentReplacer(ItvFragment())
         }
 
         //Llama a la función que rellena los datos en el formulario
         bindData()
+
         return root
     }
 
     /**
-     *
+     * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
     override fun bindData() {
-
         try {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val alert: Alert? = s.toObject(Alert::class.java)
-            binding.plateNumber.setText(alert?.plateNumber)
-            binding.alertDescription.setText(alert?.description)
-            binding.checksolved.isChecked = alert?.solved == false
-
-            //Formatea los timestamp a fecha normal dd/mm/aa
+            val itv: ITV? = s.toObject(ITV::class.java)
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            binding.date.setText(alert?.date?.let { Vehiclegest.customDateFormat(it) })
+            binding.date.setText(itv?.date?.let { Vehiclegest.customDateFormat(it) })
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    /**
-     *
-     */
     override fun editDocument(s: DocumentSnapshot) {
         TODO("Not yet implemented")
     }

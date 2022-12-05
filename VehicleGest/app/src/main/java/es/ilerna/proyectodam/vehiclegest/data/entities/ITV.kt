@@ -9,14 +9,10 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 
 @IgnoreExtraProperties
-class ITV : Parcelable {
-
-    var date: Date? = null
-
-    constructor()
+data class ITV(var date: Date? = null) : Parcelable {
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private constructor(parcel: Parcel) {
+    private constructor(parcel: Parcel) : this() {
         date = Timestamp(parcel.readLong(), 0).toDate()
     }
 

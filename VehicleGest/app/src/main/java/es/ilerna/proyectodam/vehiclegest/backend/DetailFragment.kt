@@ -1,27 +1,17 @@
 package es.ilerna.proyectodam.vehiclegest.backend
 
 import android.content.ContentValues
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
-import java.net.URL
 import java.util.concurrent.Executors
 
 /**
@@ -34,8 +24,8 @@ abstract class DetailFragment(open val s: DocumentSnapshot) : Fragment() {
     lateinit var floatingButton: FloatingActionButton
     lateinit var db: CollectionReference
 
-    open fun bindData(){} //Enlazar datos al formulario de texto
-    open fun editDocument(s: DocumentSnapshot){}
+    open fun bindData() {} //Enlazar datos al formulario de texto
+    open fun editDocument(s: DocumentSnapshot) {}
 
     open fun delDocument(s: DocumentSnapshot) {
 
@@ -43,7 +33,7 @@ abstract class DetailFragment(open val s: DocumentSnapshot) : Fragment() {
         executor.execute {
             try {
                 db.document(s.id).delete()
-                    .addOnSuccessListener { documentReference ->
+                    .addOnSuccessListener {
                         Log.d(
                             ContentValues.TAG,
                             "DocumentSnapshot borrado con ID: ${s.id}"

@@ -2,7 +2,6 @@ package es.ilerna.proyectodam.vehiclegest.backend
 
 import android.app.Application
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.imageview.ShapeableImageView
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.ui.vehicles.AddVehicle
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
