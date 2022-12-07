@@ -11,7 +11,6 @@ import java.util.*
 @IgnoreExtraProperties
 data class ITV(var date: Date? = null) : Parcelable {
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) : this() {
         date = Timestamp(parcel.readLong(), 0).toDate()
     }

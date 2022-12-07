@@ -10,7 +10,6 @@ import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Service
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
-import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo

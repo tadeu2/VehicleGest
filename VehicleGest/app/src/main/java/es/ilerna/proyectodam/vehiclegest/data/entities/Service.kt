@@ -17,7 +17,6 @@ data class Service(
 ) : Parcelable {
 
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
         date = Timestamp(parcel.readLong(), 0).toDate()

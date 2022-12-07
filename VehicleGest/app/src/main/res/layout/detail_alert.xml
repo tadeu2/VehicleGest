@@ -71,10 +71,10 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:maxLines="1"
                     android:clickable="false"
                     android:focusable="false"
                     android:fontFamily="@font/roboto"
+                    android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="24/12/22" />
             </TableRow>
@@ -101,11 +101,11 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:enabled="false"
                     android:clickable="false"
+                    android:enabled="false"
                     android:focusable="false"
-                    android:maxLines="1"
                     android:fontFamily="@font/roboto"
+                    android:maxLines="1"
                     android:textAlignment="center"
                     tools:text="1234ABC" />
             </TableRow>

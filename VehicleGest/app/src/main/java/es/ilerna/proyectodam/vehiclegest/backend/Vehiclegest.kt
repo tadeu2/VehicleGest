@@ -75,13 +75,13 @@ class Vehiclegest : Application() {
                 executor.execute {
 
                     if (isUrlValid(url)) {
-                        val u: URL = URL(url);
+                        val url = URL(url);
 
                         //Declaramos un manejador que asigne la imagen al objecto imagen
                         val handler = Handler(Looper.getMainLooper())
 
                         //Creamos el objecto imagen vacio y le asignamos por stream a otra variable
-                        val im = u.openStream()
+                        val im = url.openStream()
                         val image = BitmapFactory.decodeStream(im)
 
                         //Para hacer cambios en la interfaz
@@ -98,13 +98,20 @@ class Vehiclegest : Application() {
             }
         }
 
+
+        /**
+         * Función para cambiar de fragment
+         */
+        fun fragmentReplacer(fragment: Fragment, fm: FragmentManager) {
+            fm.beginTransaction().replace(R.id.nav_host_fragment_content_main, fragment).commit()
+        }
+
         /**
          * Prueba si la URL en texto es válida o no
          */
         fun isUrlValid(url: String?): Boolean {
             return try {
-                val obj = URL(url)
-                obj.toURI()
+                URL(url).toURI()
                 true
             } catch (e: MalformedURLException) {
                 false
@@ -113,10 +120,6 @@ class Vehiclegest : Application() {
             }
         }
 
-        fun fragmentReplacer(fragment: Fragment, parentFragmentManager: FragmentManager) {
-            val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment)
-            fragmentTransaction.commit()
-        }
+
     }
 }

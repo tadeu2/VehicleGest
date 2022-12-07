@@ -38,8 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plate_label"
@@ -47,8 +46,8 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/plate_number"
                     android:text="@string/plate_number"
-                    android:textStyle="bold"
                     android:textAlignment="textEnd"
+                    android:textStyle="bold"
                     tools:text="@string/plate_number" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -56,8 +55,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
-                    android:textStyle="bold"
                     android:textAlignment="textEnd"
+                    android:textStyle="bold"
                     tools:text="@string/date" />
 
             </LinearLayout>
@@ -66,8 +65,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plate_number"

@@ -9,3 +9,6 @@ desktop.ini
 .idea
 .tmp.driveupload
 .idea
+VehicleGest/local.properties
+VehicleGest/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+VehicleGest/.idea/misc.xml

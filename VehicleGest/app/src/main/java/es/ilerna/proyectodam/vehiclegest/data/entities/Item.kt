@@ -15,7 +15,6 @@ data class Item(
     var photoURL: String? = null
 ) : Parcelable {
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
         name = parcel.readString()

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
@@ -19,19 +20,21 @@ import java.util.concurrent.Executors
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddAlert : Fragment() {
+class AddAlert : AddFragment() {
 
+    //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: AddAlertBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var dbAlert: CollectionReference
+    //Getter para la variable de enlace
+    val binding get() = _binding!!
 
     override fun onCreateView(
+        //Variable de instancia de XML de vistas
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        dbAlert = FirebaseFirestore.getInstance().collection("alert")
+        db = FirebaseFirestore.getInstance().collection("alert")
 
         //Enlaza al XML del formulario y lo infla
         _binding = AddAlertBinding.inflate(inflater, container, false)
@@ -62,7 +65,7 @@ class AddAlert : Fragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    private fun addData() {
+    override fun addData() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             try {
@@ -73,7 +76,7 @@ class AddAlert : Fragment() {
                 val alert = Alert(
                     plateNumber, date, description, solved
                 )
-                dbAlert.add(alert)
+                db.add(alert)
                     .addOnSuccessListener { documentReference ->
                         Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
                     }

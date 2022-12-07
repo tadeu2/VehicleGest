@@ -21,8 +21,6 @@ data class Employee(
     var admin: Boolean? = null
 ) : Parcelable {
 
-
-    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) : this() {
         dni = parcel.readString()
         name = parcel.readString()

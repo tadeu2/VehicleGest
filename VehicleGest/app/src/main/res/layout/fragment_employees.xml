@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:showIn="@layout/activity_main"
+    tools:context=".ui.vehicles.VehiclesFragment"
     tools:menu="@menu/app_bar_items"
-    tools:context=".ui.vehicles.VehiclesFragment">
+    tools:showIn="@layout/activity_main">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_employees"

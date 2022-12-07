@@ -27,7 +27,7 @@ android {
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
         viewBinding true
     }
@@ -44,7 +44,7 @@ android {
     }
 
     //pongo este exclude porque da error al compilar
-    packagingOptions{
+    packagingOptions {
         pickFirst 'META-INF/DEPENDENCIES'
         pickFirst 'META-INF/AL2.0'
         pickFirst 'META-INF/LGPL2.1'

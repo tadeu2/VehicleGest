@@ -130,6 +130,7 @@
             android:inputType="textPassword"
             android:minHeight="48dp" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/logo"
         android:layout_width="200dp"

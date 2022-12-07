@@ -64,7 +64,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/url"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:clickable="false"
@@ -93,7 +93,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/employee_dni"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:clickable="false"
@@ -118,9 +118,9 @@
                     tools:text="@string/name" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name"
+                    android:id="@+id/name"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:clickable="false"
@@ -147,7 +147,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/surname"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:clickable="false"
@@ -174,7 +174,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/address"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:clickable="false"
@@ -201,7 +201,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phone"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:clickable="false"
@@ -228,7 +228,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/birthdate"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:clickable="false"
@@ -255,7 +255,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email"
                     style="@style/TextAppearance.Material3.BodyMedium"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:clickable="false"
@@ -284,7 +284,7 @@
 
                 <CheckBox
                     android:id="@+id/checkadmin"
-                   android:layout_width="400dp"
+                    android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:checked="false"

@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
@@ -27,7 +25,6 @@ class AddEmployee : AddFragment() {
 
     private var _binding: AddEmployeeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var dbEmployee: CollectionReference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +32,7 @@ class AddEmployee : AddFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        dbEmployee = FirebaseFirestore.getInstance().collection("employees");
+        db = FirebaseFirestore.getInstance().collection("employees");
 
         //Enlaza al XML del formulario y lo infla
         _binding = AddEmployeeBinding.inflate(inflater, container, false)
@@ -89,7 +86,7 @@ class AddEmployee : AddFragment() {
                 val employee = Employee(
                     dni, name, surname, address, email, phone, birthdate, photoURL, admin
                 )
-                dbEmployee.add(employee)
+                db.add(employee)
                     .addOnSuccessListener { documentReference ->
                         Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
                     }

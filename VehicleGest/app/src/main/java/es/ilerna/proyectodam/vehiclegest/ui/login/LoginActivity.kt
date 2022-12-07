@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
-        binding.btRegister.setOnClickListener{
+        binding.btRegister.setOnClickListener {
             navigateRegister()
         }
     }

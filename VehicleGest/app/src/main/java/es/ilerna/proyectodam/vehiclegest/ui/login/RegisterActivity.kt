@@ -70,19 +70,20 @@ class RegisterActivity : AppCompatActivity() {
      * @param password  Contraseña de usuario
      */
     private fun userRegistration(username: String, password: String) {
-        auth.createUserWithEmailAndPassword(username, password).addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
-                Log.d(ContentValues.TAG, "regInWithEmail: register success")
-                navigateMain(auth.currentUser)
-            } else {
-                Log.w(ContentValues.TAG, "reWithEmail:register failure", task.exception)
-                //Backend.showSnackbar(binding.root, task.exception?.message.toString())
-                MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.register_error))
-                    .setMessage(task.exception?.message.toString())
-                    .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                    }.setIcon(R.drawable.outline_error_24).show()
+        auth.createUserWithEmailAndPassword(username, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d(ContentValues.TAG, "regInWithEmail: register success")
+                    navigateMain(auth.currentUser)
+                } else {
+                    Log.w(ContentValues.TAG, "reWithEmail:register failure", task.exception)
+                    //Backend.showSnackbar(binding.root, task.exception?.message.toString())
+                    MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.register_error))
+                        .setMessage(task.exception?.message.toString())
+                        .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                        }.setIcon(R.drawable.outline_error_24).show()
+                }
             }
-        }
     }
 
     /**

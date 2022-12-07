@@ -10,7 +10,6 @@ import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Item
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
-import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment
 
 
 /**

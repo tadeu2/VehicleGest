@@ -155,9 +155,6 @@
             style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/table_details"
             android:clickable="false"
             android:focusable="false"
             android:lineHeight="10dp"
@@ -165,6 +162,9 @@
             android:padding="10dp"
             android:scrollbars="vertical"
             android:textAlignment="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table_details"
 
             tools:text="This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger

@@ -279,22 +279,22 @@
 
         </TableLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/vehicle_description"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/table_details"
-                android:clickable="false"
-                android:focusable="false"
-                android:lineHeight="10dp"
-                android:nestedScrollingEnabled="true"
-                android:scrollbars="vertical"
-                android:textAlignment="textStart"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/vehicle_description"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:lineHeight="10dp"
+            android:nestedScrollingEnabled="true"
+            android:scrollbars="vertical"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table_details"
 
-                tools:text="This is a automobile, byname auto, also called motorcar or car,
+            tools:text="This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine
                     using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
