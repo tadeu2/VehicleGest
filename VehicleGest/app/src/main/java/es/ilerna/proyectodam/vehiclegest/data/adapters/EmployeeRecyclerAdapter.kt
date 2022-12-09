@@ -2,9 +2,11 @@ package es.ilerna.proyectodam.vehiclegest.data.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
 import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
@@ -29,6 +31,8 @@ class EmployeeRecyclerAdapter(
 
         ) : ViewHolder(binding.root) {
 
+        private lateinit var progressBar: ProgressBar
+
         /**
          * Rellena cada item de la tarjeta con los datos del objeto empleado
          */
@@ -50,12 +54,15 @@ class EmployeeRecyclerAdapter(
                     binding.surname.text = employee?.surname.toString()
 
                     //Carga la foto en el formulario a partir de la URL almacenada
-                    Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
+                    //Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
+                    // Mostrar la barra de carga
+                    progressBar = ProgressBar(binding.root.context)
 
-                    //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.employeeCard.setOnClickListener {
                         listener.onEmployeeSelected(snapshot)
                     }
+                    Controller().showImageFromUrl(binding.employeeImage, employee?.photoURL.toString(),progressBar)
+                    //Iniciamos el escuchador que accionamos al pulsar una ficha
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

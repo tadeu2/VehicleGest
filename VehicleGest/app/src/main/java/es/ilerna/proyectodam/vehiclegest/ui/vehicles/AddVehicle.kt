@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
+import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
@@ -25,6 +27,7 @@ class AddVehicle : AddFragment() {
     private var _binding: AddVehicleBinding? = null
     private val binding get() = _binding!!
     private lateinit var dbVehicle: CollectionReference
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +41,12 @@ class AddVehicle : AddFragment() {
         _binding = AddVehicleBinding.inflate(inflater, container, false)
 
         binding.url.doAfterTextChanged {
-            Vehiclegest.displayImgURL(binding.url.text.toString(), binding.vehicleImage)
+            //Vehiclegest.displayImgURL(binding.url.text.toString(), binding.vehicleImage)
+            //Vehiclegest.displayImgURL(binding.url.text.toString(), binding.itemImage)
+            // Mostrar la barra de carga
+            progressBar = ProgressBar(context)
+            //Carga la foto en el formulario a partir de la URL almacenada
+            Controller().showImageFromUrl(binding.vehicleImage, binding.url.text.toString(), progressBar)
         }
 
         binding.bar.btsave.setOnClickListener() {

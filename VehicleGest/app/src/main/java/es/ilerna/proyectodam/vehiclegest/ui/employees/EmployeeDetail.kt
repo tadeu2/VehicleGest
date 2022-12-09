@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
@@ -18,6 +20,7 @@ class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
     private var _binding: DetailEmployeeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +66,15 @@ class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
             binding.birthdate.setText(employee?.birthdate?.let { Vehiclegest.customDateFormat(it) })
 
             //Carga la foto en el formulario a partir de la URL almacenada
-            Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
+            //Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
+            // Mostrar la barra de carga
+            progressBar = ProgressBar(context)
+            //Carga la foto en el formulario a partir de la URL almacenada
+            Controller().showImageFromUrl(
+                binding.employeeImage,
+                employee?.photoURL.toString(),
+                progressBar
+            )
 
         } catch (e: Exception) {
             e.printStackTrace()

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Item
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
 
@@ -19,15 +21,17 @@ class ItemDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
     private var _binding: DetailItemBinding? = null
     private val binding get() = _binding!!
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         //Enlaza al XML del formulario y lo infla
         _binding = DetailItemBinding.inflate(inflater, container, false)
-        //db = FirebaseFirestore.getInstance().collection("inventory");
+        db = FirebaseFirestore.getInstance().collection("inventory");
         val root: View = binding.root
 
         //Escuchador del boton cerrar
@@ -55,7 +59,11 @@ class ItemDetail(s: DocumentSnapshot) : DetailFragment(s) {
             binding.itemDescription.setText(item?.description)
 
             //Carga la foto en el formulario a partir de la URL almacenada
-            Vehiclegest.displayImgURL(item?.photoURL, binding.itemImage)
+            //Vehiclegest.displayImgURL(item?.photoURL, binding.itemImage)
+            // Mostrar la barra de carga
+            progressBar = ProgressBar(context)
+            //Carga la foto en el formulario a partir de la URL almacenada
+            Controller().showImageFromUrl(binding.itemImage, item?.photoURL.toString(), progressBar)
 
         } catch (e: Exception) {
             e.printStackTrace()

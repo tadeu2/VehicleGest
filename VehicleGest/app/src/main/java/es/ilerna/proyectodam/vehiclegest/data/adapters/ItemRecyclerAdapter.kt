@@ -2,9 +2,11 @@ package es.ilerna.proyectodam.vehiclegest.data.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Item
 import es.ilerna.proyectodam.vehiclegest.databinding.ItemCardBinding
@@ -19,6 +21,7 @@ class ItemRecyclerAdapter(
     private val listener: ItemAdapterListener
 ) : FirestoreAdapter<ItemRecyclerAdapter.ItemViewHolder>(query) {
 
+
     /**
      * nested class
      * El holder se encarga de pintar las celdas
@@ -27,6 +30,8 @@ class ItemRecyclerAdapter(
         private val binding: ItemCardBinding,
 
         ) : ViewHolder(binding.root) {
+
+        private lateinit var progressBar: ProgressBar
 
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
@@ -39,14 +44,21 @@ class ItemRecyclerAdapter(
                 //Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
+
                     //Inicializamos un objeto a partir de una instántanea
                     val item: Item? = snapshot.toObject(Item::class.java)
+
                     //La asignamos a los datos del formulario
                     binding.plateNumber.text = item?.plateNumber.toString()
                     binding.name.text = item?.name.toString()
 
+                    // Mostrar la barra de carga
+                    progressBar = ProgressBar(Vehiclegest.appContext())
                     //Carga la foto en el formulario a partir de la URL almacenada
-                    Vehiclegest.displayImgURL(item?.photoURL.toString(), binding.itemImage)
+                    Controller().showImageFromUrl(binding.itemImage, item?.photoURL.toString(),progressBar)
+                    //Carga la foto en el formulario a partir de la URL almacenada
+                    //Vehiclegest.displayImgURL(item?.photoURL.toString(), binding.itemImage)
+
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.itemCard.setOnClickListener {
                         listener.onItemSelected(snapshot)

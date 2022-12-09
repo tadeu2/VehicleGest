@@ -48,12 +48,4 @@ abstract class AddFragment() : Fragment() {
         floatingButton.visibility = VISIBLE
     }
 
-    //
-    fun fragmentReplacer(fragment: Fragment, fragmentManager:FragmentManager) {
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment)
-        fragmentTransaction.commit()
-    }
-
 }

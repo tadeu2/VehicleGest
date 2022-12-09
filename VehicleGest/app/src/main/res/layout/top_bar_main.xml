@@ -30,8 +30,7 @@
             app:title="Vehiclegest"
             app:titleCentered="true"
             app:titleTextColor="@color/md_theme_light_surface">
-
-        </com.google.android.material.appbar.MaterialToolbar>
+       </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -2,9 +2,11 @@ package es.ilerna.proyectodam.vehiclegest.data.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
@@ -28,6 +30,8 @@ class VehicleRecyclerAdapter(
 
         ) : ViewHolder(binding.root) {
 
+        private lateinit var progressBar: ProgressBar
+
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
          *
@@ -38,6 +42,7 @@ class VehicleRecyclerAdapter(
         ) {
             try {//Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
+
                 executor.execute {
                     //Inicializamos un objeto vehículo a partir de una instántanea
                     val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
@@ -48,7 +53,16 @@ class VehicleRecyclerAdapter(
                     binding.model.text = vehicle?.model.toString()
 
                     //Carga la foto en el formulario a partir de la URL almacenada
-                    Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
+                    //Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
+
+                    // Mostrar la barra de carga
+                    progressBar = ProgressBar(Vehiclegest.appContext())
+                    //Carga la foto en el formulario a partir de la URL almacenada
+                    Controller().showImageFromUrl(
+                        binding.vehicleImage,
+                        vehicle?.photoURL.toString(),
+                        progressBar
+                    )
 
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.vehicleCard.setOnClickListener {

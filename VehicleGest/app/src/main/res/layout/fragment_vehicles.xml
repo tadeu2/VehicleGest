@@ -22,4 +22,15 @@
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/vehicle_card" />
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/circularproress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="10dp"
+        android:translationZ="10dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
