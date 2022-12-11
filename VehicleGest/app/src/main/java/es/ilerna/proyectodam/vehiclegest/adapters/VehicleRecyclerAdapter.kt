@@ -8,8 +8,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
+import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import java.util.concurrent.Executors
 
 /**

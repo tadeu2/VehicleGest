@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.customReverseDateFormat
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.models.Employee
 import es.ilerna.proyectodam.vehiclegest.databinding.AddEmployeeBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
+import es.ilerna.proyectodam.vehiclegest.models.Employee
 import java.util.concurrent.Executors
 
 /**
@@ -44,7 +44,11 @@ class AddEmployee : AddFragment() {
             // Mostrar la barra de carga
             progressBar = ProgressBar(context)
             //Carga la foto en el formulario a partir de la URL almacenada
-            Controller().showImageFromUrl(binding.employeeImage, binding.url.text.toString(), progressBar)
+            Controller().showImageFromUrl(
+                binding.employeeImage,
+                binding.url.text.toString(),
+                progressBar
+            )
         }
 
         binding.bar.btsave.setOnClickListener() {

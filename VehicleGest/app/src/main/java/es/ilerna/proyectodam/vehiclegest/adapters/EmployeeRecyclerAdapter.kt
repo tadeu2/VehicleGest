@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
-import es.ilerna.proyectodam.vehiclegest.models.Employee
 import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
+import es.ilerna.proyectodam.vehiclegest.models.Employee
 import java.util.concurrent.Executors
 
 
@@ -60,7 +60,11 @@ class EmployeeRecyclerAdapter(
                     binding.employeeCard.setOnClickListener {
                         listener.onEmployeeSelected(snapshot)
                     }
-                    Controller().showImageFromUrl(binding.employeeImage, employee?.photoURL.toString(),progressBar)
+                    Controller().showImageFromUrl(
+                        binding.employeeImage,
+                        employee?.photoURL.toString(),
+                        progressBar
+                    )
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                 }
             } catch (e: Exception) {

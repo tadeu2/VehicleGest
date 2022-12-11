@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.models.Service
 import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
+import es.ilerna.proyectodam.vehiclegest.models.Service
 import java.util.concurrent.Executors
 
 /**

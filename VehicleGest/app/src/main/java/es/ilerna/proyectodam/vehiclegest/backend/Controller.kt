@@ -18,6 +18,7 @@ import java.util.concurrent.Executors
 
 class Controller {
     // Función para descargar e imagen de una URL y mostrarla en un ImageView
+
     @OptIn(DelicateCoroutinesApi::class)
     fun showImageFromUrl(imageView: ImageView, url: String, progressBar: ProgressBar) {
         // Mostrar la barra de carga

@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.models.Alert
 import es.ilerna.proyectodam.vehiclegest.databinding.AddAlertBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
+import es.ilerna.proyectodam.vehiclegest.models.Alert
 import java.util.concurrent.Executors
 
 /**
@@ -22,6 +22,7 @@ class AddAlert : AddFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: AddAlertBinding? = null
+
     //Getter para la variable de enlace
     val binding get() = _binding!!
 

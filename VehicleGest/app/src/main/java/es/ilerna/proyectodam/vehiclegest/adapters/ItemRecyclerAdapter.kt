@@ -8,8 +8,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.models.Item
 import es.ilerna.proyectodam.vehiclegest.databinding.ItemCardBinding
+import es.ilerna.proyectodam.vehiclegest.models.Item
 import java.util.concurrent.Executors
 
 /**
@@ -55,7 +55,11 @@ class ItemRecyclerAdapter(
                     // Mostrar la barra de carga
                     progressBar = ProgressBar(Vehiclegest.appContext())
                     //Carga la foto en el formulario a partir de la URL almacenada
-                    Controller().showImageFromUrl(binding.itemImage, item?.photoURL.toString(),progressBar)
+                    Controller().showImageFromUrl(
+                        binding.itemImage,
+                        item?.photoURL.toString(),
+                        progressBar
+                    )
                     //Carga la foto en el formulario a partir de la URL almacenada
                     //Vehiclegest.displayImgURL(item?.photoURL.toString(), binding.itemImage)
 

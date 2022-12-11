@@ -8,10 +8,10 @@ import android.widget.ProgressBar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
@@ -76,11 +76,15 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
                 append(" KM")
             })
             //Carga la foto en el formulario a partir de la URL almacenada
-           // Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
+            // Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
             // Mostrar la barra de carga
             progressBar = ProgressBar(context)
             //Carga la foto en el formulario a partir de la URL almacenada
-            Controller().showImageFromUrl(binding.vehicleImage, binding.url.text.toString(), progressBar)
+            Controller().showImageFromUrl(
+                binding.vehicleImage,
+                binding.url.text.toString(),
+                progressBar
+            )
 
         } catch (e: Exception) {
             e.printStackTrace()

@@ -12,10 +12,10 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.adapters.ServiceRecyclerAdapter
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentServicesBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 
 /**
  * Fragmento de listado de servicios
