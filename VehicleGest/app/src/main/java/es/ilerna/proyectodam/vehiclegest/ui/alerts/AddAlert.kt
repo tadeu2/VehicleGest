@@ -6,14 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
+import es.ilerna.proyectodam.vehiclegest.models.Alert
 import es.ilerna.proyectodam.vehiclegest.databinding.AddAlertBinding
 import java.util.concurrent.Executors
 
@@ -34,7 +32,7 @@ class AddAlert : AddFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        db = FirebaseFirestore.getInstance().collection("alert")
+        dbFirestoreReference = FirebaseFirestore.getInstance().collection("alert")
 
         //Enlaza al XML del formulario y lo infla
         _binding = AddAlertBinding.inflate(inflater, container, false)
@@ -76,7 +74,7 @@ class AddAlert : AddFragment() {
                 val alert = Alert(
                     plateNumber, date, description, solved
                 )
-                db.add(alert)
+                dbFirestoreReference.add(alert)
                     .addOnSuccessListener { documentReference ->
                         Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
                     }

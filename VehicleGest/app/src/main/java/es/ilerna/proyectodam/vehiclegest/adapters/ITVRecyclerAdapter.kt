@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.data.adapters
+package es.ilerna.proyectodam.vehiclegest.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,51 +6,50 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.data.entities.Service
-import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
+import es.ilerna.proyectodam.vehiclegest.models.ITV
+import es.ilerna.proyectodam.vehiclegest.databinding.ItvCardBinding
 import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
  */
-class ServiceRecyclerAdapter(
+class ITVRecyclerAdapter(
     query: Query,
-    private val listener: ServiceAdapterListener
-) : FirestoreAdapter<ServiceRecyclerAdapter.ServiceViewHolder>(query) {
+    private val listener: ITVAdapterListener
+) : FirestoreAdapter<ITVRecyclerAdapter.ITVViewHolder>(query) {
 
     /**
      * nested class
      * El holder se encarga de pintar las celdas
      */
-    class ServiceViewHolder(
-        private val binding: ServiceCardBinding,
+    class ITVViewHolder(
+        private val binding: ItvCardBinding,
 
         ) : ViewHolder(binding.root) {
 
         /**
-         * Rellena cada Service de la tarjeta con los datos del objeto
+         * Rellena cada ITV de la tarjeta con los datos del objeto vehiculo
          */
         fun bind(
             snapshot: DocumentSnapshot,
-            listener: ServiceAdapterListener
+            listener: ITVAdapterListener
         ) {
             try {
-
                 //Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
 
                     //Inicializamos un objeto a partir de una instántanea
-                    val service: Service? = snapshot.toObject(Service::class.java)
-                    //La asignamos a los datos del formulario
-                    binding.plateNumber.text = service?.plateNumber.toString()
+                    val itv: ITV? = snapshot.toObject(ITV::class.java)
+
                     //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                     //El formato se puede modificar en strings.xml
-                    binding.date.text = service?.date?.let { Vehiclegest.customDateFormat(it) }
+                    binding.date.text = itv?.date?.let { Vehiclegest.customDateFormat(it) }
 
-                    binding.serviceCard.setOnClickListener {
-                        listener.onServiceSelected(snapshot)
+                    //Iniciamos el escuchador que accionamos al pulsar una ficha
+                    binding.itvCard.setOnClickListener {
+                        listener.onITVSelected(snapshot)
                     }
                 }
             } catch (e: Exception) {
@@ -59,31 +58,30 @@ class ServiceRecyclerAdapter(
         }
     }
 
-
     /**
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
-    interface ServiceAdapterListener {
-        fun onServiceSelected(snapshot: DocumentSnapshot?)
+    interface ITVAdapterListener {
+        fun onITVSelected(snapshot: DocumentSnapshot?)
     }
 
 
     /**
-     * Llamada para devolver el Service(ServiceCard) al viewholder por cada objeto de la lista vehiculos
+     * Llamada para devolver el ITV(ITVCard) al viewholder por cada objeto de la lista vehiculos
      *
      */
     @Override
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ITVViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ServiceCardBinding.inflate(layoutInflater, parent, false)
-        return ServiceViewHolder(binding)
+        val binding = ItvCardBinding.inflate(layoutInflater, parent, false)
+        return ITVViewHolder(binding)
     }
 
     /**
      * El recyclerview llama esta función para mostrar los datos en una posición dada
      */
     @Override
-    override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ITVViewHolder, position: Int) {
         getSnapshot(position)?.let { snapshot ->
             holder.bind(snapshot, listener)
         }

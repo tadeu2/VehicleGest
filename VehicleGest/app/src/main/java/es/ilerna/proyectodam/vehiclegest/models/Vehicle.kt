@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.data.entities
+package es.ilerna.proyectodam.vehiclegest.models
 
 import android.os.Build
 import android.os.Parcel
@@ -24,6 +24,7 @@ data class Vehicle(
     var photoURL: String? = null
 ) : Parcelable {
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
         type = parcel.readString()

@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.data.entities.Service
+import es.ilerna.proyectodam.vehiclegest.models.Service
 import es.ilerna.proyectodam.vehiclegest.databinding.AddServiceBinding
 import java.util.concurrent.Executors
 

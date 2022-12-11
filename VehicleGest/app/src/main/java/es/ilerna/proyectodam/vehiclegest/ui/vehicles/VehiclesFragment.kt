@@ -12,9 +12,9 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.backend.ModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.data.adapters.VehicleRecyclerAdapter
+import es.ilerna.proyectodam.vehiclegest.adapters.VehicleRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
 
 /**

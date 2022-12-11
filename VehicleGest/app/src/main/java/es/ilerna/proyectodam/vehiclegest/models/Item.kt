@@ -1,24 +1,22 @@
-package es.ilerna.proyectodam.vehiclegest.data.entities
+package es.ilerna.proyectodam.vehiclegest.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
-import java.util.*
 
 @IgnoreExtraProperties
-class Alert(
+data class Item(
     var plateNumber: String? = null,
-    var date: Date? = null,
+    var name: String? = null,
     var description: String? = null,
-    var solved: Boolean? = false
+    var photoURL: String? = null
 ) : Parcelable {
 
     private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
-        date = Timestamp(parcel.readLong(), 0).toDate()
+        name = parcel.readString()
         description = parcel.readString()
-        solved = parcel.readBoolean()
+        photoURL = parcel.readString()
     }
 
     override fun describeContents(): Int {
@@ -27,17 +25,17 @@ class Alert(
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(plateNumber)
+        dest.writeString(name)
         dest.writeString(description)
-        date?.time?.let { dest.writeLong(it) }
-        solved?.let { dest.writeBoolean(it) }
+        dest.writeString(photoURL)
     }
 
-    companion object CREATOR : Parcelable.Creator<Alert> {
-        override fun createFromParcel(parcel: Parcel): Alert {
-            return Alert(parcel)
+    companion object CREATOR : Parcelable.Creator<Item> {
+        override fun createFromParcel(parcel: Parcel): Item {
+            return Item(parcel)
         }
 
-        override fun newArray(size: Int): Array<Alert?> {
+        override fun newArray(size: Int): Array<Item?> {
             return arrayOfNulls(size)
         }
     }

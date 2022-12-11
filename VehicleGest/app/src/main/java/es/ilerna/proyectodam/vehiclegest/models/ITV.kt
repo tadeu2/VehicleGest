@@ -1,9 +1,7 @@
-package es.ilerna.proyectodam.vehiclegest.data.entities
+package es.ilerna.proyectodam.vehiclegest.models
 
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*

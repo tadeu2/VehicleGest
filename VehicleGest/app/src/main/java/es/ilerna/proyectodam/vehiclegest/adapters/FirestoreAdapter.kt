@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.data.adapters
+package es.ilerna.proyectodam.vehiclegest.adapters
 
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView

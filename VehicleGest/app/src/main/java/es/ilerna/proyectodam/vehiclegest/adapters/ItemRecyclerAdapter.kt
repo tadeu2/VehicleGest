@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.data.adapters
+package es.ilerna.proyectodam.vehiclegest.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,61 +8,61 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
-import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
+import es.ilerna.proyectodam.vehiclegest.models.Item
+import es.ilerna.proyectodam.vehiclegest.databinding.ItemCardBinding
 import java.util.concurrent.Executors
-
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
  */
-class EmployeeRecyclerAdapter(
+class ItemRecyclerAdapter(
     query: Query,
-    private val listener: EmployeeAdapterListener
-) : FirestoreAdapter<EmployeeRecyclerAdapter.EmployeeViewHolder>(query) {
+    private val listener: ItemAdapterListener
+) : FirestoreAdapter<ItemRecyclerAdapter.ItemViewHolder>(query) {
+
 
     /**
      * nested class
      * El holder se encarga de pintar las celdas
      */
-    class EmployeeViewHolder(
-        private val binding: EmployeeCardBinding,
+    class ItemViewHolder(
+        private val binding: ItemCardBinding,
 
         ) : ViewHolder(binding.root) {
 
         private lateinit var progressBar: ProgressBar
 
         /**
-         * Rellena cada item de la tarjeta con los datos del objeto empleado
+         * Rellena cada item de la tarjeta con los datos del objeto vehiculo
          */
         fun bind(
             snapshot: DocumentSnapshot,
-            listener: EmployeeAdapterListener
+            listener: ItemAdapterListener
         ) {
             try {
-
                 //Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
 
                     //Inicializamos un objeto a partir de una instántanea
-                    val employee: Employee? = snapshot.toObject(Employee::class.java)
+                    val item: Item? = snapshot.toObject(Item::class.java)
+
                     //La asignamos a los datos del formulario
-                    binding.dni.text = employee?.dni.toString()
-                    binding.name.text = employee?.name.toString()
-                    binding.surname.text = employee?.surname.toString()
+                    binding.plateNumber.text = item?.plateNumber.toString()
+                    binding.name.text = item?.name.toString()
 
-                    //Carga la foto en el formulario a partir de la URL almacenada
-                    //Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
                     // Mostrar la barra de carga
-                    progressBar = ProgressBar(binding.root.context)
+                    progressBar = ProgressBar(Vehiclegest.appContext())
+                    //Carga la foto en el formulario a partir de la URL almacenada
+                    Controller().showImageFromUrl(binding.itemImage, item?.photoURL.toString(),progressBar)
+                    //Carga la foto en el formulario a partir de la URL almacenada
+                    //Vehiclegest.displayImgURL(item?.photoURL.toString(), binding.itemImage)
 
-                    binding.employeeCard.setOnClickListener {
-                        listener.onEmployeeSelected(snapshot)
-                    }
-                    Controller().showImageFromUrl(binding.employeeImage, employee?.photoURL.toString(),progressBar)
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
+                    binding.itemCard.setOnClickListener {
+                        listener.onItemSelected(snapshot)
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -70,29 +70,30 @@ class EmployeeRecyclerAdapter(
         }
     }
 
+
     /**
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
-    interface EmployeeAdapterListener {
-        fun onEmployeeSelected(snapshot: DocumentSnapshot?)
+    interface ItemAdapterListener {
+        fun onItemSelected(snapshot: DocumentSnapshot?)
     }
 
     /**
-     * Llamada para devolver el item al viewholder por cada objeto de la lista s
+     * Llamada para devolver el item(ItemCard) al viewholder por cada objeto de la lista vehiculos
      *
      */
     @Override
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = EmployeeCardBinding.inflate(layoutInflater, parent, false)
-        return EmployeeViewHolder(binding)
+        val binding = ItemCardBinding.inflate(layoutInflater, parent, false)
+        return ItemViewHolder(binding)
     }
 
     /**
      * El recyclerview llama esta función para mostrar los datos en una posición dada
      */
     @Override
-    override fun onBindViewHolder(holder: EmployeeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         getSnapshot(position)?.let { snapshot ->
             holder.bind(snapshot, listener)
         }

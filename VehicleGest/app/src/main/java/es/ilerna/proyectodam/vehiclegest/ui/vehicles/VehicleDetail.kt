@@ -8,9 +8,9 @@ import android.widget.ProgressBar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
-import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.data.entities.Vehicle
+import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
 
 /**

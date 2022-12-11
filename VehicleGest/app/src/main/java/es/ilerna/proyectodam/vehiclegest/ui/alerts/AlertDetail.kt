@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
-import es.ilerna.proyectodam.vehiclegest.backend.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
+import es.ilerna.proyectodam.vehiclegest.models.Alert
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 
 /**

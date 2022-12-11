@@ -32,43 +32,9 @@ class Vehiclegest : Application() {
     companion object {
 
         //Devolvemos el contexto de la aplicación con todos sus recursos
-        private var instance: Vehiclegest? = null
+        var instance: Vehiclegest? = null
         fun appContext(): Context {
             return instance!!.applicationContext
         }
-
-        /**
-         * Recupera los formatos custom de fecha almacenados en los xml de cadenas string.xml
-         */
-        fun customDateFormat(time: Date): String {
-            val simpleDateFormat = SimpleDateFormat(
-                instance!!.resources
-                    .getString(R.string.dateFormat), Locale.getDefault()
-            )
-            return simpleDateFormat.format(time)
-        }
-
-        fun customReverseDateFormat(time: String): Date {
-            val simpleDateFormat = SimpleDateFormat(
-                instance!!.resources
-                    .getString(R.string.dateFormat), Locale.getDefault()
-            )
-            return simpleDateFormat.parse(time) as Date
-        }
-
-        /**
-         * Interfaz para implementar como se comportará al hacer click a una ficha
-         */
-        interface AdapterListener {
-            fun onSelected(o: Any)
-        }
-
-        /**
-         * Función para cambiar de fragment
-         */
-        fun fragmentReplacer(fragment: Fragment, fm: FragmentManager) {
-            fm.beginTransaction().replace(R.id.nav_host_fragment_content_main, fragment).commit()
-        }
-
     }
 }

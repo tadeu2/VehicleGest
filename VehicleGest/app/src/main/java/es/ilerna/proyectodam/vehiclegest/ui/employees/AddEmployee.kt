@@ -8,15 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.widget.doAfterTextChanged
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.backend.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.customReverseDateFormat
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.data.entities.Employee
+import es.ilerna.proyectodam.vehiclegest.models.Employee
 import es.ilerna.proyectodam.vehiclegest.databinding.AddEmployeeBinding
 import java.util.concurrent.Executors
 
@@ -35,7 +33,7 @@ class AddEmployee : AddFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        db = FirebaseFirestore.getInstance().collection("employees");
+        dbFirestoreReference = FirebaseFirestore.getInstance().collection("employees");
 
         //Enlaza al XML del formulario y lo infla
         _binding = AddEmployeeBinding.inflate(inflater, container, false)
@@ -93,7 +91,7 @@ class AddEmployee : AddFragment() {
                 val employee = Employee(
                     dni, name, surname, address, email, phone, birthdate, photoURL, admin
                 )
-                db.add(employee)
+                dbFirestoreReference.add(employee)
                     .addOnSuccessListener { documentReference ->
                         Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
                     }

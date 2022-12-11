@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.data.adapters
+package es.ilerna.proyectodam.vehiclegest.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.data.entities.Alert
+import es.ilerna.proyectodam.vehiclegest.models.Alert
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
 import java.util.concurrent.Executors
 
