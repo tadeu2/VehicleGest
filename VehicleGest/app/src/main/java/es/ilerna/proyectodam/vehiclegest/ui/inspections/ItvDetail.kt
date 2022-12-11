@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 
@@ -55,7 +55,7 @@ class ItvDetail(s: DocumentSnapshot) : DetailFragment(s) {
             val itv: ITV? = s.toObject(ITV::class.java)
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            binding.date.setText(itv?.date?.let { Vehiclegest.customDateFormat(it) })
+            binding.date.setText(itv?.date?.let { customDateFormat(it) })
 
         } catch (e: Exception) {
             e.printStackTrace()

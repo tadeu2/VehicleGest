@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.models.Service
 import java.util.concurrent.Executors
 
@@ -42,12 +42,12 @@ class ServiceRecyclerAdapter(
                 executor.execute {
 
                     //Inicializamos un objeto a partir de una instántanea
-                    val service: Service? = snapshot.toObject(Service::class.java)
+                    val service = snapshot.toObject(Service::class.java)
                     //La asignamos a los datos del formulario
                     binding.plateNumber.text = service?.plateNumber.toString()
                     //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                     //El formato se puede modificar en strings.xml
-                    binding.date.text = service?.date?.let { Vehiclegest.customDateFormat(it) }
+                    binding.date.text = service?.date?.let { customDateFormat(it) }
 
                     binding.serviceCard.setOnClickListener {
                         listener.onServiceSelected(snapshot)

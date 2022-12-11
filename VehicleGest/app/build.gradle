@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "es.ilerna.proyectodam.vehiclegest"
-        minSdk 28
+        minSdk 30
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -82,13 +82,15 @@ android {
 
         //Intefaz gráfica
         implementation 'com.google.android.material:material:1.7.0'
-        implementation 'androidx.constraintlayout:constraintlayout:2.1.4'//Para poder usar constraintlayout
+        implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//Para poder usar constraintlayout
 
         //Miscelánea
         implementation 'androidx.annotation:annotation:1.5.0'
 
         //****FIREBASE*****
-        implementation 'com.google.firebase:firebase-bom:31.1.1' //Lista de materiales para adminsitrar todas las versiones
+        implementation 'com.google.firebase:firebase-bom:31.1.1'
+        //Lista de materiales para adminsitrar todas las versiones
         //No será necesario especificar las versiones a continuación teniendo el BOM
         implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
         //firebase auth

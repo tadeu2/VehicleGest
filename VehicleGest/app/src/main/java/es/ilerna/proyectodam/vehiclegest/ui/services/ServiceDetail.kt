@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
 
@@ -56,7 +56,7 @@ class ServiceDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            binding.date.setText(service?.date?.let { Vehiclegest.customDateFormat(it) })
+            binding.date.setText(service?.date?.let { customDateFormat(it) })
 
         } catch (e: Exception) {
             e.printStackTrace()

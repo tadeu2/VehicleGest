@@ -12,37 +12,44 @@ import java.util.*
  */
 class DataHelper {
 
-    /**
-     * Recupera los formatos custom de fecha almacenados en los xml de cadenas string.xml
-     */
-    fun customDateFormat(time: Date): String {
-        val simpleDateFormat = SimpleDateFormat(
-            Vehiclegest.instance!!.resources
-                .getString(R.string.dateFormat), Locale.getDefault()
-        )
-        return simpleDateFormat.format(time)
-    }
+    companion object {
+        /**
+         * Recupera los formatos custom de fecha almacenados en los xml de cadenas string.xml
+         * @param time Fecha que querremos darle formato
+         */
+        fun customDateFormat(time: Date): String {
+            val simpleDateFormat = SimpleDateFormat(
+                Vehiclegest.instance!!.resources
+                    .getString(R.string.dateFormat), Locale.getDefault()
+            )
+            return simpleDateFormat.format(time)
+        }
 
-    fun customReverseDateFormat(time: String): Date {
-        val simpleDateFormat = SimpleDateFormat(
-            Vehiclegest.instance!!.resources
-                .getString(R.string.dateFormat), Locale.getDefault()
-        )
-        return simpleDateFormat.parse(time) as Date
-    }
+        /**
+         * Función para cambiar de fragment
+         * @param fragment Fragmento que se carga
+         * @param fragmentManager Manejador de fragmentos
+         */
+        fun fragmentReplacer(fragment: Fragment, fragmentManager: FragmentManager) {
+            fragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main, fragment).commit()
+        }
 
-    /**
-     * Interfaz para implementar como se comportará al hacer click a una ficha
-     */
-    interface AdapterListener {
-        fun onSelected(o: Any)
-    }
+        /**
+         * Interfaz para implementar como se comportará al hacer click a una ficha
+         */
+        interface AdapterListener {
+            fun onSelected(o: Any)
+        }
 
-    /**
-     * Función para cambiar de fragment
-     */
-    fun fragmentReplacer(fragment: Fragment, fm: FragmentManager) {
-        fm.beginTransaction().replace(R.id.nav_host_fragment_content_main, fragment).commit()
+        fun customReverseDateFormat(time: String): Date {
+            val simpleDateFormat = SimpleDateFormat(
+                Vehiclegest.instance!!.resources
+                    .getString(R.string.dateFormat), Locale.getDefault()
+            )
+            return simpleDateFormat.parse(time) as Date
+        }
+
     }
 
 }

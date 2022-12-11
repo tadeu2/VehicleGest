@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E5E5E5"
     tools:context=".ui.login.LoginActivity">
 
     <com.google.android.material.button.MaterialButton
@@ -71,12 +72,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:minHeight="48dp"
         app:boxCornerRadiusBottomEnd="15dp"
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:endIconMode="clear_text"
+        app:endIconDrawable="@drawable/ic_outline_email_24"
+        app:endIconMode="custom"
         app:errorEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
         app:layout_constraintHorizontal_bias="0.0"
@@ -88,7 +91,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:textColorHint="#8D6E63" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -103,6 +107,7 @@
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
+        app:endIconDrawable="@drawable/ic_outline_password_24"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_90"
@@ -114,7 +119,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:textColorHint="#616161" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.imageview.ShapeableImageView

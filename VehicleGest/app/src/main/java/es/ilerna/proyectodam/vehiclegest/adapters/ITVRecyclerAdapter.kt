@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ItvCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 import java.util.concurrent.Executors
 
@@ -45,7 +45,7 @@ class ITVRecyclerAdapter(
 
                     //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                     //El formato se puede modificar en strings.xml
-                    binding.date.text = itv?.date?.let { Vehiclegest.customDateFormat(it) }
+                    binding.date.text = itv?.date?.let { customDateFormat(it) }
 
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.itvCard.setOnClickListener {

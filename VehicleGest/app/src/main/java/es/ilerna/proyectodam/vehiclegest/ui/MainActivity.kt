@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
@@ -13,6 +12,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inspections.ItvFragment
@@ -28,8 +28,10 @@ class MainActivity : AppCompatActivity() {
 
     //Variables principales de la actividad
     private lateinit var binding: ActivityMainBinding
+
+    //Variables de Firebase
     private lateinit var auth: FirebaseAuth
-    lateinit var db: FirebaseFirestore
+    private lateinit var dbFirestore: FirebaseFirestore
 
     //Variables para crear el contador de alertas
     private var alertCount: Int = 0
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.topToolbar)
 
         // Inicializa Firebase
-        db = FirebaseFirestore.getInstance()
+        dbFirestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         binding.appBarMain.topToolbar.subtitle = auth.currentUser?.email.toString()
 
@@ -53,11 +55,11 @@ class MainActivity : AppCompatActivity() {
         FirebaseFirestore.setLoggingEnabled(true)
 
         //Inicializa el icono de alerta
-        alertQuery = db.collection("alert")
+        alertQuery = dbFirestore.collection("alert")
         badgeAlert = BadgeDrawable.create(this)
 
         //Carga el fragmento de vehículos como inicial
-        replaceFragment(VehiclesFragment())
+        fragmentReplacer(VehiclesFragment(), supportFragmentManager)
 
         //Escuchador del menú superior
         binding.appBarMain.topToolbar.setOnMenuItemClickListener {
@@ -66,22 +68,22 @@ class MainActivity : AppCompatActivity() {
                     auth.signOut()
                     checkCurrentUser()
                 }
-                R.id.alert_icon -> replaceFragment(AlertsFragment())
+                R.id.alert_icon -> fragmentReplacer(AlertsFragment(), supportFragmentManager)
             }
             true
         }
 
         /**
          * Escuchador del menú inferior, al hacer click en cada uno de los iconos se cargar
-         *un fragmento
+         * un fragmento
          **/
         binding.bottomBarMain.bottomNavMenu.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.vehicles -> replaceFragment(VehiclesFragment())
-                R.id.itv -> replaceFragment(ItvFragment())
-                R.id.services -> replaceFragment(ServiceFragment())
-                R.id.inventory -> replaceFragment(InventoryFragment())
-                R.id.employees -> replaceFragment(EmployeeFragment())
+                R.id.vehicles -> fragmentReplacer(VehiclesFragment(), supportFragmentManager)
+                R.id.itv -> fragmentReplacer(ItvFragment(), supportFragmentManager)
+                R.id.services -> fragmentReplacer(ServiceFragment(), supportFragmentManager)
+                R.id.inventory -> fragmentReplacer(InventoryFragment(), supportFragmentManager)
+                R.id.employees -> fragmentReplacer(EmployeeFragment(), supportFragmentManager)
             }
             true
         }
@@ -119,23 +121,12 @@ class MainActivity : AppCompatActivity() {
         badgeAlert.number = alertCount
 
         //Pinta la barra superior
-        var inflater = menuInflater
+        val inflater = menuInflater
         inflater.inflate(R.menu.app_bar_items, menu)
         //Crea el contador de alertas y lo asocia al icono de la campana
         BadgeUtils.attachBadgeDrawable(badgeAlert, binding.appBarMain.topToolbar, R.id.alert_icon)
 
         return super.onCreateOptionsMenu(menu)
-    }
-
-    /**
-     * Navega entre los fragmentos dentro del layout
-     * @param fragment Fragmento que se le pasa para cambiarlo en destino
-     */
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment)
-        fragmentTransaction.commit()
     }
 
     /**

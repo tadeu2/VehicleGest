@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 import java.util.concurrent.Executors
 
@@ -41,7 +41,7 @@ class AlertRecyclerAdapter(
                     binding.plateNumber.text = alert?.plateNumber.toString()
                     //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                     //El formato se puede modificar en strings.xml
-                    binding.date.text = alert?.date?.let { Vehiclegest.customDateFormat(it) }
+                    binding.date.text = alert?.date?.let { customDateFormat(it) }
 
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.alertCard.setOnClickListener {

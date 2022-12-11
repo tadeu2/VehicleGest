@@ -13,8 +13,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ItemRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 
 class InventoryFragment : ModelFragment(), ItemRecyclerAdapter.ItemAdapterListener {
@@ -64,11 +64,11 @@ class InventoryFragment : ModelFragment(), ItemRecyclerAdapter.ItemAdapterListen
     }
 
     override fun onItemSelected(snapshot: DocumentSnapshot?) {
-        Vehiclegest.fragmentReplacer(ItemDetail(snapshot!!), parentFragmentManager)
+        fragmentReplacer(ItemDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {
-        Vehiclegest.fragmentReplacer(AddItem(), parentFragmentManager)
+        fragmentReplacer(AddItem(), parentFragmentManager)
     }
 
     override fun onStart() {

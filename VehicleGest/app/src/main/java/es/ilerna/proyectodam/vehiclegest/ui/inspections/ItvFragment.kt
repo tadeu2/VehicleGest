@@ -13,8 +13,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ITVRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInspectionBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 
 /**
@@ -66,11 +66,11 @@ class ItvFragment : ModelFragment(), ITVRecyclerAdapter.ITVAdapterListener {
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
     override fun onITVSelected(snapshot: DocumentSnapshot?) {
-        Vehiclegest.fragmentReplacer(ItvDetail(snapshot!!), parentFragmentManager)
+        fragmentReplacer(ItvDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {
-        Vehiclegest.fragmentReplacer(AddItv(), parentFragmentManager)
+        fragmentReplacer(AddItv(), parentFragmentManager)
     }
 
     override fun onStart() {

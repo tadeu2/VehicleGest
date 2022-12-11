@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.databinding.AddAlertBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customReverseDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 import java.util.concurrent.Executors
@@ -69,7 +69,7 @@ class AddAlert : AddFragment() {
         executor.execute {
             try {
                 val plateNumber = binding.plateNumber.text.toString()
-                val date = Vehiclegest.customReverseDateFormat(binding.date.text.toString())
+                val date = customReverseDateFormat(binding.date.text.toString())
                 val description = binding.alertDescription.text.toString()
                 val solved = binding.checksolved.isChecked
                 val alert = Alert(

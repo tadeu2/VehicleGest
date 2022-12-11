@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 
@@ -59,7 +59,7 @@ class AlertDetail(s: DocumentSnapshot) : DetailFragment(s) {
             //Formatea los timestamp a fecha normal dd/mm/aa
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            binding.date.setText(alert?.date?.let { Vehiclegest.customDateFormat(it) })
+            binding.date.setText(alert?.date?.let { customDateFormat(it) })
 
         } catch (e: Exception) {
             e.printStackTrace()

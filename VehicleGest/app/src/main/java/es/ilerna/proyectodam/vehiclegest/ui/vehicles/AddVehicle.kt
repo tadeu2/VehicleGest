@@ -12,9 +12,9 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.databinding.AddVehicleBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customReverseDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import java.util.concurrent.Executors
@@ -87,8 +87,7 @@ class AddVehicle : AddFragment() {
                 val type = binding.type.text.toString()
                 val brand = binding.brand.text.toString()
                 val model = binding.model.text.toString()
-                val expiryDateITV =
-                    Vehiclegest.customReverseDateFormat(binding.expiringItv.text.toString())
+                val expiryDateITV = customReverseDateFormat(binding.expiringItv.text.toString())
                 val description = binding.vehicleDescription.text.toString()
                 val licensed = binding.checkLicensed.isChecked
                 val totalDistance = Integer.parseInt(binding.totalDistance.text.toString())

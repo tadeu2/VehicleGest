@@ -14,8 +14,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.EmployeeRecyclerAdapter
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentEmployeesBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 
 /**
@@ -67,11 +67,11 @@ class EmployeeFragment : ModelFragment(), EmployeeRecyclerAdapter.EmployeeAdapte
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
     override fun onEmployeeSelected(snapshot: DocumentSnapshot?) {
-        Vehiclegest.fragmentReplacer(EmployeeDetail(snapshot!!), parentFragmentManager)
+        fragmentReplacer(EmployeeDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {
-        Vehiclegest.fragmentReplacer(AddEmployee(), parentFragmentManager)
+        fragmentReplacer(AddEmployee(), parentFragmentManager)
     }
 
     //Inicia el escuchador de los cambios en la lista de instantáneas

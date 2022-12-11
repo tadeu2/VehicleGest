@@ -8,8 +8,8 @@ import android.widget.ProgressBar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 
@@ -66,7 +66,7 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
             binding.expiringItv.setText(vehicle?.expiryDateITV?.let {
-                Vehiclegest.customDateFormat(
+                customDateFormat(
                     it
                 )
             })

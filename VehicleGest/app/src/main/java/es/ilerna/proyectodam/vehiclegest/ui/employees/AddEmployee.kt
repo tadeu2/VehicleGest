@@ -11,9 +11,9 @@ import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.customReverseDateFormat
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.databinding.AddEmployeeBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customReverseDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.models.Employee
 import java.util.concurrent.Executors
