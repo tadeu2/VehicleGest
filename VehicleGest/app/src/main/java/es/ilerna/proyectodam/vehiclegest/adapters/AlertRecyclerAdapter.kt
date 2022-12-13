@@ -1,5 +1,6 @@
 package es.ilerna.proyectodam.vehiclegest.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,11 +9,16 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.models.Alert
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
+ * @param query Parámetro que contiene la consulta a la base de datos
+ * @param listener Parámetro que contiene el listener del adapter
  */
 class AlertRecyclerAdapter(
     query: Query,
@@ -20,67 +26,88 @@ class AlertRecyclerAdapter(
 ) : FirestoreAdapter<AlertRecyclerAdapter.AlertViewHolder>(query) {
 
     /**
-     * nested class
-     * El holder se encarga de pintar las celdas
+     * Clase interna
+     * El holder se encarga de pintar las tarjetas de alerta
+     * Implementa a RecyclerView.ViewHolder
+     * @param binding Parámetro que contiene la vista de la tarjeta
      */
     class AlertViewHolder(
         private val binding: AlertCardBinding,
 
         ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(
+        /**
+         * Función que se encarga de pintar los datos en la tarjeta
+         * @param snapshot Parámetro que contiene la instancia de la alerta
+         * @param listener Parámetro que contiene el listener de la tarjeta
+         */
+        fun bindDataCard(
             snapshot: DocumentSnapshot,
             listener: AlertAdapterListener
         ) {
-            try {
-                //Crea un hilo paralelo para descargar las imagenes de una URL
-                val executor = Executors.newSingleThreadExecutor()
-                executor.execute {
-                    //Inicializamos un objeto a partir de una instántanea
-                    val alert: Alert? = snapshot.toObject(Alert::class.java)
-                    binding.plateNumber.text = alert?.plateNumber.toString()
-                    //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-                    //El formato se puede modificar en strings.xml
-                    binding.date.text = alert?.date?.let { customDateFormat(it) }
-
-                    //Iniciamos el escuchador que accionamos al pulsar una ficha
-                    binding.alertCard.setOnClickListener {
-                        listener.onAlertSelected(snapshot)
+                try {
+                    //Crea un hilo paralelo para descargar las imagenes de una URL
+                    val executor = Executors.newSingleThreadExecutor()
+                    executor.execute {
+                        //Inicializamos un objeto a partir de una instántanea
+                        val alert: Alert? = snapshot.toObject(Alert::class.java)
+                        binding.plateNumber.text = alert?.plateNumber.toString()
+                        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                        //El formato se puede modificar en strings.xml
+                        binding.date.text = alert?.date?.let { customDateFormat(it) }
+                        //Iniciamos el escuchador que accionamos al pulsar una ficha
+                        binding.alertCard.setOnClickListener {
+                            listener.onAlertSelected(snapshot)
+                        }
                     }
+                } catch (e: Exception) {
+                    Log.e("Error", e.message.toString(), e)
+                    e.printStackTrace()
+                } catch (e2: NullPointerException) {
+                    Log.e("Error", "Referencia nula", e2)
+                    e2.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+
         }
     }
 
     /**
      * Interfaz para implementar como se comportará al hacer click a una ficha
+     * @param snapshot Parámetro que contiene la instancia de la alerta
      */
     interface AlertAdapterListener {
-        fun onAlertSelected(s: DocumentSnapshot?)
+        //Función que se encarga de abrir la ficha de la alerta
+        fun onAlertSelected(snapshot: DocumentSnapshot?)
+        //Función que se encarga de añadir un registro de alerta
+        fun onAddButtonClick()
     }
 
-
     /**
-     * Llamada para devolver el item(AlertCard) al viewholder por cada objeto de la lista alertas
-     *
+     * Función que se encarga de crear el holder
+     * @param parent Parámetro que contiene el ViewGroup
+     * @param viewType Parámetro que contiene el tipo de vista
      */
-    @Override
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlertViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = AlertCardBinding.inflate(layoutInflater, parent, false)
-        return AlertViewHolder(binding)
+        return AlertViewHolder(
+            //Infla la vista de la tarjeta
+            AlertCardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     /**
-     * El recyclerview llama esta función para mostrar los datos en una posición dada
+     * Función que se encarga de enlazar los datos con el holder
+     * @param holder Parámetro que contiene el holder
+     * @param position Parámetro que contiene la posición del holder
      */
-    @Override
     override fun onBindViewHolder(holder: AlertViewHolder, position: Int) {
+        //Obtiene la instancia de la alerta
         getSnapshot(position)?.let { snapshot ->
-            holder.bind(snapshot, listener)
+            //Pinta los datos en la tarjeta
+            holder.bindDataCard(snapshot, listener)
         }
     }
-
 }

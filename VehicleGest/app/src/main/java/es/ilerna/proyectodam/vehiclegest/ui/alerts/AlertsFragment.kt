@@ -68,8 +68,8 @@ class AlertsFragment : ModelFragment(), AlertRecyclerAdapter.AlertAdapterListene
     }
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onAlertSelected(s: DocumentSnapshot?) {
-        fragmentReplacer(AlertDetail(s!!), parentFragmentManager)
+    override fun onAlertSelected(snapshot: DocumentSnapshot?) {
+        fragmentReplacer(AlertDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {

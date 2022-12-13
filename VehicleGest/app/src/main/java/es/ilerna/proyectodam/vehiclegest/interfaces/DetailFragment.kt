@@ -1,5 +1,7 @@
 package es.ilerna.proyectodam.vehiclegest.interfaces
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +15,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
 import java.util.concurrent.Executors
+
 
 /**
  * Interfaz para crear escuchadores para las diferentes entidades de la base de datos Firestore
@@ -53,7 +56,15 @@ abstract class DetailFragment(open val s: DocumentSnapshot) : Fragment() {
         super.onCreate(savedInstanceState)
         //Esconde barras de navegación
         navBarTop = requireActivity().findViewById(R.id.topToolbar)
-        navBarTop.visibility = GONE
+        navBarTop.animate()
+            .translationY(0F)
+            .alpha(0.0f)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    navBarTop.visibility = GONE
+                }
+            })
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = GONE
         floatingButton = requireActivity().findViewById(R.id.addButton)

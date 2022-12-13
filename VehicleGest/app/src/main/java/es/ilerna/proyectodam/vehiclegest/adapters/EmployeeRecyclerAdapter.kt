@@ -11,10 +11,11 @@ import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
 import es.ilerna.proyectodam.vehiclegest.models.Employee
 import java.util.concurrent.Executors
 
-
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
+ * @param query Parámetro que contiene la consulta a la base de datos
+ * @param listener Parámetro que contiene el listener del adapter
  */
 class EmployeeRecyclerAdapter(
     query: Query,
@@ -22,29 +23,30 @@ class EmployeeRecyclerAdapter(
 ) : FirestoreAdapter<EmployeeRecyclerAdapter.EmployeeViewHolder>(query) {
 
     /**
-     * nested class
-     * El holder se encarga de pintar las celdas
+     * Clase interna
+     * El holder se encarga de pintar las tarjetas de empleado
+     * Implementa a RecyclerView.ViewHolder
+     * @param binding Parámetro que contiene la vista de la tarjeta
      */
     class EmployeeViewHolder(
         private val binding: EmployeeCardBinding,
-
-        ) : ViewHolder(binding.root) {
+    ) : ViewHolder(binding.root) {
 
         private lateinit var progressBar: ProgressBar
 
         /**
-         * Rellena cada item de la tarjeta con los datos del objeto empleado
+         * Función que se encarga de pintar los datos en la tarjeta
+         * @param snapshot Parámetro que contiene la instancia del empleado
+         * @param listener Parámetro que contiene el listener de la tarjeta
          */
-        fun bind(
+        fun bindDataCard(
             snapshot: DocumentSnapshot,
             listener: EmployeeAdapterListener
         ) {
             try {
-
                 //Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
-
                     //Inicializamos un objeto a partir de una instántanea
                     val employee: Employee? = snapshot.toObject(Employee::class.java)
                     //La asignamos a los datos del formulario
@@ -97,7 +99,7 @@ class EmployeeRecyclerAdapter(
     @Override
     override fun onBindViewHolder(holder: EmployeeViewHolder, position: Int) {
         getSnapshot(position)?.let { snapshot ->
-            holder.bind(snapshot, listener)
+            holder.bindDataCard(snapshot, listener)
         }
     }
 
