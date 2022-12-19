@@ -5,14 +5,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
 
 /**
- * Adaptador de firestore
- * @param query
+ * Clase abstracta
+ * El adapter se encarga de meter los datos en el recyclerview
+ * Implementa a RecyclerView.Adapter
+ * @param query Parámetro que contiene la consulta a la base de datos
  */
 
 abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
     private val query: Query
 ) : RecyclerView.Adapter<fireStoreViewHolder>(), EventListener<QuerySnapshot> {
-
+    //Listener de la consulta a la base de datos
     private var registration: ListenerRegistration? = null
 
     //Variable de instantaneas de documento
@@ -25,7 +27,7 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
         }
     }
 
-    //Parar escuchador
+    //Detener escuchador para ver si se ha agregado un item al query
     open fun stopListening() {
         if (registration != null) {
             registration!!.remove()
@@ -40,15 +42,15 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
         documentSnapshots: QuerySnapshot?,
         exception: FirebaseFirestoreException?
     ) {
-        // Handle errors
+        //Si hay un error, lo muestra en el log
         if (exception != null) {
             Log.e("onEvent:error", exception.toString())
             return
         }
 
-        // Dispatch the event
+        //Si no hay error, actualiza los datos
         for (change in documentSnapshots!!.documentChanges) {
-            // Snapshot of the changed document
+            //
             when (change.type) {
                 DocumentChange.Type.ADDED -> onDocumentAdded(change)
                 DocumentChange.Type.MODIFIED -> onDocumentModified(change)
@@ -57,11 +59,13 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
         }
     }
 
+    //Añade un item al query
     protected open fun onDocumentAdded(change: DocumentChange) {
         snapshots.add(change.newIndex, change.document)
         notifyItemInserted(change.newIndex)
     }
 
+    //Modifica un item del query
     protected open fun onDocumentModified(change: DocumentChange) {
         if (change.oldIndex == change.newIndex) {
             // Item modidicado pero se queda en el mismo lugar
@@ -75,15 +79,18 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
         }
     }
 
+    //Elimina un item del query
     protected open fun onDocumentRemoved(change: DocumentChange) {
         snapshots.removeAt(change.oldIndex)
         notifyItemRemoved(change.oldIndex)
     }
 
+    //Devuelve el número de items del query
     override fun getItemCount(): Int {
         return snapshots.size
     }
 
+    //Devuelve el id del item
     protected open fun getSnapshot(index: Int): DocumentSnapshot? {
         return snapshots[index]
     }

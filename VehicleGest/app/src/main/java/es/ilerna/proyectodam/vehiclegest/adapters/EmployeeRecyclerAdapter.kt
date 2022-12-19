@@ -1,5 +1,6 @@
 package es.ilerna.proyectodam.vehiclegest.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -31,9 +32,6 @@ class EmployeeRecyclerAdapter(
     class EmployeeViewHolder(
         private val binding: EmployeeCardBinding,
     ) : ViewHolder(binding.root) {
-
-        private lateinit var progressBar: ProgressBar
-
         /**
          * Función que se encarga de pintar los datos en la tarjeta
          * @param snapshot Parámetro que contiene la instancia del empleado
@@ -49,15 +47,11 @@ class EmployeeRecyclerAdapter(
                 executor.execute {
                     //Inicializamos un objeto a partir de una instántanea
                     val employee: Employee? = snapshot.toObject(Employee::class.java)
+
                     //La asignamos a los datos del formulario
                     binding.dni.text = employee?.dni.toString()
                     binding.name.text = employee?.name.toString()
                     binding.surname.text = employee?.surname.toString()
-
-                    //Carga la foto en el formulario a partir de la URL almacenada
-                    //Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
-                    // Mostrar la barra de carga
-                    progressBar = ProgressBar(binding.root.context)
 
                     binding.employeeCard.setOnClickListener {
                         listener.onEmployeeSelected(snapshot)
@@ -65,12 +59,15 @@ class EmployeeRecyclerAdapter(
                     Controller().showImageFromUrl(
                         binding.employeeImage,
                         employee?.photoURL.toString(),
-                        progressBar
                     )
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                 }
             } catch (e: Exception) {
+                Log.e("Error", e.message.toString(), e)
                 e.printStackTrace()
+            } catch (e2: NullPointerException) {
+                Log.e("Error", "Referencia nula", e2)
+                e2.printStackTrace()
             }
         }
     }
@@ -79,28 +76,41 @@ class EmployeeRecyclerAdapter(
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
     interface EmployeeAdapterListener {
+        //Función que se ejecutará al hacer click en una ficha
         fun onEmployeeSelected(snapshot: DocumentSnapshot?)
+        //Función que se encarga de añadir un registro
+        fun onAddButtonClick()
     }
 
     /**
      * Llamada para devolver el item al viewholder por cada objeto de la lista s
-     *
+     * @param parent Parámetro que contiene el padre
+     * @param viewType Parámetro que contiene el tipo de vista
+     * @return Devuelve el viewholder
      */
-    @Override
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = EmployeeCardBinding.inflate(layoutInflater, parent, false)
-        return EmployeeViewHolder(binding)
+        return EmployeeViewHolder(
+            //Inflamos la vista de la tarjeta
+            EmployeeCardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     /**
-     * El recyclerview llama esta función para mostrar los datos en una posición dada
+     * Función que se encarga de enlazar los datos con el holder
+     * @param holder Parámetro que contiene el holder
+     * @param position Parámetro que contiene la posición
      */
-    @Override
     override fun onBindViewHolder(holder: EmployeeViewHolder, position: Int) {
+        //Obtenemos el empleado de la posición
         getSnapshot(position)?.let { snapshot ->
+            //Llamamos a la función que pinta los datos en la tarjeta
             holder.bindDataCard(snapshot, listener)
         }
+
     }
 
 }

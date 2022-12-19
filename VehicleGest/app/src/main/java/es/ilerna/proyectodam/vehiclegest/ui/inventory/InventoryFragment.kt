@@ -17,7 +17,7 @@ import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 
-class InventoryFragment : ModelFragment(), ItemRecyclerAdapter.ItemAdapterListener {
+class InventoryFragment : ModelFragment() {
 
     private var _binding: FragmentInventoryBinding? = null
     private val binding get() = _binding!!
@@ -63,10 +63,17 @@ class InventoryFragment : ModelFragment(), ItemRecyclerAdapter.ItemAdapterListen
         return root
     }
 
+    /**
+     * Abre el formulario de creación de vehículos
+     * @param snapshot Instanntanea del documento
+     */
     override fun onItemSelected(snapshot: DocumentSnapshot?) {
         fragmentReplacer(ItemDetail(snapshot!!), parentFragmentManager)
     }
 
+    /**
+     * Abre el formulario de creación de items
+     */
     override fun onAddButtonClick() {
         fragmentReplacer(AddItem(), parentFragmentManager)
     }

@@ -8,16 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AddServiceBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customReverseDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
+ *
  */
 class AddService : AddFragment() {
 
@@ -26,25 +30,26 @@ class AddService : AddFragment() {
     private lateinit var dbService: CollectionReference
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
+        //Inicializa la base de datos
         dbService = FirebaseFirestore.getInstance().collection("service");
 
         //Enlaza al XML del formulario y lo infla
         _binding = AddServiceBinding.inflate(inflater, container, false)
 
+        //Escucha el botón de añadir
         binding.bar.btsave.setOnClickListener() {
             addData()
             fragmentReplacer(ServiceFragment(), parentFragmentManager)
         }
-
+        //Escuchador del botón de cancelar
         binding.bar.btclose.setOnClickListener() {
             fragmentReplacer(ServiceFragment(), parentFragmentManager)
         }
 
+        //Escucha el botón de fecha
         binding.date.setOnClickListener() {
             val newFragment =
                 DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
@@ -67,27 +72,34 @@ class AddService : AddFragment() {
         executor.execute {
             try {
                 val plateNumber = binding.plateNumber.text.toString()
-                val date = customReverseDateFormat(binding.date.text.toString())
+                // Devuelve la fecha en formato dd/mm/yyyy
+                val date = SimpleDateFormat(
+                    Vehiclegest.instance.resources.getString(R.string.dateFormat),
+                    Locale.getDefault()
+                ).parse(binding.date.text.toString()) as Date
                 val remarks = binding.remarks.text.toString()
                 val costumer = binding.costumer.text.toString()
 
                 val service = Service(
                     plateNumber, date, remarks, costumer
                 )
-                dbService.add(service)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "Error añadiendo documento", e)
-                    }
+                dbService.add(service).addOnSuccessListener { documentReference ->
+                    Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
+                }.addOnFailureListener { e ->
+                    Log.w(TAG, "Error añadiendo documento", e)
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()
+            } catch (e2: NullPointerException) {
+                e2.printStackTrace()
             }
         }
     }
 
+    /**
+     * Elimina la vista del formulario
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml

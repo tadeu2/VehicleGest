@@ -1,44 +1,45 @@
 package es.ilerna.proyectodam.vehiclegest.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ItemCardBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
 import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
+ * @param query Parámetro que contiene la consulta a la base de datos
+ * @param listener Parámetro que contiene el listener del adapter
  */
 class ItemRecyclerAdapter(
     query: Query,
-    private val listener: ItemAdapterListener
+    private val listener: ModelFragment
 ) : FirestoreAdapter<ItemRecyclerAdapter.ItemViewHolder>(query) {
 
-
     /**
-     * nested class
-     * El holder se encarga de pintar las celdas
+     * Clase interna
+     * El holder se encarga de pintar las tarjetas
+     * Implementa a RecyclerView.ViewHolder
+     * @param binding Parámetro que contiene la vista de la tarjeta
      */
     class ItemViewHolder(
         private val binding: ItemCardBinding,
 
         ) : ViewHolder(binding.root) {
 
-        private lateinit var progressBar: ProgressBar
-
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
          */
-        fun bind(
+        fun bindDataCard(
             snapshot: DocumentSnapshot,
-            listener: ItemAdapterListener
+            listener: ModelFragment
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
@@ -52,16 +53,11 @@ class ItemRecyclerAdapter(
                     binding.plateNumber.text = item?.plateNumber.toString()
                     binding.name.text = item?.name.toString()
 
-                    // Mostrar la barra de carga
-                    progressBar = ProgressBar(Vehiclegest.appContext())
                     //Carga la foto en el formulario a partir de la URL almacenada
                     Controller().showImageFromUrl(
                         binding.itemImage,
                         item?.photoURL.toString(),
-                        progressBar
                     )
-                    //Carga la foto en el formulario a partir de la URL almacenada
-                    //Vehiclegest.displayImgURL(item?.photoURL.toString(), binding.itemImage)
 
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.itemCard.setOnClickListener {
@@ -69,7 +65,11 @@ class ItemRecyclerAdapter(
                     }
                 }
             } catch (e: Exception) {
+                Log.e("Error", e.message.toString(), e)
                 e.printStackTrace()
+            } catch (e2: NullPointerException) {
+                Log.e("Error", "Referencia nula", e2)
+                e2.printStackTrace()
             }
         }
     }
@@ -79,27 +79,39 @@ class ItemRecyclerAdapter(
      * Interfaz para implementar como se comportará al hacer click a una ficha
      */
     interface ItemAdapterListener {
+        //Función que se ejecutará al hacer click en una ficha
         fun onItemSelected(snapshot: DocumentSnapshot?)
+
+        //Función que se ejecutará al hacer click en el botón de añadir
+        fun onAddItemButtonClick()
     }
 
     /**
-     * Llamada para devolver el item(ItemCard) al viewholder por cada objeto de la lista vehiculos
-     *
+     * Crea el holder
+     * @param parent Parámetro que contiene el padre
+     * @param viewType Parámetro que contiene el tipo de vista
+     * @return Devuelve el holder
      */
-    @Override
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemCardBinding.inflate(layoutInflater, parent, false)
-        return ItemViewHolder(binding)
+        return ItemViewHolder(
+            ItemCardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     /**
-     * El recyclerview llama esta función para mostrar los datos en una posición dada
+     * Función que se encarga de rellenar cada item de la tarjeta con los datos del objeto
+     * @param holder Parámetro que contiene el holder
+     * @param position Parámetro que contiene la posición del objeto en la lista
      */
-    @Override
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        //Obtiene el objeto de la lista
         getSnapshot(position)?.let { snapshot ->
-            holder.bind(snapshot, listener)
+            //Llama a la función que rellena los datos de la tarjeta
+            holder.bindDataCard(snapshot, listener)
         }
     }
 

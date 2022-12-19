@@ -2,12 +2,10 @@ package es.ilerna.proyectodam.vehiclegest.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
-import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import java.util.concurrent.Executors
@@ -29,14 +27,11 @@ class VehicleRecyclerAdapter(
         private val binding: VehicleCardBinding,
 
         ) : ViewHolder(binding.root) {
-
-        private lateinit var progressBar: ProgressBar
-
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
          *
          */
-        fun bind(
+        fun bindDataCard(
             snapshot: DocumentSnapshot,
             listener: VehicleAdapterListener
         ) {
@@ -53,15 +48,9 @@ class VehicleRecyclerAdapter(
                     binding.model.text = vehicle?.model.toString()
 
                     //Carga la foto en el formulario a partir de la URL almacenada
-                    //Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
-
-                    // Mostrar la barra de carga
-                    progressBar = ProgressBar(Vehiclegest.appContext())
-                    //Carga la foto en el formulario a partir de la URL almacenada
                     Controller().showImageFromUrl(
                         binding.vehicleImage,
                         vehicle?.photoURL.toString(),
-                        progressBar
                     )
 
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
@@ -79,26 +68,44 @@ class VehicleRecyclerAdapter(
      * Interfaz para implementar como se comportará al hacer click a una ficha o al botón de añadir
      */
     interface VehicleAdapterListener {
-        fun onVehicleSelected(s: DocumentSnapshot?)
+        /**
+         * Acción al pulsar una ficha
+         * @param snapshot Instántanea del documento
+         */
+        fun onVehicleSelected(snapshot: DocumentSnapshot?)
+
+        /**
+         * Acción al pulsar el botón de añadir
+         */
+        fun onAddButtonClick()
     }
 
     /**
-     * Llamada para devolver el item al viewholder por cada objeto de la lista
+     * Infla el layout de la tarjeta
+     * @param parent ViewGroup padre de la vista
+     * @param viewType Tipo de vista a inflar
+     * @return Devuelve el holder de la tarjeta con el layout inflado y el listener
      */
-    @Override
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VehicleViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = VehicleCardBinding.inflate(layoutInflater, parent, false)
-        return VehicleViewHolder(binding)
+        return VehicleViewHolder(
+            VehicleCardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     /**
      * El recyclerview llama esta función para mostrar los datos en una posición dada
+     * @param holder Holder de la tarjeta a rellenar con los datos del vehículo
+     * @param position Posición de la tarjeta a rellenar
      */
-    @Override
     override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
+        //Obtiene la instántanea del documento
         getSnapshot(position)?.let { snapshot ->
-            holder.bind(snapshot, listener)
+            //Rellena la tarjeta con los datos del vehículo
+            holder.bindDataCard(snapshot, listener)
         }
     }
 

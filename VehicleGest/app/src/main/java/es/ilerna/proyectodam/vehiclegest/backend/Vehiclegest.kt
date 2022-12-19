@@ -2,6 +2,8 @@ package es.ilerna.proyectodam.vehiclegest.backend
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 
 /**
  * Clase principal de la aplicación
@@ -9,19 +11,15 @@ import android.content.Context
 
 class Vehiclegest : Application() {
 
-    //Constructor principal de la aplicación vehiclegest
-    init {
-        //Inicializa la variable instance pasandole la referencia a la
-        //instancia de la aplicación principal
+    override fun onCreate() {
+        super.onCreate()
         instance = this
     }
 
     //Variables y métodos estáticos
     companion object {
         //Devolvemos el contexto de la aplicación con todos sus recursos
-        var instance: Vehiclegest? = null
-        fun appContext(): Context {
-            return instance!!.applicationContext
-        }
+        lateinit var instance: Vehiclegest
+            private set
     }
 }

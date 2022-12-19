@@ -3,15 +3,15 @@ package es.ilerna.proyectodam.vehiclegest.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.models.Alert
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.Executors
 
 /**
@@ -34,7 +34,7 @@ class AlertRecyclerAdapter(
     class AlertViewHolder(
         private val binding: AlertCardBinding,
 
-        ) : RecyclerView.ViewHolder(binding.root) {
+        ) : ViewHolder(binding.root) {
 
         /**
          * Función que se encarga de pintar los datos en la tarjeta
@@ -45,39 +45,46 @@ class AlertRecyclerAdapter(
             snapshot: DocumentSnapshot,
             listener: AlertAdapterListener
         ) {
-                try {
-                    //Crea un hilo paralelo para descargar las imagenes de una URL
-                    val executor = Executors.newSingleThreadExecutor()
-                    executor.execute {
-                        //Inicializamos un objeto a partir de una instántanea
-                        val alert: Alert? = snapshot.toObject(Alert::class.java)
-                        binding.plateNumber.text = alert?.plateNumber.toString()
-                        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-                        //El formato se puede modificar en strings.xml
-                        binding.date.text = alert?.date?.let { customDateFormat(it) }
-                        //Iniciamos el escuchador que accionamos al pulsar una ficha
-                        binding.alertCard.setOnClickListener {
-                            listener.onAlertSelected(snapshot)
-                        }
+            try {
+                //Crea un hilo paralelo para descargar las imagenes de una URL
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
+
+                    //Inicializamos un objeto a partir de una instántanea
+                    val alert: Alert? = snapshot.toObject(Alert::class.java)
+                    binding.plateNumber.text = alert?.plateNumber.toString()
+
+                    //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                    //El formato se puede modificar en strings.xml
+                    binding.date.text = alert?.date?.let {
+                        SimpleDateFormat(
+                            Vehiclegest.instance.getString(R.string.dateFormat),
+                            Locale.getDefault()
+                        ).format(it)
                     }
-                } catch (e: Exception) {
-                    Log.e("Error", e.message.toString(), e)
-                    e.printStackTrace()
-                } catch (e2: NullPointerException) {
-                    Log.e("Error", "Referencia nula", e2)
-                    e2.printStackTrace()
+                    //Iniciamos el escuchador que accionamos al pulsar una ficha
+                    binding.alertCard.setOnClickListener {
+                        listener.onAlertSelected(snapshot)
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e("Error", e.message.toString(), e)
+                e.printStackTrace()
+            } catch (e2: NullPointerException) {
+                Log.e("Error", "Referencia nula", e2)
+                e2.printStackTrace()
+            }
 
         }
     }
 
     /**
      * Interfaz para implementar como se comportará al hacer click a una ficha
-     * @param snapshot Parámetro que contiene la instancia de la alerta
      */
     interface AlertAdapterListener {
         //Función que se encarga de abrir la ficha de la alerta
         fun onAlertSelected(snapshot: DocumentSnapshot?)
+
         //Función que se encarga de añadir un registro de alerta
         fun onAddButtonClick()
     }
@@ -86,6 +93,7 @@ class AlertRecyclerAdapter(
      * Función que se encarga de crear el holder
      * @param parent Parámetro que contiene el ViewGroup
      * @param viewType Parámetro que contiene el tipo de vista
+     * @return Devuelve el holder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlertViewHolder {
         return AlertViewHolder(

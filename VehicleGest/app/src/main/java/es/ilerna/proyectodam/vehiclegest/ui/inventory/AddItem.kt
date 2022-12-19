@@ -38,14 +38,10 @@ class AddItem : AddFragment() {
 
         //Carga la foto en el formulario a partir de la URL almacenada
         binding.url.doAfterTextChanged {
-            //Vehiclegest.displayImgURL(binding.url.text.toString(), binding.itemImage)
-            // Mostrar la barra de carga
-            progressBar = ProgressBar(context)
             //Carga la foto en el formulario a partir de la URL almacenada
             Controller().showImageFromUrl(
                 binding.itemImage,
                 binding.url.text.toString(),
-                progressBar
             )
         }
 

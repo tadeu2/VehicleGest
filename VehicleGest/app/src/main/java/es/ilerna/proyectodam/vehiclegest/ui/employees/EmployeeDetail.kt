@@ -64,16 +64,10 @@ class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
             binding.birthdate.setText(employee?.birthdate?.let { customDateFormat(it) })
-
-            //Carga la foto en el formulario a partir de la URL almacenada
-            //Vehiclegest.displayImgURL(employee?.photoURL.toString(), binding.employeeImage)
-            // Mostrar la barra de carga
-            progressBar = ProgressBar(context)
             //Carga la foto en el formulario a partir de la URL almacenada
             Controller().showImageFromUrl(
                 binding.employeeImage,
                 employee?.photoURL.toString(),
-                progressBar
             )
 
         } catch (e: Exception) {

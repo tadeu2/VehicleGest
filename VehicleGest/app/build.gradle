@@ -39,9 +39,6 @@ android {
         jvmTarget = '1.8'
     }
     buildToolsVersion = "33.0.1"
-    buildFeatures {
-        viewBinding true
-    }
 
     //pongo este exclude porque da error al compilar
     packagingOptions {

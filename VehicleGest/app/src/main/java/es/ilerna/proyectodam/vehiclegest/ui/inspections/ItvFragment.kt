@@ -69,6 +69,10 @@ class ItvFragment : ModelFragment(), ITVRecyclerAdapter.ITVAdapterListener {
         fragmentReplacer(ItvDetail(snapshot!!), parentFragmentManager)
     }
 
+    override fun onAddItvButtonClick() {
+        TODO("Not yet implemented")
+    }
+
     override fun onAddButtonClick() {
         fragmentReplacer(AddItv(), parentFragmentManager)
     }
