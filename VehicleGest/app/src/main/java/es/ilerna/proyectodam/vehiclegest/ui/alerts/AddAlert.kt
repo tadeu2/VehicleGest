@@ -26,6 +26,9 @@ class AddAlert : AddFragment() {
     //Getter para la variable de enlace
     val binding get() = _binding!!
 
+    /**
+     * Fase de creación del fragmento
+      */
     override fun onCreateView(
         //Variable de instancia de XML de vistas
         inflater: LayoutInflater,
@@ -33,16 +36,19 @@ class AddAlert : AddFragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        //Referencia a la base de datos
         dbFirestoreReference = FirebaseFirestore.getInstance().collection("alert")
 
         //Enlaza al XML del formulario y lo infla
         _binding = AddAlertBinding.inflate(inflater, container, false)
 
+        //Escuchador del botón de añadir
         binding.bar.btsave.setOnClickListener {
-            addData()
+            addDocumentToDatabase()
             fragmentReplacer(AlertsFragment(), parentFragmentManager)
         }
 
+        //Escuchador del botón de cancelar
         binding.bar.btclose.setOnClickListener {
             fragmentReplacer(AlertsFragment(), parentFragmentManager)
         }
@@ -64,7 +70,7 @@ class AddAlert : AddFragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addData() {
+    override fun addDocumentToDatabase() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             try {
@@ -89,6 +95,9 @@ class AddAlert : AddFragment() {
         }
     }
 
+    /**
+     * Fase de destrucción del fragmento
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -14,21 +15,26 @@ import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ITVRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInspectionBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 
 /**
  * Fragmento de listado de itv
  */
-class ItvFragment : ModelFragment(), ITVRecyclerAdapter.ITVAdapterListener {
+class ItvFragment : Fragment(), DataHelper.AdapterListener {
 
+    //Enlaza el fragmento al xml
     private var _binding: FragmentInspectionBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var ITVRecyclerAdapter: ITVRecyclerAdapter
+    //Crea una variable para el adaptador
+    private lateinit var itvRecyclerAdapter: ITVRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var itvQuery: Query
 
+    /**
+     * Fase de creación del fragmento
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Consulta a firestore db de la colección de vehiculos
@@ -41,6 +47,9 @@ class ItvFragment : ModelFragment(), ITVRecyclerAdapter.ITVAdapterListener {
 
     }
 
+    /**
+     * Fase de creación de la vista
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -57,36 +66,42 @@ class ItvFragment : ModelFragment(), ITVRecyclerAdapter.ITVAdapterListener {
         recyclerView.setHasFixedSize(true)
 
         //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-        ITVRecyclerAdapter = ITVRecyclerAdapter(itvQuery, this)
+        itvRecyclerAdapter = ITVRecyclerAdapter(itvQuery, this)
         //Asigna ese adapter al recyclerview
-        recyclerView.adapter = ITVRecyclerAdapter
+        recyclerView.adapter = itvRecyclerAdapter
 
         return root
     }
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onITVSelected(snapshot: DocumentSnapshot?) {
+    override fun onItemSelected(snapshot: DocumentSnapshot?) {
         fragmentReplacer(ItvDetail(snapshot!!), parentFragmentManager)
     }
 
-    override fun onAddItvButtonClick() {
-        TODO("Not yet implemented")
-    }
-
+    //Al pulsar el botón flotante se abre el fragmento de creación
     override fun onAddButtonClick() {
         fragmentReplacer(AddItv(), parentFragmentManager)
     }
 
+    /**
+     * Al iniciar el fragmento se inicia el escuchador del adapter
+     */
     override fun onStart() {
         super.onStart()
-        ITVRecyclerAdapter.startListening()
+        itvRecyclerAdapter.startListening()
     }
 
+    /**
+     * Al parar el fragmento se para el escuchador del adapter
+     */
     override fun onStop() {
         super.onStop()
-        ITVRecyclerAdapter.stopListening()
+        itvRecyclerAdapter.stopListening()
     }
 
+    /**
+     * Al destruir el fragmento se destruye el binding
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml

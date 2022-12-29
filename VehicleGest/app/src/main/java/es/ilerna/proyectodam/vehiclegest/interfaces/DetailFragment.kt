@@ -14,32 +14,39 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
+import io.grpc.InternalChannelz.id
+import org.checkerframework.checker.units.qual.s
 import java.util.concurrent.Executors
 
 
 /**
  * Interfaz para crear escuchadores para las diferentes entidades de la base de datos Firestore
  */
-abstract class DetailFragment(open val s: DocumentSnapshot) : Fragment() {
+abstract class DetailFragment() : Fragment() {
 
-    lateinit var navBarTop: MaterialToolbar
-    lateinit var navBarBot: BottomNavigationView
-    lateinit var floatingButton: FloatingActionButton
-    lateinit var db: CollectionReference
+    //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
+    private lateinit var navBarTop: MaterialToolbar
+    private lateinit var navBarBot: BottomNavigationView
+    private lateinit var floatingButton: FloatingActionButton
+    //Variable que almacenará la referencia a la colección de firestore
+    lateinit var dbFirestoreReference: CollectionReference
 
-    open fun bindData() {} //Enlazar datos al formulario de texto
-    open fun editDocument(s: DocumentSnapshot) {}
+    open fun bindDataToForm() {} //Enlazar datos al formulario de texto
+    open fun addData() {} //Añadir datos a la base de datos
+    open fun updateData() {} //Actualizar datos en la base de datos
+    open fun editDocument(snapshot: DocumentSnapshot) {}//Editar documento en la base de datos
 
-    open fun delDocument(s: DocumentSnapshot) {
-
-        val executor = Executors.newSingleThreadExecutor()
-        executor.execute {
+    /**
+     *  Borra el documento de la base de datos
+     *  @param s: DocumentSnapshot
+     */
+    fun delDocument(snapshot: DocumentSnapshot) {
             try {
-                db.document(s.id).delete()
+                snapshot.reference.delete()
                     .addOnSuccessListener {
                         Log.d(
                             ContentValues.TAG,
-                            "DocumentSnapshot borrado con ID: ${s.id}"
+                            "DocumentSnapshot borrado con ID: ${snapshot.id}"
                         )
                     }
                     .addOnFailureListener { e ->
@@ -49,22 +56,17 @@ abstract class DetailFragment(open val s: DocumentSnapshot) : Fragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
+
     }
 
+    /**
+     * Fase de creación de la actividad en el ciclo de vida de la actividad.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Esconde barras de navegación
+        //Inicializa las variables y sconde barras de navegación pasándole las referencias
         navBarTop = requireActivity().findViewById(R.id.topToolbar)
-        navBarTop.animate()
-            .translationY(0F)
-            .alpha(0.0f)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    navBarTop.visibility = GONE
-                }
-            })
+        navBarTop.visibility = GONE
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = GONE
         floatingButton = requireActivity().findViewById(R.id.addButton)
@@ -72,19 +74,15 @@ abstract class DetailFragment(open val s: DocumentSnapshot) : Fragment() {
 
     }
 
+    /**
+     * Fase del ciclo de vida de la actividad cuando esta se destruye
+     */
     override fun onDestroy() {
         super.onDestroy()
         //La barra superior vuelve a ser visible al destruirse el fragmento
         navBarTop.visibility = VISIBLE
         navBarBot.visibility = VISIBLE
         floatingButton.visibility = VISIBLE
-    }
-
-    fun fragmentReplacer(fragment: Fragment) {
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment)
-        fragmentTransaction.commit()
     }
 
 }

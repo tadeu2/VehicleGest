@@ -4,24 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
+ * @param snapshot Instantanea de firestore de la alerta
  */
-class AlertDetail(s: DocumentSnapshot) : DetailFragment(s) {
+class AlertDetail(
+    val snapshot: DocumentSnapshot,
+) :
+    DetailFragment() {
 
+    //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: DetailAlertBinding? = null
     private val binding get() = _binding!!
 
+    //Crea la vista
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         //Enlaza al XML del formulario y lo infla
@@ -30,28 +36,29 @@ class AlertDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
         //Escuchador del boton cerrar
         binding.bar.btclose.setOnClickListener {
-            fragmentReplacer(AlertsFragment())
+            fragmentReplacer(AlertsFragment(), parentFragmentManager)
         }
 
         //Escuchador del boton borrar
         binding.bar.btdelete.setOnClickListener {
-            delDocument(s)
-            fragmentReplacer(AlertsFragment())
+            delDocument(snapshot)
+            fragmentReplacer(AlertsFragment(), parentFragmentManager)
         }
 
         //Llama a la función que rellena los datos en el formulario
-        bindData()
+        bindDataToForm()
         return root
     }
 
+
     /**
-     *
+     * Rellena los datos del formulario con los datos
      */
-    override fun bindData() {
+    override fun bindDataToForm() {
 
         try {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val alert: Alert? = s.toObject(Alert::class.java)
+            val alert: Alert? = snapshot.toObject(Alert::class.java)
             binding.plateNumber.setText(alert?.plateNumber)
             binding.alertDescription.setText(alert?.description)
             binding.checksolved.isChecked = alert?.solved == false
@@ -67,12 +74,15 @@ class AlertDetail(s: DocumentSnapshot) : DetailFragment(s) {
     }
 
     /**
-     *
+     * Edita los datos del documento en firestore
      */
-    override fun editDocument(s: DocumentSnapshot) {
+    override fun editDocument(snapshot: DocumentSnapshot) {
         TODO("Not yet implemented")
     }
 
+    /**
+     *  Al destrozar la vista, elimina la referencia al binding
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml

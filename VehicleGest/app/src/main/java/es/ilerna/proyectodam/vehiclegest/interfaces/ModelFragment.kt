@@ -1,7 +1,9 @@
 package es.ilerna.proyectodam.vehiclegest.interfaces
 
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
+import es.ilerna.proyectodam.vehiclegest.adapters.ITVRecyclerAdapter
 
 /**
  * Interfaz para crear escuchadores para las diferentes entidades de la base de datos Firestore

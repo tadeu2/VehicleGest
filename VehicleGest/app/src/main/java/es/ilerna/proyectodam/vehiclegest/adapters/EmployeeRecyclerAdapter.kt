@@ -3,12 +3,12 @@ package es.ilerna.proyectodam.vehiclegest.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.models.Employee
 import java.util.concurrent.Executors
 
@@ -20,7 +20,7 @@ import java.util.concurrent.Executors
  */
 class EmployeeRecyclerAdapter(
     query: Query,
-    private val listener: EmployeeAdapterListener
+    private val listener: DataHelper.AdapterListener
 ) : FirestoreAdapter<EmployeeRecyclerAdapter.EmployeeViewHolder>(query) {
 
     /**
@@ -37,9 +37,9 @@ class EmployeeRecyclerAdapter(
          * @param snapshot Parámetro que contiene la instancia del empleado
          * @param listener Parámetro que contiene el listener de la tarjeta
          */
-        fun bindDataCard(
+        fun bindDataToCardView(
             snapshot: DocumentSnapshot,
-            listener: EmployeeAdapterListener
+            listener: DataHelper.AdapterListener
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
@@ -54,7 +54,7 @@ class EmployeeRecyclerAdapter(
                     binding.surname.text = employee?.surname.toString()
 
                     binding.employeeCard.setOnClickListener {
-                        listener.onEmployeeSelected(snapshot)
+                        listener.onItemSelected(snapshot)
                     }
                     Controller().showImageFromUrl(
                         binding.employeeImage,
@@ -108,7 +108,7 @@ class EmployeeRecyclerAdapter(
         //Obtenemos el empleado de la posición
         getSnapshot(position)?.let { snapshot ->
             //Llamamos a la función que pinta los datos en la tarjeta
-            holder.bindDataCard(snapshot, listener)
+            holder.bindDataToCardView(snapshot, listener)
         }
 
     }

@@ -25,10 +25,14 @@ import java.util.concurrent.Executors
  */
 class AddService : AddFragment() {
 
+    //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: AddServiceBinding? = null
     private val binding get() = _binding!!
     private lateinit var dbService: CollectionReference
 
+    /**
+     * Fase de creación de la vista del fragmento
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -41,7 +45,7 @@ class AddService : AddFragment() {
 
         //Escucha el botón de añadir
         binding.bar.btsave.setOnClickListener() {
-            addData()
+            addDocumentToDatabase()
             fragmentReplacer(ServiceFragment(), parentFragmentManager)
         }
         //Escuchador del botón de cancelar
@@ -51,9 +55,13 @@ class AddService : AddFragment() {
 
         //Escucha el botón de fecha
         binding.date.setOnClickListener() {
-            val newFragment =
-                DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
-            newFragment.show(parentFragmentManager, "datePicker")
+            //Crea un nuevo fragmento de diálogo
+            DatePickerFragment { day, month, year ->
+                // Actualiza el campo de fecha
+                binding.date.setText(String.format("$day/$month/$year"))
+            }
+                // Muestra el diálogo
+                .show(parentFragmentManager, "datePicker")
         }
 
         //Llama a la función que rellena los datos en el formulario
@@ -67,7 +75,7 @@ class AddService : AddFragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addData() {
+    override fun addDocumentToDatabase() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             try {

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,10 +21,11 @@ import java.util.concurrent.Executors
  */
 class AddItem : AddFragment() {
 
+    //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: AddItemBinding? = null
     private val binding get() = _binding!!
+    //Variable para la base de datos
     private lateinit var dbitem: CollectionReference
-    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -46,7 +46,7 @@ class AddItem : AddFragment() {
         }
 
         binding.bar.btsave.setOnClickListener() {
-            addData()
+            addDocumentToDatabase()
             fragmentReplacer(InventoryFragment(), parentFragmentManager)
         }
 
@@ -61,7 +61,7 @@ class AddItem : AddFragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addData() {
+    override fun addDocumentToDatabase() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             try {

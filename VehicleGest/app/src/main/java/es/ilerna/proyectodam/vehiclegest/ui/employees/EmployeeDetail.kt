@@ -4,24 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Employee
 
 /**
  * Abre una ventana diálogo con los detalles
  */
-class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
+class EmployeeDetail(
+    private val snapshot: DocumentSnapshot
+) : DetailFragment() {
 
+    //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: DetailEmployeeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var progressBar: ProgressBar
 
+    /**
+     * Fase de creación de la vista
+     * @param inflater  Inflador de la vista
+     * @param container Contenedor de la vista
+     * @param savedInstanceState Instancia guardada
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,28 +38,30 @@ class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
         //Enlaza al XML del formulario y lo infla
         _binding = DetailEmployeeBinding.inflate(inflater, container, false)
-        db = FirebaseFirestore.getInstance().collection("employees");
         val root: View = binding.root
 
         //Escuchador del boton cerrar
         binding.bar.btclose.setOnClickListener {
-            fragmentReplacer(EmployeeFragment())
+            fragmentReplacer(EmployeeFragment(), parentFragmentManager)
         }
 
         //Escuchador del boton borrar
         binding.bar.btdelete.setOnClickListener {
-            delDocument(s)
-            fragmentReplacer(EmployeeFragment())
+            delDocument(snapshot)
+            fragmentReplacer(EmployeeFragment(), parentFragmentManager)
         }
 
         //Llama a la función que rellena los datos en el formulario
-        bindData()
+        bindDataToForm()
         return root
     }
 
-    override fun bindData() {
+    /**
+     * Rellena los datos del formulario con los datos
+     */
+    override fun bindDataToForm() {
         try {
-            val employee: Employee? = s.toObject(Employee::class.java)
+            val employee: Employee? = snapshot.toObject(Employee::class.java)
             binding.url.setText(employee?.photoURL)
             binding.employeeDni.setText(employee?.dni)
             binding.name.setText(employee?.name)
@@ -75,10 +85,16 @@ class EmployeeDetail(s: DocumentSnapshot) : DetailFragment(s) {
         }
     }
 
-    override fun editDocument(s: DocumentSnapshot) {
+    /**
+     * Edita el documento de la base de datos
+     */
+    override fun editDocument(snapshot: DocumentSnapshot) {
         TODO("Not yet implemented")
     }
 
+    /**
+     *  Al destruir la vista, elimina la referencia al binding
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml

@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.ItemCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
 import java.util.concurrent.Executors
@@ -20,7 +21,7 @@ import java.util.concurrent.Executors
  */
 class ItemRecyclerAdapter(
     query: Query,
-    private val listener: ModelFragment
+    private val listener: DataHelper.AdapterListener
 ) : FirestoreAdapter<ItemRecyclerAdapter.ItemViewHolder>(query) {
 
     /**
@@ -37,9 +38,9 @@ class ItemRecyclerAdapter(
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
          */
-        fun bindDataCard(
+        fun bindDataToCardview(
             snapshot: DocumentSnapshot,
-            listener: ModelFragment
+            listener: DataHelper.AdapterListener
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
@@ -111,7 +112,7 @@ class ItemRecyclerAdapter(
         //Obtiene el objeto de la lista
         getSnapshot(position)?.let { snapshot ->
             //Llama a la función que rellena los datos de la tarjeta
-            holder.bindDataCard(snapshot, listener)
+            holder.bindDataToCardview(snapshot, listener)
         }
     }
 

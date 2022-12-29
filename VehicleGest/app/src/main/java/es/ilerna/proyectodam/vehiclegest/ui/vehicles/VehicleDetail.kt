@@ -10,18 +10,27 @@ import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
+import org.checkerframework.checker.units.qual.s
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
+ * @param snapshot Instantanea de firestore del vehículo
  */
-class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
+class VehicleDetail(val snapshot: DocumentSnapshot) : DetailFragment() {
 
+    //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: DetailVehicleBinding? = null
     private val binding get() = _binding!!
-    private lateinit var progressBar: ProgressBar
 
+    /**
+     *  Fase de creación de la vista
+     *  @param inflater Inflador de la vista del fragmento
+     *  @param container Contenedor de la vista
+     *  @param savedInstanceState Estado de la instancia
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,21 +38,21 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
     ): View {
         //Enlaza al XML del formulario y lo infla
         _binding = DetailVehicleBinding.inflate(inflater, container, false)
-        db = FirebaseFirestore.getInstance().collection("vehicle");
+        dbFirestoreReference = FirebaseFirestore.getInstance().collection("vehicle");
         val root: View = binding.root
 
         //Escuchador del boton cerrar
         binding.bar.btclose.setOnClickListener {
-            fragmentReplacer(VehiclesFragment())
+            fragmentReplacer(VehiclesFragment(), parentFragmentManager)
         }
 
-        //Escuchador del boton cerrar
+        //Escuchador del boton cerrar, borra el vehículo y vuelve al fragmento de vehículos
         binding.bar.btdelete.setOnClickListener {
-            delDocument(s)
-            fragmentReplacer(VehiclesFragment())
+            delDocument(snapshot)
+            fragmentReplacer(VehiclesFragment(), parentFragmentManager)
         }
 
-        bindData()
+        bindDataToForm()
         //Llama a la función que rellena los datos en el formulario
         return root
     }
@@ -51,10 +60,10 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun bindData() {
+    override fun bindDataToForm() {
         try {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val vehicle: Vehicle? = s.toObject(Vehicle::class.java)
+            val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
             binding.url.setText(vehicle?.photoURL)
             binding.plateNumber.setText(vehicle?.plateNumber)
             binding.type.setText(vehicle?.type)
@@ -78,23 +87,27 @@ class VehicleDetail(s: DocumentSnapshot) : DetailFragment(s) {
             //Carga la foto en el formulario a partir de la URL almacenada
             // Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
             // Mostrar la barra de carga
-            progressBar = ProgressBar(context)
             //Carga la foto en el formulario a partir de la URL almacenada
             Controller().showImageFromUrl(
                 binding.vehicleImage,
-                binding.url.text.toString(),
-                progressBar
+                binding.url.text.toString()
             )
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    override fun editDocument(s: DocumentSnapshot) {
+    /**
+     * Edita los datos del vehículo
+     * @param snapshot Instantanea de firestore del vehículo
+     */
+    override fun editDocument(snapshot: DocumentSnapshot) {
         TODO("Not yet implemented")
     }
 
+    /**
+     * Al destruir la vista, elimina la referencia al binding
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml

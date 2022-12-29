@@ -4,33 +4,37 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.AlertRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentAlertsBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 
 /**
  * Fragmento de listado de alertas
  */
-class AlertsFragment : ModelFragment(), AlertRecyclerAdapter.AlertAdapterListener {
+class AlertsFragment : Fragment(), DataHelper.AdapterListener {
 
-    //Variables de fragmento
+    //Enlaza el fragmento al xml
     private var _binding: FragmentAlertsBinding? = null
     private val binding get() = _binding!!
 
+    //Crea una variable para el adaptador
     private lateinit var alertRecyclerAdapter: AlertRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var alertsQuery: Query
+    private lateinit var alertsQuery: CollectionReference //Consulta de firestore
 
-
+    /**
+     * Fase de creación del fragmento
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Consulta a firestore db de la colección
@@ -42,6 +46,12 @@ class AlertsFragment : ModelFragment(), AlertRecyclerAdapter.AlertAdapterListene
         }
     }
 
+    /**
+     * Fase de creación de la vista
+     * @param inflater Inflador de la vista
+     * @param container Contenedor de la vista
+     *  @param savedInstanceState Estado de la instancia
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,21 +78,28 @@ class AlertsFragment : ModelFragment(), AlertRecyclerAdapter.AlertAdapterListene
     }
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onAlertSelected(snapshot: DocumentSnapshot?) {
+    override fun onItemSelected(snapshot: DocumentSnapshot?) {
         fragmentReplacer(AlertDetail(snapshot!!), parentFragmentManager)
     }
 
+    /**
+     * Al pulsar el botón flotante se abre el fragmento de creación
+     */
     override fun onAddButtonClick() {
         fragmentReplacer(AddAlert(), parentFragmentManager)
     }
 
-    //Inicia el escuchador de los cambios en la lista de instantáneas
+    /**
+     * Al iniciar el fragmento el escuchador del adaptador se activa
+     */
     override fun onStart() {
         super.onStart()
         alertRecyclerAdapter.startListening()
     }
 
-    //Para de escuchar los cambios
+    /**
+     * Al parar el fragmento el escuchador del adaptador se desactiva
+     */
     override fun onStop() {
         super.onStop()
         alertRecyclerAdapter.stopListening()

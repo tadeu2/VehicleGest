@@ -6,11 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.databinding.AddVehicleBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customReverseDateFormat
@@ -24,62 +21,72 @@ import java.util.concurrent.Executors
  */
 class AddVehicle : AddFragment() {
 
+    //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: AddVehicleBinding? = null
     private val binding get() = _binding!!
-    private lateinit var dbVehicle: CollectionReference
-    private lateinit var progressBar: ProgressBar
 
+    //Variable para la base de datos
+    private lateinit var dbVehicle: CollectionReference
+
+    /**
+     * Fase de creación de la vista del fragmento
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        //Inicializa la base de datos
         dbVehicle = FirebaseFirestore.getInstance().collection("vehicle")
 
         //Enlaza al XML del formulario y lo infla
         _binding = AddVehicleBinding.inflate(inflater, container, false)
 
-        binding.url.doAfterTextChanged {
+
+/*        binding.url.doAfterTextChanged {
             //Vehiclegest.displayImgURL(binding.url.text.toString(), binding.vehicleImage)
             //Vehiclegest.displayImgURL(binding.url.text.toString(), binding.itemImage)
             // Mostrar la barra de carga
-            progressBar = ProgressBar(context)
             //Carga la foto en el formulario a partir de la URL almacenada
             Controller().showImageFromUrl(
                 binding.vehicleImage,
                 binding.url.text.toString(),
                 progressBar
             )
-        }
+        }*/
 
+        /**
+         * Crea un escuchador para el botón de salvar
+         */
         binding.bar.btsave.setOnClickListener() {
-            addData()
+            addDocumentToDatabase()
             fragmentReplacer(VehiclesFragment(), parentFragmentManager)
         }
 
+        // Crea un escuchador para el botón de cancelar
         binding.bar.btclose.setOnClickListener() {
             fragmentReplacer(VehiclesFragment(), parentFragmentManager)
         }
 
+        // Crea un escuchador para el botón de fecha
         binding.expiringItv.setOnClickListener() {
-            val newFragment =
-                DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
-            newFragment.show(parentFragmentManager, "datePicker")
+            // Crea un nuevo fragmento de diálogo de fecha
+            DatePickerFragment { day, month, year ->
+                // Muestra la fecha seleccionada en el campo de texto
+                binding.expiringItv.setText(String.format("$day/$month/$year"))
+            }
+                // Muestra el diálogo
+                .show(parentFragmentManager, "datePicker")
         }
 
         //Llama a la función que rellena los datos en el formulario
         return binding.root
     }
 
-    private fun onDateSelected(day: Int, month: Int, year: Int) {
-        binding.expiringItv.setText(String.format("$day/$month/$year"))
-    }
-
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addData() {
+    override fun addDocumentToDatabase() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             try {

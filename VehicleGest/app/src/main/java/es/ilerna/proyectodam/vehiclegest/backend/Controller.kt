@@ -2,11 +2,16 @@ package es.ilerna.proyectodam.vehiclegest.backend
 
 import android.content.ContentValues
 import android.graphics.BitmapFactory
+import android.location.GnssAntennaInfo
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.util.Listener
+import es.ilerna.proyectodam.vehiclegest.adapters.AlertRecyclerAdapter
 import kotlinx.coroutines.*
 import java.net.HttpURLConnection
 import java.net.MalformedURLException

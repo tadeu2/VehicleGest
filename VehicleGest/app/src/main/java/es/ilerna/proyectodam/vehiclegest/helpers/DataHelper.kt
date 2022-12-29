@@ -2,6 +2,7 @@ package es.ilerna.proyectodam.vehiclegest.helpers
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import java.text.SimpleDateFormat
@@ -19,7 +20,7 @@ class DataHelper {
          */
         fun customDateFormat(time: Date): String {
             val simpleDateFormat = SimpleDateFormat(
-                Vehiclegest.instance!!.resources
+                Vehiclegest.instance.resources
                     .getString(R.string.dateFormat), Locale.getDefault()
             )
             return simpleDateFormat.format(time)
@@ -35,21 +36,25 @@ class DataHelper {
                 .replace(R.id.nav_host_fragment_content_main, fragment).commit()
         }
 
-        /**
-         * Interfaz para implementar como se comportará al hacer click a una ficha
-         */
-        interface AdapterListener {
-            fun onSelected(o: Any)
-        }
+
 
         fun customReverseDateFormat(time: String): Date {
             val simpleDateFormat = SimpleDateFormat(
-                Vehiclegest.instance!!.resources
+                Vehiclegest.instance.resources
                     .getString(R.string.dateFormat), Locale.getDefault()
             )
             return simpleDateFormat.parse(time) as Date
         }
 
+    }
+
+    /**
+     * Interfaz para implementar como se comportará al hacer click a una ficha
+     */
+    interface AdapterListener {
+        fun onItemSelected(snapshot: DocumentSnapshot?)
+        //Función que se encarga de añadir un registro de alerta
+        fun onAddButtonClick()
     }
 
 }

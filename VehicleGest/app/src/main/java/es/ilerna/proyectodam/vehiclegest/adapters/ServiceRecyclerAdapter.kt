@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.models.Service
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,7 +21,8 @@ import java.util.concurrent.Executors
  * @param listener Parámetro que contiene el listener del adapter
  */
 class ServiceRecyclerAdapter(
-    query: Query, private val listener: ServiceAdapterListener
+    query: Query,
+    private val listener: DataHelper.AdapterListener
 ) : FirestoreAdapter<ServiceRecyclerAdapter.ServiceViewHolder>(query) {
 
     /**
@@ -37,8 +39,9 @@ class ServiceRecyclerAdapter(
         /**
          * Rellena cada Service de la tarjeta con los datos del objeto
          */
-        fun bind(
-            snapshot: DocumentSnapshot, listener: ServiceAdapterListener
+        fun bindDataToCardView(
+            snapshot: DocumentSnapshot,
+            listener: DataHelper.AdapterListener
         ) {
             try {
 
@@ -54,12 +57,11 @@ class ServiceRecyclerAdapter(
                     //El formato se puede modificar en strings.xml
                     binding.date.text = service?.date?.let {
                         SimpleDateFormat(
-                            Vehiclegest.instance.getString(R.string.dateFormat),
-                            Locale.getDefault()
+                            Vehiclegest.instance.getString(R.string.dateFormat), Locale.getDefault()
                         ).format(it)
                     }
                     binding.serviceCard.setOnClickListener {
-                        listener.onServiceSelected(snapshot)
+                        listener.onItemSelected(snapshot)
                     }
                 }
             } catch (e: Exception) {
@@ -97,9 +99,7 @@ class ServiceRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder {
         return ServiceViewHolder(
             ServiceCardBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
@@ -113,7 +113,7 @@ class ServiceRecyclerAdapter(
         //Obtiene el objeto de la lista de servicios
         getSnapshot(position)?.let { snapshot ->
             //Llama al método bind del ServiceViewHolder para rellenar los datos
-            holder.bind(snapshot, listener)
+            holder.bindDataToCardView(snapshot, listener)
         }
     }
 

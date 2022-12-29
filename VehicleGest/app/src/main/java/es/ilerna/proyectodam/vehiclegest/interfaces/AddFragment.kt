@@ -23,8 +23,7 @@ abstract class AddFragment() : Fragment() {
     //Variable que almacenará la referencia a la colección de firestore
     lateinit var dbFirestoreReference: CollectionReference
 
-    //Método abstracto que implementará cada clase que herede para
-    open fun addData() {} //Enlazar datos al formulario de texto
+    open fun addDocumentToDatabase() {} //Añadir datos a la base de datos
 
     //Fase de creación de la actividad en el ciclo de vida de la actividad.
     override fun onCreate(savedInstanceState: Bundle?) {

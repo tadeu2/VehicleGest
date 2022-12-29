@@ -15,6 +15,7 @@ import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AddEmployeeBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Employee
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,7 +24,7 @@ import java.util.concurrent.Executors
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddEmployee : AddFragment() {
+class AddEmployee : DetailFragment() {
 
     //Inicializamos el binding
     private var _binding: AddEmployeeBinding? = null

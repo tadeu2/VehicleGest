@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import java.util.concurrent.Executors
 
@@ -16,7 +17,7 @@ import java.util.concurrent.Executors
  */
 class VehicleRecyclerAdapter(
     query: Query,
-    private val listener: VehicleAdapterListener
+    private val listener: DataHelper.AdapterListener
 ) : FirestoreAdapter<VehicleRecyclerAdapter.VehicleViewHolder>(query) {
 
     /**
@@ -31,9 +32,9 @@ class VehicleRecyclerAdapter(
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
          *
          */
-        fun bindDataCard(
+        fun bindDataToCardview(
             snapshot: DocumentSnapshot,
-            listener: VehicleAdapterListener
+            listener: DataHelper.AdapterListener
         ) {
             try {//Crea un hilo paralelo para descargar las imagenes de una URL
                 val executor = Executors.newSingleThreadExecutor()
@@ -55,7 +56,7 @@ class VehicleRecyclerAdapter(
 
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.vehicleCard.setOnClickListener {
-                        listener.onVehicleSelected(snapshot)
+                        listener.onItemSelected(snapshot)
                     }
                 }
             } catch (e: Exception) {
@@ -105,7 +106,7 @@ class VehicleRecyclerAdapter(
         //Obtiene la instántanea del documento
         getSnapshot(position)?.let { snapshot ->
             //Rellena la tarjeta con los datos del vehículo
-            holder.bindDataCard(snapshot, listener)
+            holder.bindDataToCardview(snapshot, listener)
         }
     }
 

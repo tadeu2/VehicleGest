@@ -10,19 +10,23 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
+import org.checkerframework.checker.units.qual.s
 
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
+ * @param snapshot Instantanea de firestore del item
  */
-class ItemDetail(s: DocumentSnapshot) : DetailFragment(s) {
+class ItemDetail(val snapshot: DocumentSnapshot) : DetailFragment() {
 
+    //Variable para enlazar el achivo de código con el XML de interfaz
     private var _binding: DetailItemBinding? = null
     private val binding get() = _binding!!
-    private lateinit var progressBar: ProgressBar
 
+    //Crea la vista
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,49 +35,52 @@ class ItemDetail(s: DocumentSnapshot) : DetailFragment(s) {
 
         //Enlaza al XML del formulario y lo infla
         _binding = DetailItemBinding.inflate(inflater, container, false)
-        db = FirebaseFirestore.getInstance().collection("inventory");
+        dbFirestoreReference = FirebaseFirestore.getInstance().collection("inventory");
         val root: View = binding.root
 
         //Escuchador del boton cerrar
         binding.bar.btclose.setOnClickListener {
-            fragmentReplacer(InventoryFragment())
+            fragmentReplacer(InventoryFragment(), parentFragmentManager)
         }
 
         //Escuchador del boton borrar
         binding.bar.btdelete.setOnClickListener {
-            delDocument(s)
-            fragmentReplacer(InventoryFragment())
+            delDocument(snapshot)
+            fragmentReplacer(InventoryFragment(), parentFragmentManager)
         }
 
-        bindData()
+        bindDataToForm()
         //Llama a la función que rellena los datos en el formulario
         return root
     }
 
-    override fun bindData() {
+    override fun bindDataToForm() {
         try {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val item: Item? = s.toObject(Item::class.java)
+            val item: Item? = snapshot.toObject(Item::class.java)
             binding.name.setText(item?.name)
             binding.plateNumber.setText(item?.plateNumber)
             binding.itemDescription.setText(item?.description)
 
             //Carga la foto en el formulario a partir de la URL almacenada
-            //Vehiclegest.displayImgURL(item?.photoURL, binding.itemImage)
-            // Mostrar la barra de carga
-            progressBar = ProgressBar(context)
-            //Carga la foto en el formulario a partir de la URL almacenada
-            Controller().showImageFromUrl(binding.itemImage, item?.photoURL.toString(), progressBar)
+            Controller().showImageFromUrl(binding.itemImage, item?.photoURL.toString())
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    override fun editDocument(s: DocumentSnapshot) {
+    /**
+     * Borra el documento de la base de datos
+     * @param snapshot Instantanea de firestore del item
+     */
+    override fun editDocument(snapshot: DocumentSnapshot) {
         TODO("Not yet implemented")
     }
 
+    /**
+     * Al destruir la vista, elimina la referencia al binding
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml

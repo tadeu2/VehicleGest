@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,7 +23,7 @@ import java.util.concurrent.Executors
  */
 class AlertRecyclerAdapter(
     query: Query,
-    private val listener: AlertAdapterListener
+    private val listener: DataHelper.AdapterListener
 ) : FirestoreAdapter<AlertRecyclerAdapter.AlertViewHolder>(query) {
 
     /**
@@ -41,9 +42,9 @@ class AlertRecyclerAdapter(
          * @param snapshot Parámetro que contiene la instancia de la alerta
          * @param listener Parámetro que contiene el listener de la tarjeta
          */
-        fun bindDataCard(
+        fun bindDataToCardView(
             snapshot: DocumentSnapshot,
-            listener: AlertAdapterListener
+            listener: DataHelper.AdapterListener
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
@@ -64,7 +65,7 @@ class AlertRecyclerAdapter(
                     }
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     binding.alertCard.setOnClickListener {
-                        listener.onAlertSelected(snapshot)
+                        listener.onItemSelected(snapshot)
                     }
                 }
             } catch (e: Exception) {
@@ -115,7 +116,7 @@ class AlertRecyclerAdapter(
         //Obtiene la instancia de la alerta
         getSnapshot(position)?.let { snapshot ->
             //Pinta los datos en la tarjeta
-            holder.bindDataCard(snapshot, listener)
+            holder.bindDataToCardView(snapshot, listener)
         }
     }
 }

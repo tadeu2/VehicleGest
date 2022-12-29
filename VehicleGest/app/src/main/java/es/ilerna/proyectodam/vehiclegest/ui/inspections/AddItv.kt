@@ -13,16 +13,19 @@ import es.ilerna.proyectodam.vehiclegest.databinding.AddItvBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customReverseDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddItv : AddFragment() {
+class AddItv : DetailFragment() {
 
+    //Enlace al xml de la interfaz
     private var _binding: AddItvBinding? = null
     private val binding get() = _binding!!
+    //Referencia a la base de datos
     private lateinit var dbItv: CollectionReference
 
     override fun onCreateView(

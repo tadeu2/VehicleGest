@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ItvCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 import java.text.SimpleDateFormat
@@ -22,7 +23,8 @@ import java.util.concurrent.Executors
  *  @param listener Parámetro que contiene el listener del adapter
  */
 class ITVRecyclerAdapter(
-    query: Query, private val listener: ModelFragment
+    query: Query,
+    private val listener: DataHelper.AdapterListener
 ) : FirestoreAdapter<ITVRecyclerAdapter.ITVViewHolder>(query) {
 
     /**
@@ -39,8 +41,8 @@ class ITVRecyclerAdapter(
         /**
          * Rellena cada ITV de la tarjeta con los datos del objeto vehiculo
          */
-        fun bindDataCard(
-            snapshot: DocumentSnapshot, listener: ModelFragment
+        fun bindDataToCardview(
+            snapshot: DocumentSnapshot, listener: DataHelper.AdapterListener
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
@@ -98,7 +100,7 @@ class ITVRecyclerAdapter(
         //Obtiene la instancia de la tarjeta
         getSnapshot(position)?.let { snapshot ->
             //Rellena la tarjeta con los datos del objeto
-            holder.bindDataCard(snapshot, listener)
+            holder.bindDataToCardview(snapshot, listener)
         }
     }
 

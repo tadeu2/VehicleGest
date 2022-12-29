@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -14,18 +15,21 @@ import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.VehicleRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
+import org.checkerframework.checker.units.qual.s
 
 /**
  * Fragmento de listado de vehículos
  */
-class VehiclesFragment : ModelFragment(), VehicleRecyclerAdapter.VehicleAdapterListener {
+class VehiclesFragment : Fragment(), DataHelper.AdapterListener {
 
-    //Variables de fragmento
+    //Enlaza el fragmento con el xml
     private var _binding: FragmentVehiclesBinding? = null
     private val binding get() = _binding!!
 
+    //Crea una variable para el adaptador
     private lateinit var vehicleRecyclerAdapter: VehicleRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var vehiclesQuery: Query
@@ -42,6 +46,12 @@ class VehiclesFragment : ModelFragment(), VehicleRecyclerAdapter.VehicleAdapterL
 
     }
 
+    /**
+     * Fase de creación de la vista
+     * @param inflater Inflador de la vista
+     * @param container Contenedor de la vista
+     * @param savedInstanceState Estado de la instancia
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,26 +78,33 @@ class VehiclesFragment : ModelFragment(), VehicleRecyclerAdapter.VehicleAdapterL
     }
 
     //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onVehicleSelected(s: DocumentSnapshot?) {
-        fragmentReplacer(VehicleDetail(s!!), parentFragmentManager)
+    override fun onItemSelected(snapshot: DocumentSnapshot?) {
+        fragmentReplacer(VehicleDetail(snapshot!!), parentFragmentManager)
     }
 
     override fun onAddButtonClick() {
         fragmentReplacer(AddVehicle(), parentFragmentManager)
     }
 
-    //Inicia el escuchador de los cambios en la lista de instantáneas
+    /**
+     * Al iniciar la vista, inicializa el escuchador del adaptador
+     */
     override fun onStart() {
         super.onStart()
         vehicleRecyclerAdapter.startListening()
     }
 
-    //Para de escuchar los cambios
+    /**
+     * Al parar la vista, para el escuchador del adaptador
+     */
     override fun onStop() {
         super.onStop()
         vehicleRecyclerAdapter.stopListening()
     }
 
+    /**
+     * Al destruir la vista, elimina el enlace con el xml
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
