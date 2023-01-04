@@ -7,101 +7,97 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.backend.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.databinding.AddAlertBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customReverseDateFormat
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customReverseDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 import java.util.concurrent.Executors
 
 /**
- * Abre una ventana diálogo con los detalles del vehículo
+ * Clase que representa el fragmento de añadir alerta
  */
 class AddAlert : AddFragment() {
+    private var _addAlertBinding: AddAlertBinding? =
+        null //Variable para enlazar el achivo de código con el XML de interfaz
+    //Getter para el binding
+    private val getAddAlertBinding
+        get() = _addAlertBinding ?: throw IllegalStateException("Binding error")
 
-    //Variable para enlazar el achivo de código con el XML de interfaz
-    private var _binding: AddAlertBinding? = null
-
-    //Getter para la variable de enlace
-    val binding get() = _binding!!
 
     /**
      * Fase de creación del fragmento
-      */
+     * @param inflater Inflador de la vista
+     * @param container Contenedor de la vista
+     * @param savedInstanceState Estado de la instancia
+     */
     override fun onCreateView(
         //Variable de instancia de XML de vistas
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        try {
+            //Referencia a la base de datos de Firestore
+            dbFirestoreReference = FirebaseFirestore.getInstance().collection("alert")
+            //Enlaza al XML del formulario y lo infla
+            _addAlertBinding = AddAlertBinding.inflate(inflater, container, false)
 
-        //Referencia a la base de datos
-        dbFirestoreReference = FirebaseFirestore.getInstance().collection("alert")
+            //Escuchador del botón de añadir
+            getAddAlertBinding.bar.btsave.setOnClickListener {
+                addDocumentToDatabase()
+                fragmentReplacer(AlertsFragment(), parentFragmentManager)
+            }
 
-        //Enlaza al XML del formulario y lo infla
-        _binding = AddAlertBinding.inflate(inflater, container, false)
+            //Escuchador del botón de cancelar
+            getAddAlertBinding.bar.btclose.setOnClickListener {
+                fragmentReplacer(AlertsFragment(), parentFragmentManager)
+            }
 
-        //Escuchador del botón de añadir
-        binding.bar.btsave.setOnClickListener {
-            addDocumentToDatabase()
-            fragmentReplacer(AlertsFragment(), parentFragmentManager)
-        }
-
-        //Escuchador del botón de cancelar
-        binding.bar.btclose.setOnClickListener {
-            fragmentReplacer(AlertsFragment(), parentFragmentManager)
-        }
-
-        binding.date.setOnClickListener {
-            val newFragment =
-                DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
-            newFragment.show(parentFragmentManager, "datePicker")
+            //Escuchador del botón de fecha
+            getAddAlertBinding.date.setOnClickListener {
+                DatePickerFragment { day, month, year -> String.format("$day/$month/$year") }
+                    .show(parentFragmentManager, "datePicker")
+            }
+        } catch (exception: Exception) {
+            Log.w(TAG, exception.message.toString(), exception)
+            exception.printStackTrace()
         }
 
         //Llama a la función que rellena los datos en el formulario
-        return binding.root
-    }
-
-    private fun onDateSelected(day: Int, month: Int, year: Int) {
-        binding.date.setText(String.format("$day/$month/$year"))
+        return getAddAlertBinding.root
     }
 
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
     override fun addDocumentToDatabase() {
-        val executor = Executors.newSingleThreadExecutor()
-        executor.execute {
-            try {
-                val plateNumber = binding.plateNumber.text.toString()
-                val date = customReverseDateFormat(binding.date.text.toString())
-                val description = binding.alertDescription.text.toString()
-                val solved = binding.checksolved.isChecked
-                val alert = Alert(
-                    plateNumber, date, description, solved
-                )
-                dbFirestoreReference.add(alert)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "Error añadiendo documento", e)
-                    }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        Executors.newSingleThreadExecutor().execute {
+            val plateNumber = getAddAlertBinding.plateNumber.text.toString()
+            val date = customReverseDateFormat(getAddAlertBinding.date.text.toString())
+            val description = getAddAlertBinding.alertDescription.text.toString()
+            val solved = getAddAlertBinding.checksolved.isChecked
+            val alert = Alert(
+                plateNumber, date, description, solved
+            )
+            dbFirestoreReference.add(alert)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error añadiendo documento", e)
+                }
         }
     }
 
     /**
-     * Fase de destrucción del fragmento
+     * Fase de destrucción del fragmento que elimina la referencia al XML de la interfaz
      */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
-        _binding = null
+        _addAlertBinding = null
     }
 
 }

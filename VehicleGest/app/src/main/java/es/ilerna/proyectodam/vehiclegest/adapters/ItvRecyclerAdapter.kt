@@ -3,14 +3,13 @@ package es.ilerna.proyectodam.vehiclegest.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ItvCardBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
-import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,73 +18,73 @@ import java.util.concurrent.Executors
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
- * @param query Parámetro que contiene la consulta a la base de datos
- *  @param listener Parámetro que contiene el listener del adapter
+ * @param queryFireStoreDatabase Parámetro que contiene la consulta a la base de datos
+ *  @param adapterListener Parámetro que contiene el listener del adapter
  */
-class ITVRecyclerAdapter(
-    query: Query,
-    private val listener: DataHelper.AdapterListener
-) : FirestoreAdapter<ITVRecyclerAdapter.ITVViewHolder>(query) {
+class ItvRecyclerAdapter(
+    queryFireStoreDatabase: Query,
+    private val adapterListener: Controller.AdapterListener
+) : FirestoreAdapter<ItvRecyclerAdapter.ItvViewHolder>(queryFireStoreDatabase) {
 
     /**
      * Clase interna
      * El holder se encarga de pintar las tarjetas de ITV
      * Implementa a RecyclerView.ViewHolder
-     * @param binding Parámetro que contiene la vista de la tarjeta
+     * @param itvCardBinding Parámetro que contiene la vista de la tarjeta
      */
-    class ITVViewHolder(
-        private val binding: ItvCardBinding,
+    class ItvViewHolder(
+        private val itvCardBinding: ItvCardBinding,
 
-        ) : ViewHolder(binding.root) {
+        ) : RecyclerView.ViewHolder(itvCardBinding.root) {
 
         /**
          * Rellena cada ITV de la tarjeta con los datos del objeto vehiculo
          */
         fun bindDataToCardview(
-            snapshot: DocumentSnapshot, listener: DataHelper.AdapterListener
+            documentSnapshot: DocumentSnapshot, adapterListener: Controller.AdapterListener
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
-                val executor = Executors.newSingleThreadExecutor()
-                executor.execute {
+                val executorService = Executors.newSingleThreadExecutor()
+                executorService.execute {
 
                     //Inicializamos un objeto a partir de una instántanea
-                    val itv: ITV? = snapshot.toObject(ITV::class.java)
+                    val itv: ITV? = documentSnapshot.toObject(ITV::class.java)
 
                     //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                     //El formato se puede modificar en strings.xml
-                    binding.date.text = itv?.date?.let {
+                    itvCardBinding.date.text = itv?.date?.let {
                         SimpleDateFormat(
                             Vehiclegest.instance.getString(R.string.dateFormat),
                             Locale.getDefault()
                         ).format(it)
                     }
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
-                    binding.itvCard.setOnClickListener {
-                        listener.onItemSelected(snapshot)
+                    itvCardBinding.itvCard.setOnClickListener {
+                        adapterListener.onItemSelected(documentSnapshot)
                     }
                 }
 
-            } catch (e: Exception) {
-                Log.e("Error", e.message.toString(), e)
-                e.printStackTrace()
-            } catch (e2: NullPointerException) {
-                Log.e("Error", "Referencia nula", e2)
-                e2.printStackTrace()
+            } catch (exception: Exception) {
+                Log.e("Error", exception.message.toString(), exception)
+                exception.printStackTrace()
+            } catch (nullPointerException: NullPointerException) {
+                Log.e("Error", "Referencia nula", nullPointerException)
+                nullPointerException.printStackTrace()
             }
         }
     }
 
     /**
      * Llamada para devolver el ITV(ITVCard) al viewholder por cada objeto de la lista vehiculos
-     * @param parent Parámetro que contiene el ViewGroup
+     * @param viewGroup Parámetro que contiene el ViewGroup
      * @param viewType Parámetro que contiene el tipo de vista
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ITVViewHolder {
-        return ITVViewHolder(
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItvViewHolder {
+        return ItvViewHolder(
             ItvCardBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
+                LayoutInflater.from(viewGroup.context),
+                viewGroup,
                 false
             )
         )
@@ -93,14 +92,14 @@ class ITVRecyclerAdapter(
 
     /**
      * Llamada para rellenar cada ITVCard con los datos del objeto
-     * @param holder Parámetro que contiene la vista de la tarjeta
+     * @param itvViewHolder Parámetro que contiene la vista de la tarjeta
      * @param position Parámetro que contiene la posición de la tarjeta
      */
-    override fun onBindViewHolder(holder: ITVRecyclerAdapter.ITVViewHolder, position: Int) {
+    override fun onBindViewHolder(itvViewHolder: ItvViewHolder, position: Int) {
         //Obtiene la instancia de la tarjeta
-        getSnapshot(position)?.let { snapshot ->
+        getSnapshot(position)?.let { documentSnapshot ->
             //Rellena la tarjeta con los datos del objeto
-            holder.bindDataToCardview(snapshot, listener)
+            itvViewHolder.bindDataToCardview(documentSnapshot, adapterListener)
         }
     }
 

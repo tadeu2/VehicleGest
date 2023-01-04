@@ -21,41 +21,41 @@ import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
  */
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRegisterBinding
+    private lateinit var activityRegisterBinding: ActivityRegisterBinding
 
     //Declaramos la variable auth para la autenticación de Firebase auth
-    private lateinit var auth: FirebaseAuth
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Creamos el binding con la actividad asociada y la inflamos
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        activityRegisterBinding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(activityRegisterBinding.root)
 
         // Inicializamos la variable auth de firebase
-        auth = Firebase.auth
+        firebaseAuth = Firebase.auth
 
-        binding.btRegister.setOnClickListener {
+        activityRegisterBinding.btRegister.setOnClickListener {
             //Con el binding le pasamos los campos de texto de la actividad de autenticacion
 
-            val username: String = binding.tieUsername.text.toString()
-            val password: String = binding.tiePassword.text.toString()
-            val password2: String = binding.tiePassword2.text.toString()
+            val username: String = activityRegisterBinding.tieUsername.text.toString()
+            val password: String = activityRegisterBinding.tiePassword.text.toString()
+            val passwordRepeat: String = activityRegisterBinding.tiePassword2.text.toString()
 
             if (username.isBlank()) {
-                binding.tilUsername.error = getString(R.string.invalid_username)
+                activityRegisterBinding.tilUsername.error = getString(R.string.invalid_username)
                 Log.w(ContentValues.TAG, "regInWithEmail:Username lenght")
             } else if (password.isBlank() || password.length < 6) {
-                binding.tilPassword.error = getString(R.string.invalid_password)
+                activityRegisterBinding.tilPassword.error = getString(R.string.invalid_password)
                 Log.w(ContentValues.TAG, "regInWithEmail: Invalid password lenght")
-            } else if (password != password2) {
-                binding.tilPassword.error = getString(R.string.match_password)
-                binding.tilPassword2.error = getString(R.string.match_password)
+            } else if (password != passwordRepeat) {
+                activityRegisterBinding.tilPassword.error = getString(R.string.match_password)
+                activityRegisterBinding.tilPassword2.error = getString(R.string.match_password)
                 Log.w(ContentValues.TAG, "regInWithEmail: Invalid password lenght")
             } else {
-                binding.tilUsername.error = null
-                binding.tilPassword.error = null
+                activityRegisterBinding.tilUsername.error = null
+                activityRegisterBinding.tilPassword.error = null
                 userRegistration(username, password)
             }
 
@@ -70,11 +70,11 @@ class RegisterActivity : AppCompatActivity() {
      * @param password  Contraseña de usuario
      */
     private fun userRegistration(username: String, password: String) {
-        auth.createUserWithEmailAndPassword(username, password)
+        firebaseAuth.createUserWithEmailAndPassword(username, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(ContentValues.TAG, "regInWithEmail: register success")
-                    navigateMain(auth.currentUser)
+                    navigateMain(firebaseAuth.currentUser)
                 } else {
                     Log.w(ContentValues.TAG, "reWithEmail:register failure", task.exception)
                     //Backend.showSnackbar(binding.root, task.exception?.message.toString())

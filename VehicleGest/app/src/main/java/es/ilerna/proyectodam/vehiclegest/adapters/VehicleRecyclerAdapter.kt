@@ -2,83 +2,70 @@ package es.ilerna.proyectodam.vehiclegest.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.backend.Controller
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.VehicleCardBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
+ * @param queryFirestoreDatabase Parámetro que contiene la consulta a la base de datos
+ * @param adapterListener Parámetro que contiene el listener del adapter
  */
 class VehicleRecyclerAdapter(
-    query: Query,
-    private val listener: DataHelper.AdapterListener
-) : FirestoreAdapter<VehicleRecyclerAdapter.VehicleViewHolder>(query) {
+    queryFirestoreDatabase: Query,
+    private val adapterListener: Controller.AdapterListener
+) : FirestoreAdapter<VehicleRecyclerAdapter.VehicleViewHolder>(queryFirestoreDatabase) {
 
     /**
      * nested class
      * El holder se encarga de pintar las celdas
      */
     class VehicleViewHolder(
-        private val binding: VehicleCardBinding,
+        private val vehicleCardBinding: VehicleCardBinding,
 
-        ) : ViewHolder(binding.root) {
+        ) : RecyclerView.ViewHolder(vehicleCardBinding.root) {
         /**
          * Rellena cada item de la tarjeta con los datos del objeto vehiculo
          *
          */
         fun bindDataToCardview(
-            snapshot: DocumentSnapshot,
-            listener: DataHelper.AdapterListener
+            documentSnapshot: DocumentSnapshot,
+            adapterListener: Controller.AdapterListener
         ) {
             try {//Crea un hilo paralelo para descargar las imagenes de una URL
-                val executor = Executors.newSingleThreadExecutor()
+                val executorService = Executors.newSingleThreadExecutor()
 
-                executor.execute {
+                executorService.execute {
                     //Inicializamos un objeto vehículo a partir de una instántanea
-                    val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
+                    val vehicle: Vehicle? = documentSnapshot.toObject(Vehicle::class.java)
                     //La asignamos a los datos del formulario
-                    binding.plateNumber.text = vehicle?.plateNumber.toString()
-                    binding.type.text = vehicle?.type.toString()
-                    binding.brand.text = vehicle?.brand.toString()
-                    binding.model.text = vehicle?.model.toString()
+                    vehicleCardBinding.plateNumber.text = vehicle?.plateNumber.toString()
+                    vehicleCardBinding.type.text = vehicle?.type.toString()
+                    vehicleCardBinding.brand.text = vehicle?.brand.toString()
+                    vehicleCardBinding.model.text = vehicle?.model.toString()
 
                     //Carga la foto en el formulario a partir de la URL almacenada
                     Controller().showImageFromUrl(
-                        binding.vehicleImage,
+                        vehicleCardBinding.vehicleImage,
                         vehicle?.photoURL.toString(),
                     )
 
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
-                    binding.vehicleCard.setOnClickListener {
-                        listener.onItemSelected(snapshot)
+                    vehicleCardBinding.vehicleCard.setOnClickListener {
+                        adapterListener.onItemSelected(documentSnapshot)
                     }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            } catch (nullPointerException: NullPointerException) {
+                nullPointerException.printStackTrace()
             }
         }
-    }
-
-    /**
-     * Interfaz para implementar como se comportará al hacer click a una ficha o al botón de añadir
-     */
-    interface VehicleAdapterListener {
-        /**
-         * Acción al pulsar una ficha
-         * @param snapshot Instántanea del documento
-         */
-        fun onVehicleSelected(snapshot: DocumentSnapshot?)
-
-        /**
-         * Acción al pulsar el botón de añadir
-         */
-        fun onAddButtonClick()
     }
 
     /**
@@ -99,14 +86,14 @@ class VehicleRecyclerAdapter(
 
     /**
      * El recyclerview llama esta función para mostrar los datos en una posición dada
-     * @param holder Holder de la tarjeta a rellenar con los datos del vehículo
+     * @param vehicleViewHolder Holder de la tarjeta a rellenar con los datos del vehículo
      * @param position Posición de la tarjeta a rellenar
      */
-    override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
+    override fun onBindViewHolder(vehicleViewHolder: VehicleViewHolder, position: Int) {
         //Obtiene la instántanea del documento
-        getSnapshot(position)?.let { snapshot ->
+        getSnapshot(position)?.let { documentSnapshot ->
             //Rellena la tarjeta con los datos del vehículo
-            holder.bindDataToCardview(snapshot, listener)
+            vehicleViewHolder.bindDataToCardview(documentSnapshot, adapterListener)
         }
     }
 

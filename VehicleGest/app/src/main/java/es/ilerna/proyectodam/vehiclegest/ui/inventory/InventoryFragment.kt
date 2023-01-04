@@ -1,6 +1,7 @@
 package es.ilerna.proyectodam.vehiclegest.ui.inventory
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,77 +9,89 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ItemRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 
 /**
  * Fragmento de listado de inventario
  */
-class InventoryFragment : Fragment(), DataHelper.AdapterListener {
+class InventoryFragment : Fragment(), Controller.AdapterListener {
 
     //Inicializamos el binding con el XML de la interfaz
-    private var _binding: FragmentInventoryBinding? = null
-    private val binding get() = _binding!!
+    private var fragmentInventoryBinding: FragmentInventoryBinding? = null
+    private val getfragmentInventoryBinding
+        get() = fragmentInventoryBinding ?: throw IllegalStateException("Binding error")
 
-    //Variables locales
+    //Crea una variable para el adaptador
     private lateinit var itemRecyclerAdapter: ItemRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var itemQuery: Query
+    private lateinit var itemCollectionReference: CollectionReference //Consulta de firestore
 
-    //Fase de creación del fragmento
+    /**
+     * Fase de creación del fragmento
+     * @param savedInstanceState Bundle de datos
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Consulta a firestore db de la colección de vehiculos
-        itemQuery = Firebase.firestore.collection("inventory")
+        try {
 
-        //Crea un escuchador para el botón flotante que abre el formulario de creacion
-        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
-            onAddButtonClick()
+            //Referencia a la base de datos de Firebase
+            itemCollectionReference = Firebase.firestore.collection("item")
+            //Crea un escuchador para el botón flotante que abre el formulario de creacion
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
+                onAddButtonClick()
+            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         }
-
     }
 
     /**
      *  Fase de creación de la vista
+     *  @param inflater  Inflador de la vista
+     *  @param container Contenedor de la vista
+     *  @param savedInstanceState Bundle de datos
+     *  @return Vista del fragmento
      */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+    try {
         //Pintar el fragment
-        _binding = FragmentInventoryBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        fragmentInventoryBinding = FragmentInventoryBinding.inflate(inflater, container, false)
 
         //Enlaza el recycler a la variable
-        recyclerView = binding.recycleritems
+        recyclerView = getfragmentInventoryBinding.recycleritems
         //Le asigna un manager lineal en el contexto de este fragmento
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
         //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-        itemRecyclerAdapter = ItemRecyclerAdapter(itemQuery, this)
+        itemRecyclerAdapter = ItemRecyclerAdapter(itemCollectionReference, this)
         //Asigna ese adapter al recyclerview
         recyclerView.adapter = itemRecyclerAdapter
-
-        return root
+    } catch (exception: Exception) {
+        Log.e("InventoryFragment", exception.message.toString() ,exception)
+        exception.printStackTrace()
+    }
+        return getfragmentInventoryBinding.root
     }
 
     /**
      * Abre el formulario de creación de vehículos
-     * @param snapshot Instanntanea del documento
+     * @param documentSnapshot Instanntanea del documento
      */
-    override fun onItemSelected(snapshot: DocumentSnapshot?) {
-        fragmentReplacer(ItemDetail(snapshot!!), parentFragmentManager)
+    override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
+        fragmentReplacer(ItemDetail(documentSnapshot!!), parentFragmentManager)
     }
 
     /**
@@ -110,7 +123,7 @@ class InventoryFragment : Fragment(), DataHelper.AdapterListener {
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
-        _binding = null
+        fragmentInventoryBinding = null
 
     }
 }

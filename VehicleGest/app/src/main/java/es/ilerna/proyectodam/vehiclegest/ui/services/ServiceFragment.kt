@@ -1,6 +1,8 @@
 package es.ilerna.proyectodam.vehiclegest.ui.services
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,43 +10,49 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ServiceRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentServicesBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 
 /**
  * Fragmento de listado de servicios
  */
-class ServiceFragment : Fragment(), DataHelper.AdapterListener {
+class ServiceFragment : Fragment(), Controller.AdapterListener {
 
     //Variables de fragmento
-    private var _binding: FragmentServicesBinding? = null
-    private val binding get() = _binding!!
+    private var fragmentServicesBinding: FragmentServicesBinding? = null
+    private val getFragmentServicesBinding
+        get() = fragmentServicesBinding ?: throw IllegalStateException("Binding is null")
 
-    //Variables locales
+    //Variables de Firebase
     private lateinit var serviceRecyclerAdapter: ServiceRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var serviceQuery: Query
+    private lateinit var serviceCollectionReference: CollectionReference //Consulta de firestore
 
     /**
      * Fase de creación del fragmento
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Consulta a firestore db de la colección de vehiculos
-        serviceQuery = Firebase.firestore.collection("service")
+        try {
 
-        //Crea un escuchador para el botón flotante que abre el formulario de creacion
-        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
-            onAddButtonClick()
+            //Consulta a firestore db de la colección de vehiculos
+            serviceCollectionReference = Firebase.firestore.collection("service")
+
+            //Crea un escuchador para el botón flotante que abre el formulario de creacion
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
+                onAddButtonClick()
+            }
+        } catch (exception: Exception) {
+            Log.e(ContentValues.TAG, exception.message.toString(), exception)
+            exception.printStackTrace()
         }
-
     }
 
     /**
@@ -55,21 +63,24 @@ class ServiceFragment : Fragment(), DataHelper.AdapterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        try {
+            //Pintar el fragment
+            fragmentServicesBinding = FragmentServicesBinding.inflate(inflater, container, false)
 
-        //Pintar el fragment
-        _binding = FragmentServicesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        //Pintar el recyclerview
-        //Enlaza el recycler a la variable
-        recyclerView = binding.recyclerservices
-        //Le asigna un manager lineal en el contexto de este fragmento
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.setHasFixedSize(true)
-        serviceRecyclerAdapter = ServiceRecyclerAdapter(serviceQuery, this)
-        recyclerView.adapter = serviceRecyclerAdapter
-
-        return root
+            //Pintar el recyclerview
+            //Enlaza el recycler a la variable
+            recyclerView = getFragmentServicesBinding.recyclerservices
+            //Le asigna un manager lineal en el contexto de este fragmento
+            recyclerView.layoutManager = LinearLayoutManager(context) //contexto de este fragmento
+            recyclerView.setHasFixedSize(true) //Para que no se recargue el tamaño del recycler
+            //Le asigna un adaptador al recycler
+            serviceRecyclerAdapter = ServiceRecyclerAdapter(serviceCollectionReference, this)
+            recyclerView.adapter = serviceRecyclerAdapter //Asigna el adaptador al recycler
+        } catch (exception: Exception) {
+            Log.e(ContentValues.TAG, exception.message.toString(), exception)
+            exception.printStackTrace()
+        }
+        return getFragmentServicesBinding.root
     }
 
     /**
@@ -81,9 +92,10 @@ class ServiceFragment : Fragment(), DataHelper.AdapterListener {
 
     /**
      * Al pulsar el botón de editar se abre el fragmento de edición
+     * @param documentSnapshot Documento de firestore que se va a editar
      */
-    override fun onItemSelected(snapshot: DocumentSnapshot?) {
-        fragmentReplacer(ServiceDetail(snapshot!!), parentFragmentManager)
+    override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
+        fragmentReplacer(ServiceDetail(documentSnapshot!!), parentFragmentManager)
     }
 
     /**
@@ -108,7 +120,7 @@ class ServiceFragment : Fragment(), DataHelper.AdapterListener {
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
-        _binding = null
+        fragmentServicesBinding = null
     }
 
 }

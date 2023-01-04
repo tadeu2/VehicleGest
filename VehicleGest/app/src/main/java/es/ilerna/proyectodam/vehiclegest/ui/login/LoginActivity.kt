@@ -21,40 +21,44 @@ import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
  */
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginBinding
+    //Enlaza la actividad al xml
+    private lateinit var activityLoginBinding: ActivityLoginBinding
 
     //Declaramos la variable auth para la autenticación de Firebase auth
-    private lateinit var auth: FirebaseAuth
+    private lateinit var firebaseAuth: FirebaseAuth
 
+    /**
+     * Fase de creación de la actividad
+     * @param savedInstanceState Bundle de datos
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Creamos el binding con la actividad asociada y la inflamos
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        activityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(activityLoginBinding.root) //Establece la vista de la actividad
+        firebaseAuth = Firebase.auth // Inicializamos la variable auth de firebase
 
-        // Inicializamos la variable auth de firebase
-        auth = Firebase.auth
-
-        binding.btLogin.setOnClickListener {
+        //Crea un escuchador para el botón de login
+        activityLoginBinding.btLogin.setOnClickListener {
             //Con el binding le pasamos los campos de texto de la actividad de autenticacion
-            val username: String = binding.tieUsername.text.toString()
-            val password: String = binding.tiePassword.text.toString()
+            val username: String = activityLoginBinding.tieUsername.text.toString()
+            val password: String = activityLoginBinding.tiePassword.text.toString()
             if (username.isBlank()) {
-                binding.tilUsername.error = getString(R.string.invalid_username)
-                Log.w(ContentValues.TAG, "signInWithEmail:Username lenght")
+                activityLoginBinding.tilUsername.error = getString(R.string.invalid_username)
+                Log.w(ContentValues.TAG, "signInWithEmail:Username length")
             } else if (password.isBlank() || password.length < 6) {
-                binding.tilPassword.error = getString(R.string.invalid_password)
-                Log.w(ContentValues.TAG, "signInWithEmail: Invalid password lenght")
+                activityLoginBinding.tilPassword.error = getString(R.string.invalid_password)
+                Log.w(ContentValues.TAG, "signInWithEmail: Invalid password length")
             } else {
-                binding.tilUsername.error = null
-                binding.tilPassword.error = null
-                userAuthentication(username, password)
+                activityLoginBinding.tilUsername.error = null
+                activityLoginBinding.tilPassword.error = null
+                userAuthentication(username, password) //Llama a la función de autenticación
             }
 
         }
-
-        binding.btRegister.setOnClickListener {
+        //Crea un escuchador para el botón de registro
+        activityLoginBinding.btRegister.setOnClickListener {
             navigateRegister()
         }
     }
@@ -68,13 +72,13 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun userAuthentication(username: String, password: String) {
         // TODO: password complexity - Backend.isValidPassword(password)
-        auth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this) { task ->
+        firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
                 Log.d(ContentValues.TAG, "signInWithEmail: login success")
-                navigateMain(auth.currentUser)
+                navigateMain(firebaseAuth.currentUser)
             } else {
                 Log.w(ContentValues.TAG, "signInWithEmail:login failure", task.exception)
-                //Backend.showSnackbar(binding.root, task.exception?.message.toString())
+                //Si el login falla muestra un mensaje de error
                 MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.authError))
                     .setMessage(task.exception?.message.toString())
                     .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
@@ -105,6 +109,5 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, RegisterActivity::class.java))
         finish()
     }
-
 }
 

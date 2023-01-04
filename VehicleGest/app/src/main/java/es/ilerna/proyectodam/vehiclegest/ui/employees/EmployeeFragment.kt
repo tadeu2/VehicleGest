@@ -1,6 +1,8 @@
 package es.ilerna.proyectodam.vehiclegest.ui.employees
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,25 +12,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.EmployeeRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentEmployeesBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.ModelFragment
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 
 /**
  * Fragmento de listado de empleados
  */
-class EmployeeFragment : Fragment(), DataHelper.AdapterListener {
+class EmployeeFragment : Fragment(), Controller.AdapterListener {
 
     //Inicializamos el binding con el XML de la interfaz
-    private var _binding: FragmentEmployeesBinding? = null
-    private val binding get() = _binding!!
+    private var fragmentEmployeesBinding: FragmentEmployeesBinding? = null
+    private val getFragmentEmployeesBinding
+        get() = fragmentEmployeesBinding ?: throw IllegalStateException("Binding error")
 
     //Variables locales
     private lateinit var employeeRecyclerAdapter: EmployeeRecyclerAdapter
@@ -38,43 +38,52 @@ class EmployeeFragment : Fragment(), DataHelper.AdapterListener {
     //Fase de creación del fragmento
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Referencia a la base de datos de Firebase
-        employeeQuery = Firebase.firestore.collection("employees")
-
-        //Crea un escuchador para el botón flotante que abre el formulario de creacion
-        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
-            onAddButtonClick()
+        try {
+            //Referencia a la base de datos de Firebase
+            employeeQuery = Firebase.firestore.collection("employees")
+            //Crea un escuchador para el botón flotante que abre el formulario de creacion
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
+                onAddButtonClick()
+            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            Log.e(ContentValues.TAG, exception.message.toString(), exception)
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        try {
+            //Enlaza el fragmento a el xml y lo infla
+            fragmentEmployeesBinding = FragmentEmployeesBinding.inflate(inflater, container, false)
 
-        //Enlaza el fragmento a el xml y lo infla
-        _binding = FragmentEmployeesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+            //Pintar el recyclerview
+            //Enlaza el recycler a la variable
+            recyclerView = getFragmentEmployeesBinding.recyclerEmployees
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.setHasFixedSize(true)
 
-        //Pintar el recyclerview
-        //Enlaza el recycler a la variable
-        recyclerView = binding.recyclerEmployees
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.setHasFixedSize(true)
-
-        employeeRecyclerAdapter = EmployeeRecyclerAdapter(employeeQuery, this)
-        recyclerView.adapter = employeeRecyclerAdapter
-
-        return root
+            employeeRecyclerAdapter = EmployeeRecyclerAdapter(employeeQuery, this)
+            recyclerView.adapter = employeeRecyclerAdapter
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            Log.e(ContentValues.TAG, exception.message.toString(), exception)
+        }
+        return getFragmentEmployeesBinding.root
     }
 
-    //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onItemSelected(snapshot: DocumentSnapshot?) {
-        fragmentReplacer(EmployeeDetail(snapshot!!), parentFragmentManager)
+    /**
+     * Al seleccionar un item de la lista se abre el fragmento de detalle
+     * @param documentSnapshot Documento de la base de datos
+     */
+    override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
+        fragmentReplacer(EmployeeDetail(documentSnapshot!!), parentFragmentManager)
     }
 
-    //Al pulsar el botón flotante se abre el fragmento de creación
+    /**
+     * Al pulsar el botón flotante se abre el fragmento de creación
+     */
     override fun onAddButtonClick() {
         fragmentReplacer(AddEmployee(), parentFragmentManager)
     }
@@ -95,10 +104,12 @@ class EmployeeFragment : Fragment(), DataHelper.AdapterListener {
         employeeRecyclerAdapter.stopListening()
     }
 
-    //Fase de destrucción del fragmento
+    /**
+     * Fase de destrucción del fragmento se elimina el binding
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
-        _binding = null
+        fragmentEmployeesBinding = null
     }
 }

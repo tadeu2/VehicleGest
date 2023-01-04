@@ -1,28 +1,34 @@
 package es.ilerna.proyectodam.vehiclegest.ui.services
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.CollectionReference
+import com.google.android.material.tabs.TabLayout.TabGravity
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
- * @param snapshot Instantanea de firestore del servicio
+ * @param documentSnapshot Instantanea de firestore del servicio
  */
-class ServiceDetail(val snapshot: DocumentSnapshot) :
-    DetailFragment() {
+class ServiceDetail(
+    private val documentSnapshot: DocumentSnapshot
+) : DetailFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
-    private var _binding: DetailServiceBinding? = null
-    private val binding get() = _binding!!
+    private var detailServiceBinding: DetailServiceBinding? = null
+    private val getDetailServiceBinding
+        get() = detailServiceBinding ?: throw IllegalStateException(
+            "Binding error"
+        )  // Si no se enlaza el XML con el código, lanza una excepción
 
     /**
      *  Fase de creación de la vista
@@ -31,55 +37,54 @@ class ServiceDetail(val snapshot: DocumentSnapshot) :
      *  @param savedInstanceState Instancia guardada
      */
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        //Enlaza al XML del formulario y lo infla
-        _binding = DetailServiceBinding.inflate(inflater, container, false)
-        dbFirestoreReference = FirebaseFirestore.getInstance().collection("service");
-        val root: View = binding.root
+        try {
+            //Enlaza al XML del formulario y lo infla
+            detailServiceBinding = DetailServiceBinding.inflate(inflater, container, false)
 
-        //Escuchador del boton cerrar
-        binding.bar.btclose.setOnClickListener {
-            fragmentReplacer(ServiceFragment(), parentFragmentManager)
+            //Escuchador del boton cerrar
+            getDetailServiceBinding.bar.btclose.setOnClickListener {
+                fragmentReplacer(ServiceFragment(), parentFragmentManager)
+            }
+
+            //Escuchador del boton borrar, borrará el servicio y volverá al fragmento de servicios
+            getDetailServiceBinding.bar.btdelete.setOnClickListener {
+                delDocumentSnapshot(documentSnapshot)
+                fragmentReplacer(ServiceFragment(), parentFragmentManager)
+            }
+
+            //Llama a la función que rellena los datos en el formulario
+            bindDataToForm()
+        } catch (exception: Exception) {
+            Log.e(ContentValues.TAG, exception.message.toString(), exception)
         }
-
-        //Escuchador del boton borrar, borrará el servicio y volverá al fragmento de servicios
-        binding.bar.btdelete.setOnClickListener {
-            delDocument(snapshot)
-            fragmentReplacer(ServiceFragment(), parentFragmentManager)
-        }
-
-        //Llama a la función que rellena los datos en el formulario
-        bindDataToForm()
-
-        return root
+        return getDetailServiceBinding.root
     }
 
     /**
      * Rellena los datos del formulario con los datos del servicio
      */
     override fun bindDataToForm() {
-        try {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val service: Service? = snapshot.toObject(Service::class.java)
-            binding.plateNumber.setText(service?.plateNumber.toString())
-            binding.costumer.setText(service?.costumer.toString())
-            binding.remarks.setText(service?.remarks.toString())
+            val service: Service? = documentSnapshot.toObject(Service::class.java)
+            getDetailServiceBinding.plateNumber.setText(service?.plateNumber.toString())
+            getDetailServiceBinding.costumer.setText(service?.costumer.toString())
+            getDetailServiceBinding.remarks.setText(service?.remarks.toString())
 
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            binding.date.setText(service?.date?.let { customDateFormat(it) })
+            getDetailServiceBinding.date.setText(service?.date?.let { customDateFormat(it) })
 
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     /**
      * Edita los datos del servicio
-     * @param snapshot Instantanea de firestore del servicio
+     * @param documentSnapshot Instantanea de firestore del servicio
      */
-    override fun editDocument(snapshot: DocumentSnapshot) {
+    override fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
         TODO("Not yet implemented")
     }
 
@@ -89,7 +94,7 @@ class ServiceDetail(val snapshot: DocumentSnapshot) :
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
-        _binding = null
+        detailServiceBinding = null
     }
 
 }

@@ -10,6 +10,14 @@ import java.util.*
 
 /**
  * Escribe y lee los datos de las entidades vehículo
+ *  @param plateNumber Matrícula del vehículo
+ *  @param brand Marca del vehículo
+ *  @param model Modelo del vehículo
+ *  @param type Tipo de vehículo
+ *  @param expiryDateITV Fecha de caducidad de la ITV
+ *  @param totalDistance Distancia total recorrida
+ *  @param description Descripción del vehículo
+ *  @param photoURL URL de la foto del vehículo
  */
 @IgnoreExtraProperties
 data class Vehicle(
@@ -24,7 +32,10 @@ data class Vehicle(
     var photoURL: String? = null
 ) : Parcelable {
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    /**
+     * Constructor privado para la creación de objetos Vehicle a partir de un Parcel
+     * @param parcel Parcel que contiene los datos del vehículo
+     */
     private constructor(parcel: Parcel) : this() {
         plateNumber = parcel.readString()
         type = parcel.readString()
@@ -37,10 +48,19 @@ data class Vehicle(
         photoURL = parcel.readString()
     }
 
+    /**
+     * Método que describe el contenido del objeto Vehicle
+     * @return 0
+     */
     override fun describeContents(): Int {
         return 0
     }
 
+    /**
+     * Método que escribe los datos del objeto Vehicle en un Parcel
+     * @param dest Parcel donde se escribirán los datos del objeto Vehicle
+     * @param flags Int que indica el modo de escritura
+     */
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(plateNumber)
         dest.writeString(type)
@@ -53,11 +73,25 @@ data class Vehicle(
         dest.writeString(photoURL)
     }
 
+    /**
+     *  Objeto que implementa la interfaz Parcelable.Creator para la creación de objetos Vehicle
+     */
     companion object CREATOR : Parcelable.Creator<Vehicle> {
+
+        /**
+         * Método que crea un objeto Vehicle a partir de un Parcel
+         * @param parcel Parcel que contiene los datos del vehículo
+         * @return Objeto Vehicle creado
+         */
         override fun createFromParcel(parcel: Parcel): Vehicle {
             return Vehicle(parcel)
         }
 
+        /**
+         * Método que crea un array de objetos Vehicle
+         * @param size Tamaño del array
+         * @return Array de objetos Vehicle
+         */
         override fun newArray(size: Int): Array<Vehicle?> {
             return arrayOfNulls(size)
         }

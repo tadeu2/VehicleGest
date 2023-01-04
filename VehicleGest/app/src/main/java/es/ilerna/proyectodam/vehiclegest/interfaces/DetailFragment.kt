@@ -1,7 +1,5 @@
 package es.ilerna.proyectodam.vehiclegest.interfaces
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
@@ -14,53 +12,50 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
-import io.grpc.InternalChannelz.id
-import org.checkerframework.checker.units.qual.s
-import java.util.concurrent.Executors
 
 
 /**
  * Interfaz para crear escuchadores para las diferentes entidades de la base de datos Firestore
  */
-abstract class DetailFragment() : Fragment() {
+abstract class DetailFragment : Fragment() {
 
     //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
-    private lateinit var navBarTop: MaterialToolbar
-    private lateinit var navBarBot: BottomNavigationView
-    private lateinit var floatingButton: FloatingActionButton
-    //Variable que almacenará la referencia a la colección de firestore
-    lateinit var dbFirestoreReference: CollectionReference
+    private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
+    private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
+    private lateinit var floatingButton: FloatingActionButton //Botón flotante de la interfaz
+    lateinit var dbFirestoreReference: CollectionReference //Referencia a la colección de la base de datos
 
-    open fun bindDataToForm() {} //Enlazar datos al formulario de texto
-    open fun addData() {} //Añadir datos a la base de datos
-    open fun updateData() {} //Actualizar datos en la base de datos
-    open fun editDocument(snapshot: DocumentSnapshot) {}//Editar documento en la base de datos
+    open fun bindDataToForm() {}//Enlazar datos al formulario de texto
+    open fun addDataToDataBase() {} //Añadir datos a la base de datos
+    open fun updateDataBase() {} //Actualizar datos en la base de datos
+    open fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {}//Editar documento en la base de datos
 
     /**
      *  Borra el documento de la base de datos
-     *  @param s: DocumentSnapshot
+     *  @param documentSnapshot: DocumentSnapshot
      */
-    fun delDocument(snapshot: DocumentSnapshot) {
-            try {
-                snapshot.reference.delete()
-                    .addOnSuccessListener {
-                        Log.d(
-                            ContentValues.TAG,
-                            "DocumentSnapshot borrado con ID: ${snapshot.id}"
-                        )
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(ContentValues.TAG, "Error borrando documento", e)
-                    }
+    fun delDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
+        try {
+            documentSnapshot.reference.delete()
+                .addOnSuccessListener {
+                    Log.d(
+                        ContentValues.TAG,
+                        "DocumentSnapshot borrado con ID: ${documentSnapshot.id}"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.w(ContentValues.TAG, "Error borrando documento", e)
+                }
 
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
 
     }
 
     /**
      * Fase de creación de la actividad en el ciclo de vida de la actividad.
+     * @param savedInstanceState: Bundle? (Estado guardado de la actividad)
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +70,7 @@ abstract class DetailFragment() : Fragment() {
     }
 
     /**
-     * Fase del ciclo de vida de la actividad cuando esta se destruye
+     * Se destrye el fragmento y se vuelve a mostrar las barras de navegación
      */
     override fun onDestroy() {
         super.onDestroy()

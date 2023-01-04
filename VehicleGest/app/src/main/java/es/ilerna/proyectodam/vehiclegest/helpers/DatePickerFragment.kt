@@ -1,4 +1,4 @@
-package es.ilerna.proyectodam.vehiclegest.backend
+package es.ilerna.proyectodam.vehiclegest.helpers
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -24,7 +24,7 @@ class DatePickerFragment(val listener: (day: Int, month: Int, year: Int) -> Unit
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        //dialog.datePicker.maxDate = c.timeInMillis
+        //dialog.datePicker.maxDate = c.timeInMillis //Para que no se pueda seleccionar una fecha posterior a la actual
         return DatePickerDialog(requireContext(), this, year, month, day);
     }
 

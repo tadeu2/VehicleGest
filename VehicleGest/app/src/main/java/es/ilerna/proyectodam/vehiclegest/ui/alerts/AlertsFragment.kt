@@ -1,6 +1,8 @@
 package es.ilerna.proyectodam.vehiclegest.ui.alerts
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,34 +17,39 @@ import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.AlertRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentAlertsBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 
 /**
  * Fragmento de listado de alertas
  */
-class AlertsFragment : Fragment(), DataHelper.AdapterListener {
+class AlertsFragment : Fragment(), Controller.AdapterListener {
 
     //Enlaza el fragmento al xml
-    private var _binding: FragmentAlertsBinding? = null
-    private val binding get() = _binding!!
+    private var _fragmentAlertsBinding: FragmentAlertsBinding? = null
+    private val getFragmentAlertsBinding
+        get() = _fragmentAlertsBinding ?: throw IllegalStateException("Binding error")
 
     //Crea una variable para el adaptador
     private lateinit var alertRecyclerAdapter: AlertRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var alertsQuery: CollectionReference //Consulta de firestore
+    private lateinit var alertsCollectionReference: CollectionReference //Consulta de firestore
 
     /**
      * Fase de creación del fragmento
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Consulta a firestore db de la colección
-        alertsQuery = Firebase.firestore.collection("alert")
-
-        //Crea un escuchador para el botón flotante que abre el formulario de creacion
-        activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
-            onAddButtonClick()
+        try {
+            //Referencia a la base de datos de Firebase
+            alertsCollectionReference = Firebase.firestore.collection("alerts")
+            //Crea un escuchador para el botón flotante que abre el formulario de creacion
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
+                onAddButtonClick()
+            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            Log.e(ContentValues.TAG, exception.message.toString(), exception)
         }
     }
 
@@ -57,29 +64,34 @@ class AlertsFragment : Fragment(), DataHelper.AdapterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        try {
+            //Enlaza el fragmento a el xml y lo infla
+            _fragmentAlertsBinding = FragmentAlertsBinding.inflate(inflater, container, false)
 
-        //Enlaza el fragmento a el xml y lo infla
-        _binding = FragmentAlertsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+            //Pintar el recyclerview
+            //Enlaza el recycler a la variable
+            recyclerView = getFragmentAlertsBinding.recycleralerts
+            //Le asigna un manager lineal en el contexto de este fragmento
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.setHasFixedSize(true)
 
-        //Pintar el recyclerview
-        //Enlaza el recycler a la variable
-        recyclerView = binding.recycleralerts
-        //Le asigna un manager lineal en el contexto de este fragmento
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.setHasFixedSize(true)
-
-        //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-        alertRecyclerAdapter = AlertRecyclerAdapter(alertsQuery, this)
-        //Asigna ese adapter al recyclerview
-        recyclerView.adapter = alertRecyclerAdapter
-
-        return root
+            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
+            alertRecyclerAdapter = AlertRecyclerAdapter(alertsCollectionReference, this)
+            //Asigna ese adapter al recyclerview
+            recyclerView.adapter = alertRecyclerAdapter
+        } catch (exception: Exception) {
+            Log.w(ContentValues.TAG, exception.message.toString(), exception)
+            exception.printStackTrace()
+        }
+        return getFragmentAlertsBinding.root
     }
 
-    //Al seleccionar un item de la lista se abre el fragmento de detalle
-    override fun onItemSelected(snapshot: DocumentSnapshot?) {
-        fragmentReplacer(AlertDetail(snapshot!!), parentFragmentManager)
+    /**
+     * Al seleccinar un elemento del recycler se abre el detalle
+     * @param documentSnapshot Documento de firestore
+     */
+    override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
+        fragmentReplacer(AlertDetail(documentSnapshot!!), parentFragmentManager)
     }
 
     /**
@@ -105,9 +117,12 @@ class AlertsFragment : Fragment(), DataHelper.AdapterListener {
         alertRecyclerAdapter.stopListening()
     }
 
+    /**
+     * Al destruir el fragmento se elimina la variable de enlace al xml
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
-        _binding = null
+        _fragmentAlertsBinding = null
     }
 }

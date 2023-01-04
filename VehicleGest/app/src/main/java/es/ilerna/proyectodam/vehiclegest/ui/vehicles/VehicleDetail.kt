@@ -1,29 +1,34 @@
 package es.ilerna.proyectodam.vehiclegest.ui.vehicles
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.backend.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.customDateFormat
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
-import org.checkerframework.checker.units.qual.s
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
- * @param snapshot Instantanea de firestore del vehículo
+ * @param documentSnapshot Instantanea de firestore del vehículo
  */
-class VehicleDetail(val snapshot: DocumentSnapshot) : DetailFragment() {
+class VehicleDetail(
+    private val documentSnapshot: DocumentSnapshot
+) : DetailFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
-    private var _binding: DetailVehicleBinding? = null
-    private val binding get() = _binding!!
+    private var detailVehicleBinding: DetailVehicleBinding? = null
+    private val getDetailVehicleBinding
+        get() = detailVehicleBinding ?: throw IllegalStateException(
+            "Binding error"
+        ) // Lanza una excepción si el binding es nulo
 
     /**
      *  Fase de creación de la vista
@@ -36,72 +41,67 @@ class VehicleDetail(val snapshot: DocumentSnapshot) : DetailFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        try{
         //Enlaza al XML del formulario y lo infla
-        _binding = DetailVehicleBinding.inflate(inflater, container, false)
-        dbFirestoreReference = FirebaseFirestore.getInstance().collection("vehicle");
-        val root: View = binding.root
-
+        detailVehicleBinding = DetailVehicleBinding.inflate(inflater, container, false)
+        // Referencia a la base de datos
+        dbFirestoreReference = FirebaseFirestore.getInstance().collection("vehicle")
         //Escuchador del boton cerrar
-        binding.bar.btclose.setOnClickListener {
+        getDetailVehicleBinding.bar.btclose.setOnClickListener {
+            fragmentReplacer(VehiclesFragment(), parentFragmentManager)
+        }
+        //Escuchador del boton borrar, borra el vehículo y vuelve al fragmento de vehículos
+        getDetailVehicleBinding.bar.btdelete.setOnClickListener {
+            delDocumentSnapshot(documentSnapshot)
             fragmentReplacer(VehiclesFragment(), parentFragmentManager)
         }
 
-        //Escuchador del boton cerrar, borra el vehículo y vuelve al fragmento de vehículos
-        binding.bar.btdelete.setOnClickListener {
-            delDocument(snapshot)
-            fragmentReplacer(VehiclesFragment(), parentFragmentManager)
+        bindDataToForm() //Llama a la función que rellena los datos en el formulario
+        }catch (exception:Exception){
+           Log.e(TAG,exception.message.toString(), exception)
         }
 
-        bindDataToForm()
-        //Llama a la función que rellena los datos en el formulario
-        return root
+        return getDetailVehicleBinding.root
     }
 
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
     override fun bindDataToForm() {
-        try {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val vehicle: Vehicle? = snapshot.toObject(Vehicle::class.java)
-            binding.url.setText(vehicle?.photoURL)
-            binding.plateNumber.setText(vehicle?.plateNumber)
-            binding.type.setText(vehicle?.type)
-            binding.brand.setText(vehicle?.brand)
-            binding.model.setText(vehicle?.model)
-            binding.vehicleDescription.setText(vehicle?.description)
-            binding.checkLicensed.isChecked = vehicle?.licensed == false
+            val vehicle: Vehicle? = documentSnapshot.toObject(Vehicle::class.java)
+            getDetailVehicleBinding.url.setText(vehicle?.photoURL)
+            getDetailVehicleBinding.plateNumber.setText(vehicle?.plateNumber)
+            getDetailVehicleBinding.type.setText(vehicle?.type)
+            getDetailVehicleBinding.brand.setText(vehicle?.brand)
+            getDetailVehicleBinding.model.setText(vehicle?.model)
+            getDetailVehicleBinding.vehicleDescription.setText(vehicle?.description)
+            getDetailVehicleBinding.checkLicensed.isChecked = vehicle?.licensed == false
 
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            binding.expiringItv.setText(vehicle?.expiryDateITV?.let {
+            getDetailVehicleBinding.expiringItv.setText(vehicle?.expiryDateITV?.let {
                 customDateFormat(
                     it
                 )
             })
             //Añade la cadena km de kilometros al final del número
-            binding.totalDistance.setText(buildString {
+            getDetailVehicleBinding.totalDistance.setText(buildString {
                 append(vehicle?.totalDistance.toString())
                 append(" KM")
             })
             //Carga la foto en el formulario a partir de la URL almacenada
-            // Vehiclegest.displayImgURL(vehicle?.photoURL.toString(), binding.vehicleImage)
-            // Mostrar la barra de carga
-            //Carga la foto en el formulario a partir de la URL almacenada
             Controller().showImageFromUrl(
-                binding.vehicleImage,
-                binding.url.text.toString()
+                getDetailVehicleBinding.vehicleImage,
+                getDetailVehicleBinding.url.text.toString()
             )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     /**
      * Edita los datos del vehículo
-     * @param snapshot Instantanea de firestore del vehículo
+     * @param documentSnapshot Instantanea de firestore del vehículo
      */
-    override fun editDocument(snapshot: DocumentSnapshot) {
+    override fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
         TODO("Not yet implemented")
     }
 
@@ -111,6 +111,6 @@ class VehicleDetail(val snapshot: DocumentSnapshot) : DetailFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
-        _binding = null
+        detailVehicleBinding = null
     }
 }

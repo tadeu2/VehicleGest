@@ -11,8 +11,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inspections.ItvFragment
@@ -27,42 +27,45 @@ import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment
 class MainActivity : AppCompatActivity() {
 
     //Variables principales de la actividad
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var activityMainBinding: ActivityMainBinding //Binding de la actividad
 
     //Variables de Firebase
-    private lateinit var auth: FirebaseAuth
-    private lateinit var dbFirestore: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth //Autenticación de Firebase
+    private lateinit var dbFirestore: FirebaseFirestore //Base de datos de Firebase
 
     //Variables para crear el contador de alertas
     private var alertCount: Int = 0
-    private lateinit var alertQuery: CollectionReference
+    private lateinit var alertCollectionReference: CollectionReference
     private lateinit var badgeAlert: BadgeDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Bindeamos el xml con la actividad y lo inflamos
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.appBarMain.topToolbar)
+        activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        //Establecemos la vista de la actividad
+        setContentView(activityMainBinding.root)
+        //Barra de navegación inferior
+        setSupportActionBar(activityMainBinding.appBarMain.topToolbar)
 
         // Inicializa Firebase
         dbFirestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
-        binding.appBarMain.topToolbar.subtitle = auth.currentUser?.email.toString()
+        // Muestra el email del usuario en el subtitulo de la barra de navegación
+        activityMainBinding.appBarMain.topToolbar.subtitle = auth.currentUser?.email.toString()
 
         //Activamos el logueo de Firestore para debuggear fallos en el logcat
         FirebaseFirestore.setLoggingEnabled(true)
 
         //Inicializa el icono de alerta
-        alertQuery = dbFirestore.collection("alert")
-        badgeAlert = BadgeDrawable.create(this)
+        alertCollectionReference = dbFirestore.collection("alert")
+        badgeAlert = BadgeDrawable.create(this) //Creamos el badge de alerta para la barra de navegación
 
         //Carga el fragmento de vehículos como inicial
         fragmentReplacer(VehiclesFragment(), supportFragmentManager)
 
         //Escuchador del menú superior
-        binding.appBarMain.topToolbar.setOnMenuItemClickListener {
+        activityMainBinding.appBarMain.topToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.logout_icon -> {
                     auth.signOut()
@@ -77,7 +80,7 @@ class MainActivity : AppCompatActivity() {
          * Escuchador del menú inferior, al hacer click en cada uno de los iconos se cargar
          * un fragmento
          **/
-        binding.bottomBarMain.bottomNavMenu.setOnItemSelectedListener {
+        activityMainBinding.bottomBarMain.bottomNavMenu.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.vehicles -> fragmentReplacer(VehiclesFragment(), supportFragmentManager)
                 R.id.itv -> fragmentReplacer(ItvFragment(), supportFragmentManager)
@@ -107,7 +110,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         //Crea una subrutina para contar los documentos de alerta y actualiza el contador de la campana
-        alertQuery.get().addOnCompleteListener { task ->
+        alertCollectionReference.get().addOnCompleteListener { task ->
             //Cada la tarea se completa se reinicia el contador
             if (task.isSuccessful) {
                 alertCount = 0
@@ -124,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.app_bar_items, menu)
         //Crea el contador de alertas y lo asocia al icono de la campana
-        BadgeUtils.attachBadgeDrawable(badgeAlert, binding.appBarMain.topToolbar, R.id.alert_icon)
+        BadgeUtils.attachBadgeDrawable(badgeAlert, activityMainBinding.appBarMain.topToolbar, R.id.alert_icon)
 
         return super.onCreateOptionsMenu(menu)
     }

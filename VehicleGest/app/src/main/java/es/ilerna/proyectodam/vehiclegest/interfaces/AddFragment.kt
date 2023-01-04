@@ -17,15 +17,20 @@ import es.ilerna.proyectodam.vehiclegest.R
 abstract class AddFragment() : Fragment() {
 
     //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
-    private lateinit var navBarTop: MaterialToolbar
-    private lateinit var navBarBottom: BottomNavigationView
-    private lateinit var floatingButton: FloatingActionButton
-    //Variable que almacenará la referencia a la colección de firestore
-    lateinit var dbFirestoreReference: CollectionReference
+    private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
+    private lateinit var navBarBottom: BottomNavigationView //Barra de navegación inferior
+    private lateinit var floatingButton: FloatingActionButton //Botón flotante
+    lateinit var dbFirestoreReference: CollectionReference //Referencia a la colección de firestore
 
-    open fun addDocumentToDatabase() {} //Añadir datos a la base de datos
+    /**
+     * Método abstracto que se implementará en cada fragmento para realizar la adición a la base de datos
+     */
+    abstract fun addDocumentToDatabase() //Añadir datos a la base de datos
 
-    //Fase de creación de la actividad en el ciclo de vida de la actividad.
+    /**
+     * Método que se ejecuta al crear la vista del fragmento, se encarga de inicializar las variables
+     * de las barras de navegación y el botón flotante.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         //Salva el estado de la actividad
         super.onCreate(savedInstanceState)
@@ -38,10 +43,12 @@ abstract class AddFragment() : Fragment() {
         floatingButton.visibility = GONE
     }
 
-    //Fase del ciclo de vida de la actividad cuando esta se destruye
+    /**
+     * Método que se ejecuta al destruir la vista del fragmento, se encarga de mostrar las barras de
+     * navegación y el botón flotante.
+     */
     override fun onDestroy() {
         super.onDestroy()
-        //Las barras y el botón flotante vuelven a ser visible al destruirse el fragmento
         navBarTop.visibility = VISIBLE
         navBarBottom.visibility = VISIBLE
         floatingButton.visibility = VISIBLE

@@ -2,13 +2,13 @@ package es.ilerna.proyectodam.vehiclegest.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.DataHelper
 import es.ilerna.proyectodam.vehiclegest.models.Service
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,103 +17,85 @@ import java.util.concurrent.Executors
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
- * @param query Parámetro que contiene la consulta a la base de datos
- * @param listener Parámetro que contiene el listener del adapter
+ * @param queryFireStoreDatabase Parámetro que contiene la consulta a la base de datos
+ * @param adapterListener Parámetro que contiene el listener del adapter
  */
 class ServiceRecyclerAdapter(
-    query: Query,
-    private val listener: DataHelper.AdapterListener
-) : FirestoreAdapter<ServiceRecyclerAdapter.ServiceViewHolder>(query) {
+    queryFireStoreDatabase: Query,
+    private val adapterListener: Controller.AdapterListener
+) : FirestoreAdapter<ServiceRecyclerAdapter.ServiceViewHolder>(queryFireStoreDatabase) {
 
     /**
      * Clase interna
      * El holder se encarga de pintar las tarjetas
      * Implementa a RecyclerView.ViewHolder
-     * @param binding Parámetro que contiene la vista de la tarjeta
+     * @param serviceCardBinding Parámetro que contiene la vista de la tarjeta
      */
     class ServiceViewHolder(
-        private val binding: ServiceCardBinding,
+        private val serviceCardBinding: ServiceCardBinding,
 
-        ) : ViewHolder(binding.root) {
+        ) : RecyclerView.ViewHolder(serviceCardBinding.root) {
 
         /**
          * Rellena cada Service de la tarjeta con los datos del objeto
          */
         fun bindDataToCardView(
-            snapshot: DocumentSnapshot,
-            listener: DataHelper.AdapterListener
+            documentSnapshot: DocumentSnapshot,
+            adapterListener: Controller.AdapterListener
         ) {
             try {
 
                 //Crea un hilo paralelo para descargar las imagenes de una URL
-                val executor = Executors.newSingleThreadExecutor()
-                executor.execute {
+                val executorService = Executors.newSingleThreadExecutor()
+                executorService.execute {
 
                     //Inicializamos un objeto a partir de una instántanea
-                    val service = snapshot.toObject(Service::class.java)
+                    val service = documentSnapshot.toObject(Service::class.java)
                     //La asignamos a los datos del formulario
-                    binding.plateNumber.text = service?.plateNumber.toString()
+                    serviceCardBinding.plateNumber.text = service?.plateNumber.toString()
                     //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                     //El formato se puede modificar en strings.xml
-                    binding.date.text = service?.date?.let {
+                    serviceCardBinding.date.text = service?.date?.let {
                         SimpleDateFormat(
                             Vehiclegest.instance.getString(R.string.dateFormat), Locale.getDefault()
                         ).format(it)
                     }
-                    binding.serviceCard.setOnClickListener {
-                        listener.onItemSelected(snapshot)
+                    serviceCardBinding.serviceCard.setOnClickListener {
+                        adapterListener.onItemSelected(documentSnapshot)
                     }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } catch (e2: NullPointerException) {
-                e2.printStackTrace()
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            } catch (nullPointerException: NullPointerException) {
+                nullPointerException.printStackTrace()
             }
         }
     }
 
-
-    /**
-     * Interfaz para implementar como se comportará al hacer click a una ficha
-     */
-    interface ServiceAdapterListener {
-        /**
-         * Función que se ejecuta al hacer click en una ficha
-         * @param snapshot Parámetro que contiene la instancia del objeto
-         */
-        fun onServiceSelected(snapshot: DocumentSnapshot?)
-
-        /**
-         * Función que se ejecuta al hacer click en el botón de añadir
-         */
-        fun onAddServiceButtonClick()
-    }
-
-
     /**
      * Llamada para devolver el Service(ServiceCard) al viewholder por cada objeto de la lista vehiculos
-     * @param parent Parámetro que contiene el ViewGroup
+     * @param viewGroup Parámetro que contiene el ViewGroup
      * @param viewType Parámetro que contiene el tipo de vista
      * @return Devuelve el ServiceViewHolder
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ServiceViewHolder {
         return ServiceViewHolder(
             ServiceCardBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+                LayoutInflater.from(viewGroup.context), viewGroup, false
             )
         )
     }
 
     /**
      * El recyclerview llama esta función para mostrar los datos en una posición dada
-     * @param holder Parámetro que contiene el ServiceViewHolder
+     * @param serviceViewHolder Parámetro que contiene el ServiceViewHolder
      * @param position Parámetro que contiene la posición del objeto
      */
-    override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {
+    override fun onBindViewHolder(serviceViewHolder: ServiceViewHolder, position: Int) {
         //Obtiene el objeto de la lista de servicios
-        getSnapshot(position)?.let { snapshot ->
+        getSnapshot(position)?.let { documentSnapshot ->
             //Llama al método bind del ServiceViewHolder para rellenar los datos
-            holder.bindDataToCardView(snapshot, listener)
+            serviceViewHolder.bindDataToCardView(documentSnapshot, adapterListener)
         }
     }
 
