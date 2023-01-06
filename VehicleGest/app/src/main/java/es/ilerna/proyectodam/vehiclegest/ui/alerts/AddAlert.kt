@@ -6,25 +6,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.AddAlertBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customReverseDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 import java.util.concurrent.Executors
 
 /**
  * Clase que representa el fragmento de añadir alerta
  */
-class AddAlert : AddFragment() {
+class AddAlert : DetailFragment() {
     private var _addAlertBinding: AddAlertBinding? =
         null //Variable para enlazar el achivo de código con el XML de interfaz
+
     //Getter para el binding
     private val getAddAlertBinding
         get() = _addAlertBinding ?: throw IllegalStateException("Binding error")
-
 
     /**
      * Fase de creación del fragmento
@@ -44,22 +45,32 @@ class AddAlert : AddFragment() {
             //Enlaza al XML del formulario y lo infla
             _addAlertBinding = AddAlertBinding.inflate(inflater, container, false)
 
-            //Escuchador del botón de añadir
-            getAddAlertBinding.bar.btsave.setOnClickListener {
-                addDocumentToDatabase()
-                fragmentReplacer(AlertsFragment(), parentFragmentManager)
+            with(getAddAlertBinding) {
+                //Escuchador del botón de añadir
+                bar.btsave.setOnClickListener {
+                    addDocumentToDataBase()
+                    fragmentReplacer(AlertsFragment(), parentFragmentManager)
+                }
+
+                //Escuchador del botón de cancelar
+                bar.btclose.setOnClickListener {
+                    fragmentReplacer(AlertsFragment(), parentFragmentManager)
+                }
+
+                //Escuchador del botón de fecha de inicio
+                date.setOnClickListener {
+                    DatePickerFragment { day, month, year -> String.format("$day/$month/$year") }
+                        .show(parentFragmentManager, "datePicker")
+
+                }
+                //Escuchador de fecha de solución
+                dateSolved.setOnClickListener {
+                    DatePickerFragment { day, month, year -> String.format("$day/$month/$year") }
+                        .show(parentFragmentManager, "datePicker")
+                }
             }
 
-            //Escuchador del botón de cancelar
-            getAddAlertBinding.bar.btclose.setOnClickListener {
-                fragmentReplacer(AlertsFragment(), parentFragmentManager)
-            }
 
-            //Escuchador del botón de fecha
-            getAddAlertBinding.date.setOnClickListener {
-                DatePickerFragment { day, month, year -> String.format("$day/$month/$year") }
-                    .show(parentFragmentManager, "datePicker")
-            }
         } catch (exception: Exception) {
             Log.w(TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -72,16 +83,9 @@ class AddAlert : AddFragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addDocumentToDatabase() {
+    override fun addDocumentToDataBase() {
         Executors.newSingleThreadExecutor().execute {
-            val plateNumber = getAddAlertBinding.plateNumber.text.toString()
-            val date = customReverseDateFormat(getAddAlertBinding.date.text.toString())
-            val description = getAddAlertBinding.alertDescription.text.toString()
-            val solved = getAddAlertBinding.checksolved.isChecked
-            val alert = Alert(
-                plateNumber, date, description, solved
-            )
-            dbFirestoreReference.add(alert)
+            dbFirestoreReference.add(fillDataFromForm())
                 .addOnSuccessListener { documentReference ->
                     Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
                 }
@@ -89,6 +93,39 @@ class AddAlert : AddFragment() {
                     Log.w(TAG, "Error añadiendo documento", e)
                 }
         }
+    }
+
+    /**
+     * Devuelve un objeto Alerta con los datos del formulario
+     * @return Objeto Alerta con los datos del formulario
+     */
+    override fun fillDataFromForm(): Any {
+        getAddAlertBinding.apply {
+            return Alert(
+                plateNumber.text.toString(),
+                customReverseDateFormat(date.text.toString()),
+                alertDescription.text.toString(),
+                checksolved.isChecked,
+                customReverseDateFormat(dateSolved.text.toString()),
+                alertSolution.text.toString()
+            )
+        }
+    }
+
+    /**
+     * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
+     */
+    override fun bindDataToForm() {
+        //No se implementa en este fragmento
+    }
+
+
+
+    /**
+     * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
+     */
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
+        //No se implementa en este fragmento
     }
 
     /**

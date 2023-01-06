@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
@@ -40,15 +41,20 @@ class AlertDetail(
             //Enlaza al XML del formulario y lo infla
             _detailAlertBinding = DetailAlertBinding.inflate(inflater, container, false)
 
-            //Escuchador del boton cerrar
-            detailAlertBinding.bar.btclose.setOnClickListener {
-                fragmentReplacer(AlertsFragment(), parentFragmentManager)
-            }
+            //Referencia a la base de datos de Firestore
+            dbFirestoreReference = FirebaseFirestore.getInstance().collection("alert")
 
-            //Escuchador del boton borrar
-            detailAlertBinding.bar.btdelete.setOnClickListener {
-                delDocumentSnapshot(documentSnapshot) //Borra el documento
-                fragmentReplacer(AlertsFragment(), parentFragmentManager)
+            with(detailAlertBinding.bar) {
+                //Escuchador del boton cerrar
+                btclose.setOnClickListener {
+                    fragmentReplacer(AlertsFragment(), parentFragmentManager)
+                }
+
+                //Escuchador del boton borrar
+                btdelete.setOnClickListener {
+                    delDocumentSnapshot(documentSnapshot)
+                    fragmentReplacer(AlertsFragment(), parentFragmentManager)
+                }
             }
 
             bindDataToForm() //Llama a la función que rellena los datos en el formulario
@@ -68,22 +74,32 @@ class AlertDetail(
     override fun bindDataToForm() {
         //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
         val alert: Alert? = documentSnapshot.toObject(Alert::class.java)
-        detailAlertBinding.plateNumber.setText(alert?.plateNumber)
-        detailAlertBinding.alertDescription.setText(alert?.description)
-        detailAlertBinding.checksolved.isChecked = alert?.solved == false
 
-        /*Formatea los timestamp a fecha normal dd/mm/aa
-        Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-        El formato se puede modificar en strings.xml*/
-        detailAlertBinding.date.setText(alert?.date?.let { customDateFormat(it) })
+        with(detailAlertBinding) {
+            plateNumber.setText(alert?.plateNumber)
+            alertDescription.setText(alert?.description)
+            checksolved.isChecked = alert?.solved == false
 
+            //Formatea los timestamp a fecha normal dd/mm/aa
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            date.setText(alert?.date?.let { customDateFormat(it) })
+        }
+    }
+
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
+    override fun addDocumentToDataBase() {
+        //No se usa en este fragmento
     }
 
     /**
      * Edita los datos del documento en firestore
      * @param documentSnapshot Instantanea de firestore del documento
      */
-    override fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
         TODO("Not yet implemented")
     }
 

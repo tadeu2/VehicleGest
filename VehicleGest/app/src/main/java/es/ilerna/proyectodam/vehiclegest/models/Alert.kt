@@ -18,7 +18,9 @@ data class Alert(
     var plateNumber: String? = null,
     var date: Date? = null,
     var description: String? = null,
-    var solved: Boolean? = false
+    var solved: Boolean? = false,
+    var solveddate: Date? = null,
+    var solution: String? = null
 ) : Parcelable {
 
     /**
@@ -30,6 +32,8 @@ data class Alert(
         date = Timestamp(parcel.readLong(), 0).toDate()
         description = parcel.readString()
         solved = parcel.readBoolean()
+        solveddate = Timestamp(parcel.readLong(), 0).toDate()
+        solution = parcel.readString()
     }
 
     /**
@@ -50,6 +54,8 @@ data class Alert(
         dest.writeString(description)
         date?.time?.let { dest.writeLong(it) }
         solved?.let { dest.writeBoolean(it) }
+        solveddate?.time?.let { dest.writeLong(it) }
+        dest.writeString(solution)
     }
 
     /**

@@ -7,23 +7,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.AddItemBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
 import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del artículo a añadir.
  */
-class AddItem : AddFragment() {
+class AddItem : DetailFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addItemBinding: AddItemBinding? = null
     private val getAddItemBinding
         get() = addItemBinding ?: throw IllegalStateException("Binding error")
+
+    /**
+     * Metodo que rellena el formulario con los datos de la entidad
+     */
+    override fun bindDataToForm() {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Metodo que rellena la entidad con los datos del formulario
+     */
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Actualiza el documento en la base de datos
+     */
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -44,7 +66,7 @@ class AddItem : AddFragment() {
         }
 
         getAddItemBinding.bar.btsave.setOnClickListener {
-            addDocumentToDatabase()
+            addDocumentToDataBase()
             fragmentReplacer(InventoryFragment(), parentFragmentManager)
         }
 
@@ -59,7 +81,7 @@ class AddItem : AddFragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addDocumentToDatabase() {
+    override fun addDocumentToDataBase() {
         Executors.newSingleThreadExecutor().execute {
             val plateNumber = getAddItemBinding.plateNumber.text.toString()
             val name = getAddItemBinding.name.text.toString()

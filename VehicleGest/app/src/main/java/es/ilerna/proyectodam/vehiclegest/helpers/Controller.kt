@@ -2,13 +2,11 @@ package es.ilerna.proyectodam.vehiclegest.helpers
 
 import android.content.ContentValues
 import android.graphics.BitmapFactory
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
@@ -19,7 +17,6 @@ import java.net.URISyntaxException
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.Executors
 
 /**
  * Clase que contiene funciones que se usan en varios sitios
@@ -36,8 +33,9 @@ class Controller {
         // Se usa el contexto de la UI porque se va a pintar en un ImageView
         GlobalScope.launch(Dispatchers.Main) {
             // Descargar la imagen en una coroutine suspendida
-            val bitmap = withContext(Dispatchers.IO) {
-                try {
+            try {
+                val bitmap = withContext(Dispatchers.IO) {
+
                     // Establecer la conexión con la URL y descargar la imagen
                     val urlConnection =
                         URL(url).openConnection() as HttpURLConnection //Abrir la conexión
@@ -47,72 +45,40 @@ class Controller {
                         urlConnection.inputStream  // Obtener el InputStream de la imagen
                     // Convertir la imagen descargada a un Bitmap
                     return@withContext BitmapFactory.decodeStream(inputStream) // Devolver el Bitmap
-                } catch (exception: Exception) {
-                    // Si hay algún error, imprimir un mensaje en la consola
-                    Log.e("Error", "Error al descargar y mostrar la imagen", exception)
 
+                    // Si hay algún error, devolver null para que no se pinte nada
+                    return@withContext null
                 }
-                // Si hay algún error, devolver null para que no se pinte nada
-                return@withContext null
-            }
 
-            // Mostrar la imagen en el ImageView si no es null (si no hay ningún error)
-            if (bitmap != null) {
-                // Pintar la imagen en el ImageView
-                imageView.setImageBitmap(bitmap)
-            } else {
-                // Si no se ha podido descargar la imagen, mostrar un mensaje de error
-                Log.e("Error", "Error al descargar y mostrar la imagen")
-            }
-
-        }
-    }
-
-    /**
-     * Ejecuta un hilo paralelo para asignar una imagen URL al campo de imagen
-     */
-    fun displayImgURL(url: String?, imgView: ShapeableImageView?) {
-
-        try {
-            //Crea un hilo paralelo para descargar las imagenes de una URL
-            val executor = Executors.newSingleThreadExecutor()
-            executor.execute {
-
-                if (isUrlValid(url)) {
-
-                    //Declaramos un manejador que asigne la imagen al objecto imagen
-                    val handler = Handler(Looper.getMainLooper())
-
-                    //Creamos el objecto imagen vacio y le asignamos por stream a otra variable
-                    val im = URL(url).openStream()
-                    val image = BitmapFactory.decodeStream(im)
-
-                    //Para hacer cambios en la interfaz
-                    handler.post {
-                        imgView?.setImageBitmap(image)
-                    }
+                // Mostrar la imagen en el ImageView si no es null (si no hay ningún error)
+                if (bitmap != null) {
+                    // Pintar la imagen en el ImageView
+                    imageView.setImageBitmap(bitmap)
                 } else {
-                    Log.d(ContentValues.TAG, "BAD URL FORMAT")
+                    // Si no se ha podido descargar la imagen, mostrar un mensaje de error
+                    Log.e("Error", "No se puede mostrar la imagen")
                 }
-
+            } catch (exception: Exception) {
+                // Si hay algún error, imprimir un mensaje en la consola
+                Log.e(ContentValues.TAG, exception.message.toString(), exception)
+            } catch (exception: MalformedURLException) {
+                // Si hay algún error, imprimir un mensaje en la consola
+                Log.e(ContentValues.TAG, exception.message.toString(), exception)
+                Toast.makeText(
+                    Vehiclegest.instance.applicationContext,
+                    "Error en la URL de la imagen",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } catch (exception: URISyntaxException) {
+                // Si hay algún error, imprimir un mensaje en la consola
+                Log.e(ContentValues.TAG, exception.message.toString(), exception)
+                Toast.makeText(
+                    imageView.context,
+                    "Error en la sintaxis de URL de la imagen",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-        } catch (exception: Exception) {
-            throw exception
-        }
-    }
 
-
-    /**
-     * Prueba si la URL en texto es válida o no
-     */
-    private fun isUrlValid(url: String?): Boolean {
-        return try {
-            URL(url).toURI()
-            true
-        } catch (e: MalformedURLException) {
-            false
-        } catch (e: URISyntaxException) {
-            false
         }
     }
 
@@ -135,8 +101,14 @@ class Controller {
          * @param fragmentManager Manejador de fragmentos
          */
         fun fragmentReplacer(fragment: Fragment, fragmentManager: FragmentManager) {
-            fragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, fragment).commit()
+            try {
+                fragmentManager.beginTransaction()
+                    .replace(R.id.nav_host_fragment_content_main, fragment)
+                    .commit()
+            } catch (e: URISyntaxException) {
+                Log.e("Error", "Error al cambiar de fragmento")
+                throw URISyntaxException("Error al cambiar de fragmento", "Error")
+            }
         }
 
 
@@ -148,6 +120,16 @@ class Controller {
             return simpleDateFormat.parse(time) as Date
         }
 
+
+        fun showShortToast(message: String) {
+            Toast.makeText(Vehiclegest.instance.applicationContext, message, Toast.LENGTH_SHORT)
+                .show()
+        }
+
+        fun mostrarLongToast(message: String) {
+            Toast.makeText(Vehiclegest.instance.applicationContext, message, Toast.LENGTH_LONG)
+                .show()
+        }
     }
 
     /**

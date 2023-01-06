@@ -6,13 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AddServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,12 +23,33 @@ import java.util.concurrent.Executors
  * Abre una ventana diálogo con los detalles del vehículo
  *
  */
-class AddService : AddFragment() {
+class AddService : DetailFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addServiceBinding: AddServiceBinding? = null
     private val getAddServiceBinding
         get() = addServiceBinding ?: throw IllegalStateException("Binding error")
+
+    /**
+     * Metodo que rellena el formulario con los datos de la entidad
+     */
+    override fun bindDataToForm() {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Metodo que rellena la entidad con los datos del formulario
+     */
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Actualiza el documento en la base de datos
+     */
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
+        TODO("Not yet implemented")
+    }
 
     /**
      * Fase de creación de la vista del fragmento
@@ -43,23 +65,23 @@ class AddService : AddFragment() {
     ): View {
         try {
             //Inicializa la base de datos
-            dbFirestoreReference = FirebaseFirestore.getInstance().collection("service");
+            dbFirestoreReference = FirebaseFirestore.getInstance().collection("service")
 
             //Enlaza al XML del formulario y lo infla
             addServiceBinding = AddServiceBinding.inflate(inflater, container, false)
 
             //Escucha el botón de añadir
-            getAddServiceBinding.bar.btsave.setOnClickListener() {
-                addDocumentToDatabase()
+            getAddServiceBinding.bar.btsave.setOnClickListener {
+                addDocumentToDataBase()
                 fragmentReplacer(ServiceFragment(), parentFragmentManager)
             }
             //Escuchador del botón de cancelar
-            getAddServiceBinding.bar.btclose.setOnClickListener() {
+            getAddServiceBinding.bar.btclose.setOnClickListener {
                 fragmentReplacer(ServiceFragment(), parentFragmentManager)
             }
 
             //Escucha el botón de fecha
-            getAddServiceBinding.date.setOnClickListener() {
+            getAddServiceBinding.date.setOnClickListener {
                 //Crea un nuevo fragmento de diálogo
                 DatePickerFragment { day, month, year ->
                     // Actualiza el campo de fecha
@@ -79,7 +101,7 @@ class AddService : AddFragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addDocumentToDatabase() {
+    override fun addDocumentToDataBase() {
         Executors.newSingleThreadExecutor().execute {
             val plateNumber = getAddServiceBinding.plateNumber.text.toString()
             // Devuelve la fecha en formato dd/mm/yyyy

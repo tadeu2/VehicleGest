@@ -42,9 +42,9 @@ class AlertsFragment : Fragment(), Controller.AdapterListener {
         super.onCreate(savedInstanceState)
         try {
             //Referencia a la base de datos de Firebase
-            alertsCollectionReference = Firebase.firestore.collection("alerts")
+            alertsCollectionReference = Firebase.firestore.collection("alert")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener() {
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
                 onAddButtonClick()
             }
         } catch (exception: Exception) {

@@ -43,7 +43,7 @@ class ItvFragment : Fragment(), Controller.AdapterListener {
         super.onCreate(savedInstanceState)
         try {
             //Referencia a la base de datos de Firebase
-            itvCollectionReference = Firebase.firestore.collection("itv")
+            itvCollectionReference = Firebase.firestore.collection("ITV")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
             activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
                 onAddButtonClick()

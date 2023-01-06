@@ -67,10 +67,11 @@
                     android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
+                    android:singleLine="true"
                     tools:text="1234ABC" />
             </TableRow>
 
@@ -96,8 +97,8 @@
                     android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="4423442FDF" />
@@ -123,8 +124,8 @@
                     android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="nombre" />
@@ -150,8 +151,8 @@
                     android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="Caruncho Serrano" />
@@ -177,8 +178,8 @@
                     android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="C/Pepita nº Alicante" />
@@ -204,8 +205,8 @@
                     android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="652344424" />
@@ -231,8 +232,8 @@
                     android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="12/12/2013" />
@@ -258,8 +259,8 @@
                     android:layout_width="400dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/roboto"
                     android:textAlignment="center"
                     tools:text="hola@gmail.com" />
@@ -288,7 +289,7 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:checked="false"
-                    android:clickable="false" />
+                    android:focusableInTouchMode="false" />
             </TableRow>
 
         </TableLayout>

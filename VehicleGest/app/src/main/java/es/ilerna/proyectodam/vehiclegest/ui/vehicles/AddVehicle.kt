@@ -7,19 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.AddVehicleBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customReverseDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.AddFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddVehicle : AddFragment() {
+class AddVehicle : DetailFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addVehicleBinding: AddVehicleBinding? = null
@@ -27,6 +28,27 @@ class AddVehicle : AddFragment() {
 
     //Variable para la base de datos
     private lateinit var vehicleCollectionReference: CollectionReference
+
+    /**
+     * Metodo que rellena el formulario con los datos de la entidad
+     */
+    override fun bindDataToForm() {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Metodo que rellena la entidad con los datos del formulario
+     */
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Actualiza el documento en la base de datos
+     */
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
+        TODO("Not yet implemented")
+    }
 
     /**
      * Fase de creación de la vista del fragmento
@@ -51,18 +73,18 @@ class AddVehicle : AddFragment() {
             /**
              * Crea un escuchador para el botón de salvar
              */
-            getAddVehicleBinding.bar.btsave.setOnClickListener() {
-                addDocumentToDatabase()
+            getAddVehicleBinding.bar.btsave.setOnClickListener {
+                addDocumentToDataBase()
                 fragmentReplacer(VehiclesFragment(), parentFragmentManager)
             }
 
             // Crea un escuchador para el botón de cancelar
-            getAddVehicleBinding.bar.btclose.setOnClickListener() {
+            getAddVehicleBinding.bar.btclose.setOnClickListener {
                 fragmentReplacer(VehiclesFragment(), parentFragmentManager)
             }
 
             // Crea un escuchador para el botón de fecha
-            getAddVehicleBinding.expiringItv.setOnClickListener() {
+            getAddVehicleBinding.expiringItv.setOnClickListener {
                 // Crea un nuevo fragmento de diálogo de fecha
                 DatePickerFragment { day, month, year ->
                     // Muestra la fecha seleccionada en el campo de texto
@@ -81,7 +103,7 @@ class AddVehicle : AddFragment() {
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addDocumentToDatabase() {
+    override fun addDocumentToDataBase() {
         //Ejecuta la tarea en un hilo secundario
         Executors.newSingleThreadExecutor().execute {
             val plateNumber = getAddVehicleBinding.plateNumber.text.toString()

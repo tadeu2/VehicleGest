@@ -30,17 +30,17 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
     private val getFragmentEmployeesBinding
         get() = fragmentEmployeesBinding ?: throw IllegalStateException("Binding error")
 
-    //Variables locales
+    //Creamos una variable para el adaptador
     private lateinit var employeeRecyclerAdapter: EmployeeRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var employeeQuery: CollectionReference
+    private lateinit var employeeCollectionReference: CollectionReference
 
     //Fase de creación del fragmento
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
             //Referencia a la base de datos de Firebase
-            employeeQuery = Firebase.firestore.collection("employees")
+            employeeCollectionReference = Firebase.firestore.collection("employees")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
             activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
                 onAddButtonClick()
@@ -58,13 +58,13 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
             //Enlaza el fragmento a el xml y lo infla
             fragmentEmployeesBinding = FragmentEmployeesBinding.inflate(inflater, container, false)
 
-            //Pintar el recyclerview
             //Enlaza el recycler a la variable
             recyclerView = getFragmentEmployeesBinding.recyclerEmployees
+            // Enlaza el layout manager al recyclerView
             recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.setHasFixedSize(true)
+            recyclerView.setHasFixedSize(true) //Tamaño fijo para mejorar el rendimiento
 
-            employeeRecyclerAdapter = EmployeeRecyclerAdapter(employeeQuery, this)
+            employeeRecyclerAdapter = EmployeeRecyclerAdapter(employeeCollectionReference, this)
             recyclerView.adapter = employeeRecyclerAdapter
         } catch (exception: Exception) {
             exception.printStackTrace()

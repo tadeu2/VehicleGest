@@ -16,10 +16,10 @@ import es.ilerna.proyectodam.vehiclegest.models.Item
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
- * @param snapshot Instantanea de firestore del item
+ * @param documentSnapshot Instantanea de firestore del item
  */
 class ItemDetail(
-    val snapshot: DocumentSnapshot
+    val documentSnapshot: DocumentSnapshot
 ) : DetailFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
@@ -43,8 +43,7 @@ class ItemDetail(
         try {
             //Enlaza al XML del formulario y lo infla
             detailItemBinding = DetailItemBinding.inflate(inflater, container, false)
-            dbFirestoreReference = FirebaseFirestore.getInstance().collection("inventory");
-            val root: View = getDetailItemBinding.root
+            dbFirestoreReference = FirebaseFirestore.getInstance().collection("inventory")
 
             //Escuchador del boton cerrar
             getDetailItemBinding.bar.btclose.setOnClickListener {
@@ -53,7 +52,7 @@ class ItemDetail(
 
             //Escuchador del boton borrar
             getDetailItemBinding.bar.btdelete.setOnClickListener {
-                delDocumentSnapshot(snapshot)
+                delDocumentSnapshot(documentSnapshot)
                 fragmentReplacer(InventoryFragment(), parentFragmentManager)
             }
 
@@ -69,21 +68,35 @@ class ItemDetail(
      * Función que rellena los datos del formulario
      */
     override fun bindDataToForm() {
-            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val item: Item? = snapshot.toObject(Item::class.java)
-            getDetailItemBinding.name.setText(item?.name)
-            getDetailItemBinding.plateNumber.setText(item?.plateNumber)
-            getDetailItemBinding.itemDescription.setText(item?.description)
+        //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+        val item: Item? = documentSnapshot.toObject(Item::class.java)
+        getDetailItemBinding.name.setText(item?.name)
+        getDetailItemBinding.plateNumber.setText(item?.plateNumber)
+        getDetailItemBinding.itemDescription.setText(item?.description)
 
-            //Carga la foto en el formulario a partir de la URL almacenada
-            Controller().showImageFromUrl(getDetailItemBinding.itemImage, item?.photoURL.toString())
+        //Carga la foto en el formulario a partir de la URL almacenada
+        Controller().showImageFromUrl(getDetailItemBinding.itemImage, item?.photoURL.toString())
+    }
+
+    /**
+     * Metodo que rellena la entidad con los datos del formulario
+     */
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Añade el documento a la base de datos
+     */
+    override fun addDocumentToDataBase() {
+        TODO("Not yet implemented")
     }
 
     /**
      * Borra el documento de la base de datos
      * @param documentSnapshot Instantanea de firestore del item
      */
-    override fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
         TODO("Not yet implemented")
     }
 

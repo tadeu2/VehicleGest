@@ -23,18 +23,33 @@ abstract class DetailFragment : Fragment() {
     private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
     private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
     private lateinit var floatingButton: FloatingActionButton //Botón flotante de la interfaz
-    lateinit var dbFirestoreReference: CollectionReference //Referencia a la colección de la base de datos
+    protected lateinit var dbFirestoreReference: CollectionReference //Referencia a la colección de la base de datos
 
-    open fun bindDataToForm() {}//Enlazar datos al formulario de texto
-    open fun addDataToDataBase() {} //Añadir datos a la base de datos
-    open fun updateDataBase() {} //Actualizar datos en la base de datos
-    open fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {}//Editar documento en la base de datos
+    /**
+     * Metodo que rellena el formulario con los datos de la entidad
+     */
+    protected abstract fun bindDataToForm()
+    /**
+     * Metodo que rellena la entidad con los datos del formulario
+     */
+    protected abstract fun fillDataFromForm() :Any
+
+    /**
+     * Añade el documento a la base de datos
+     */
+    protected abstract fun addDocumentToDataBase()
+    /**
+     * Actualiza el documento en la base de datos
+     * @param documentSnapshot Documento a actualizar
+     * @param any Entidad a actualizar
+     */
+    protected abstract fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any)//Editar documento en la base de datos
 
     /**
      *  Borra el documento de la base de datos
      *  @param documentSnapshot: DocumentSnapshot
      */
-    fun delDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
+    protected open fun delDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
         try {
             documentSnapshot.reference.delete()
                 .addOnSuccessListener {

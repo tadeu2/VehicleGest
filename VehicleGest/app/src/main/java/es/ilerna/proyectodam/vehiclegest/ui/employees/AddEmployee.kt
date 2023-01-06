@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
@@ -61,7 +62,7 @@ class AddEmployee : DetailFragment() {
             //Escuchador del botón de añadir
             getAddEmployeeBinding.bar.btsave.setOnClickListener {
                 //añade un empleado a la base de datos
-                addDataToDataBase()
+                addDocumentToDataBase()
                 //Vuelve a la pantalla de empleados
                 fragmentReplacer(EmployeeFragment(), parentFragmentManager)
             }
@@ -89,10 +90,12 @@ class AddEmployee : DetailFragment() {
         return getAddEmployeeBinding.root
     }
 
+
+
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addDataToDataBase() {
+    override fun addDocumentToDataBase() {
         Executors.newSingleThreadExecutor().execute {
             val dni = getAddEmployeeBinding.dni.text.toString()
             val name = getAddEmployeeBinding.name.text.toString()
@@ -125,4 +128,16 @@ class AddEmployee : DetailFragment() {
 
         }
     }
+
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
+        TODO("Not yet implemented")
+    }
+    override fun bindDataToForm() {
+        TODO("Not yet implemented")
+    }
+
+    override fun fillDataFromForm() {
+        TODO("Not yet implemented")
+    }
+
 }

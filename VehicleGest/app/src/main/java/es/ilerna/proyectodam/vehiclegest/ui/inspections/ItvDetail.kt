@@ -76,11 +76,19 @@ class ItvDetail(
         getDetailItvBinding.date.setText(itv?.date?.let { customDateFormat(it) })
     }
 
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
+    override fun addDocumentToDataBase() {
+        TODO("Not yet implemented")
+    }
+
     /**
      *  Edita los datos de la ficha seleccionada
      *  @param documentSnapshot Instantanea de firestore de la ITV
      */
-    override fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
         TODO("Not yet implemented")
     }
 

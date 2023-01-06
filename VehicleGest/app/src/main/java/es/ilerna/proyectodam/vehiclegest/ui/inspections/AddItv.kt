@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.AddItvBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customReverseDateFormat
@@ -47,7 +48,7 @@ class AddItv : DetailFragment() {
 
             //Escuchador del botón de añadir
             getAddItvBinding.bar.btsave.setOnClickListener{
-                addDataToDataBase()
+                addDocumentToDataBase()
                 fragmentReplacer(ItvFragment(), parentFragmentManager)
             }
 
@@ -68,11 +69,19 @@ class AddItv : DetailFragment() {
         return getAddItvBinding.root
     }
 
+    override fun bindDataToForm() {
+        TODO("Not yet implemented")
+    }
+
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
 
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
-    override fun addDataToDataBase() {
+    override fun addDocumentToDataBase() {
         Executors.newSingleThreadExecutor().execute {
             val date = customReverseDateFormat(getAddItvBinding.date.text.toString())
             val itv = ITV(
@@ -84,6 +93,10 @@ class AddItv : DetailFragment() {
                 Log.w(TAG, "Error añadiendo documento", e)
             }
         }
+    }
+
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
+        TODO("Not yet implemented")
     }
 
     /**

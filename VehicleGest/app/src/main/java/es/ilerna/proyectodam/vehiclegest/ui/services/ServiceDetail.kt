@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.tabs.TabLayout.TabGravity
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
@@ -68,23 +66,37 @@ class ServiceDetail(
      * Rellena los datos del formulario con los datos del servicio
      */
     override fun bindDataToForm() {
-            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val service: Service? = documentSnapshot.toObject(Service::class.java)
-            getDetailServiceBinding.plateNumber.setText(service?.plateNumber.toString())
-            getDetailServiceBinding.costumer.setText(service?.costumer.toString())
-            getDetailServiceBinding.remarks.setText(service?.remarks.toString())
+        //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+        val service: Service? = documentSnapshot.toObject(Service::class.java)
+        getDetailServiceBinding.plateNumber.setText(service?.plateNumber.toString())
+        getDetailServiceBinding.costumer.setText(service?.costumer.toString())
+        getDetailServiceBinding.remarks.setText(service?.remarks.toString())
 
-            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-            //El formato se puede modificar en strings.xml
-            getDetailServiceBinding.date.setText(service?.date?.let { customDateFormat(it) })
+        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+        //El formato se puede modificar en strings.xml
+        getDetailServiceBinding.date.setText(service?.date?.let { customDateFormat(it) })
 
+    }
+
+    /**
+     * Metodo que rellena la entidad con los datos del formulario
+     */
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Añade el documento a la base de datos
+     */
+    override fun addDocumentToDataBase() {
+        TODO("Not yet implemented")
     }
 
     /**
      * Edita los datos del servicio
      * @param documentSnapshot Instantanea de firestore del servicio
      */
-    override fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
         TODO("Not yet implemented")
     }
 

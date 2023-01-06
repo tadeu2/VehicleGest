@@ -66,4 +66,9 @@
     <string name="register">Registrar</string>
     <string name="repeat_password">Repetir password</string>
     <string name="register_error">Error de registro</string>
+    <string name="solution_description">Solution</string>
+    <string name="alert_details">Alert Details</string>
+    <string name="date_solved">Date Solved</string>
+    <string name="solved">Solved</string>
+    <string name="solution">Solution</string>
 </resources>

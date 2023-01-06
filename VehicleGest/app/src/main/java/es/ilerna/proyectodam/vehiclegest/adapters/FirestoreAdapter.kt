@@ -121,8 +121,8 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
      * @param position Posición de la instantanea de documento que se quiere obtener
      * @return Instantanea de documento de la posición indicada
      */
-    protected open fun getSnapshot(index: Int): DocumentSnapshot? {
-        return documentSnapshotArrayList[index]
+    protected open fun getSnapshot(position: Int): DocumentSnapshot? {
+        return documentSnapshotArrayList[position]
     }
 
 }

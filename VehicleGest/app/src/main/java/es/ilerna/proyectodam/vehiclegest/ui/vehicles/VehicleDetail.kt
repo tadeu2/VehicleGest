@@ -98,10 +98,24 @@ class VehicleDetail(
     }
 
     /**
+     * Metodo que rellena la entidad con los datos del formulario
+     */
+    override fun fillDataFromForm(): Any {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Añade el documento a la base de datos
+     */
+    override fun addDocumentToDataBase() {
+        TODO("Not yet implemented")
+    }
+
+    /**
      * Edita los datos del vehículo
      * @param documentSnapshot Instantanea de firestore del vehículo
      */
-    override fun editDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
+    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
         TODO("Not yet implemented")
     }
 

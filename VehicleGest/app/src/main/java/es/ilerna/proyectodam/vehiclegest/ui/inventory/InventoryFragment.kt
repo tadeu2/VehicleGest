@@ -43,7 +43,7 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
         try {
 
             //Referencia a la base de datos de Firebase
-            itemCollectionReference = Firebase.firestore.collection("item")
+            itemCollectionReference = Firebase.firestore.collection("inventory")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
             activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
                 onAddButtonClick()
@@ -73,7 +73,7 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
         recyclerView = getfragmentInventoryBinding.recycleritems
         //Le asigna un manager lineal en el contexto de este fragmento
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.setHasFixedSize(true)
+        recyclerView.setHasFixedSize(true) //Para que no se recargue la vista al hacer scroll
 
         //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
         itemRecyclerAdapter = ItemRecyclerAdapter(itemCollectionReference, this)

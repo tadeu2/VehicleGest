@@ -10,9 +10,6 @@ import java.util.*
 /**
  * Clase encargada de iniciar y mostrar el datePicker para selecionar las fechas
  * @param listener Parámetro que contiene el listener del datePicker
- * @param year Parámetro que contiene el año
- * @param month Parámetro que contiene el mes
- * @param day Parámetro que contiene el día
  * @return Devuelve el datePicker con los datos del listener y las fechas
  */
 
@@ -25,7 +22,7 @@ class DatePickerFragment(val listener: (day: Int, month: Int, year: Int) -> Unit
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         //dialog.datePicker.maxDate = c.timeInMillis //Para que no se pueda seleccionar una fecha posterior a la actual
-        return DatePickerDialog(requireContext(), this, year, month, day);
+        return DatePickerDialog(requireContext(), this, year, month, day)
     }
 
     /**

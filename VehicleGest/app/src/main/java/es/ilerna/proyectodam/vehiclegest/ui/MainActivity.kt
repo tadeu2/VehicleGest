@@ -35,7 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     //Variables para crear el contador de alertas
     private var alertCount: Int = 0
+    // Referencia a la colección de alertas
     private lateinit var alertCollectionReference: CollectionReference
+    // Referencia al badge de alertas
     private lateinit var badgeAlert: BadgeDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,14 +1,17 @@
 package es.ilerna.proyectodam.vehiclegest.adapters
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
 import es.ilerna.proyectodam.vehiclegest.models.Employee
+import java.security.AccessController.getContext
 import java.util.concurrent.Executors
 
 /**
@@ -62,11 +65,8 @@ class EmployeeRecyclerAdapter(
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                 }
             } catch (exception: Exception) {
+                Controller.mostrarToast(Vehiclegest.instance.applicationContext)
                 Log.e("Error", exception.message.toString(), exception)
-                exception.printStackTrace()
-            } catch (nullPointerException: NullPointerException) {
-                Log.e("Error", "Null reference exception", nullPointerException)
-                nullPointerException.printStackTrace()
             }
         }
     }
