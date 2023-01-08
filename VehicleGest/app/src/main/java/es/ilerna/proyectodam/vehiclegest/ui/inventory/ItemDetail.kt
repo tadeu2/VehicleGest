@@ -11,7 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
 
 /**
@@ -19,8 +19,8 @@ import es.ilerna.proyectodam.vehiclegest.models.Item
  * @param documentSnapshot Instantanea de firestore del item
  */
 class ItemDetail(
-    val documentSnapshot: DocumentSnapshot
-) : DetailFragment() {
+    private val documentSnapshot: DocumentSnapshot
+) : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailItemBinding: DetailItemBinding? = null
@@ -89,6 +89,13 @@ class ItemDetail(
      * Añade el documento a la base de datos
      */
     override fun addDocumentToDataBase() {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     *  Hace el formulario editable
+     */
+    override fun makeFormEditable() {
         TODO("Not yet implemented")
     }
 

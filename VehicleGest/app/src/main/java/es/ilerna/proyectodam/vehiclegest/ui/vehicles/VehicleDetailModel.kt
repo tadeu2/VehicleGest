@@ -10,18 +10,18 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  * @param documentSnapshot Instantanea de firestore del vehículo
  */
-class VehicleDetail(
+class VehicleDetailModel(
     private val documentSnapshot: DocumentSnapshot
-) : DetailFragment() {
+) : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailVehicleBinding: DetailVehicleBinding? = null
@@ -70,7 +70,7 @@ class VehicleDetail(
     override fun bindDataToForm() {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
             val vehicle: Vehicle? = documentSnapshot.toObject(Vehicle::class.java)
-            getDetailVehicleBinding.url.setText(vehicle?.photoURL)
+            getDetailVehicleBinding.urlphoto.setText(vehicle?.photoURL)
             getDetailVehicleBinding.plateNumber.setText(vehicle?.plateNumber)
             getDetailVehicleBinding.type.setText(vehicle?.type)
             getDetailVehicleBinding.brand.setText(vehicle?.brand)
@@ -81,7 +81,7 @@ class VehicleDetail(
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
             getDetailVehicleBinding.expiringItv.setText(vehicle?.expiryDateITV?.let {
-                customDateFormat(
+                dateToStringFormat(
                     it
                 )
             })
@@ -93,7 +93,7 @@ class VehicleDetail(
             //Carga la foto en el formulario a partir de la URL almacenada
             Controller().showImageFromUrl(
                 getDetailVehicleBinding.vehicleImage,
-                getDetailVehicleBinding.url.text.toString()
+                getDetailVehicleBinding.urlphoto.text.toString()
             )
     }
 
@@ -104,10 +104,12 @@ class VehicleDetail(
         TODO("Not yet implemented")
     }
 
+
+
     /**
-     * Añade el documento a la base de datos
+     *  Hace el formulario editable
      */
-    override fun addDocumentToDataBase() {
+    override fun makeFormEditable() {
         TODO("Not yet implemented")
     }
 

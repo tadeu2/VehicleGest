@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
 
 /**
@@ -19,7 +19,7 @@ import es.ilerna.proyectodam.vehiclegest.models.Service
  */
 class ServiceDetail(
     private val documentSnapshot: DocumentSnapshot
-) : DetailFragment() {
+) : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailServiceBinding: DetailServiceBinding? = null
@@ -74,7 +74,7 @@ class ServiceDetail(
 
         //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
         //El formato se puede modificar en strings.xml
-        getDetailServiceBinding.date.setText(service?.date?.let { customDateFormat(it) })
+        getDetailServiceBinding.date.setText(service?.date?.let { dateToStringFormat(it) })
 
     }
 
@@ -89,6 +89,13 @@ class ServiceDetail(
      * Añade el documento a la base de datos
      */
     override fun addDocumentToDataBase() {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     *  Hace el formulario editable
+     */
+    override fun makeFormEditable() {
         TODO("Not yet implemented")
     }
 

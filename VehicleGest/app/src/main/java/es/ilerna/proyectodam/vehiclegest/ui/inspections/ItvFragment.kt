@@ -97,7 +97,7 @@ class ItvFragment : Fragment(), Controller.AdapterListener {
      * Al pulsar el botón flotante se abre el fragmento de creación
      */
     override fun onAddButtonClick() {
-        fragmentReplacer(AddItv(), parentFragmentManager)
+        fragmentReplacer(ItvAdder(), parentFragmentManager)
     }
 
     /**

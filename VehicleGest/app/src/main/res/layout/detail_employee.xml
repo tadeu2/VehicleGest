@@ -12,7 +12,6 @@
         app:strokeColor="@color/md_theme_dark_surfaceVariant"
         app:strokeWidth="2dp">
 
-
         <include
             android:id="@+id/bar"
             layout="@layout/bar_detail"
@@ -20,280 +19,275 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TableLayout
-            android:id="@+id/table_details"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/employee_title"
+            style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/tableshape"
+            android:text="@string/personal_information"
+            android:textAlignment="center"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/bar"
+            tools:text="@string/personal_information" />
 
-            <TableRow
+        <View
+            android:id="@+id/divider"
+            android:layout_width="393dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:layout_margin="@dimen/medium_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/employee_title"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="338dp"
+            />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/employee_image"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="@dimen/small_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:srcCompat="@drawable/no_image_available"
+            app:strokeWidth="@dimen/small_margin"
+            tools:srcCompat="@drawable/no_image_available" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/urlphoto_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/urlphoto"
+            android:padding="@dimen/small_margin"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/employee_image">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/urlphoto"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:singleLine="true"
+                tools:text="www.url.com/photo" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/employee_image"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    app:srcCompat="@drawable/no_image_available"
-                    app:strokeWidth="@dimen/small_margin"
-                    tools:srcCompat="@drawable/no_image_available" />
-            </TableRow>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dni_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/DNI"
+            android:padding="@dimen/small_margin"
+            android:textAlignment="center"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/urlphoto_layout">
 
-
-            <TableRow
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/employee_dni"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                tools:text="4423442FDF" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_url_detail"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:nestedScrollingEnabled="false"
-                    android:text="@string/imgurl"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/imgurl" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/name"
+            android:padding="@dimen/small_margin"
+            android:textAlignment="center"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dni_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/url"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    android:singleLine="true"
-                    tools:text="1234ABC" />
-            </TableRow>
-
-            <TableRow
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                tools:text="nombre" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_dni_detail"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto"
-                    android:nestedScrollingEnabled="false"
-                    android:text="@string/DNI"
-                    android:textAlignment="textEnd"
-                    tools:text="DNI" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/surname_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/surname"
+            android:padding="@dimen/small_margin"
+            android:textAlignment="center"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/employee_dni"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="4423442FDF" />
-            </TableRow>
-
-            <TableRow
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/surname"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                tools:text="Caruncho Serrano" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_employee_name"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/name"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/name" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/address_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/address"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/surname_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="nombre" />
-            </TableRow>
-
-            <TableRow
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/roboto"
+                android:textAlignment="center"
+                tools:text="C/Pepita nº Alicante" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_surname"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/surname"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/surname" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phone_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/phone"
+            android:padding="@dimen/small_margin"
+            android:textAlignment="center"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/surname"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="Caruncho Serrano" />
-            </TableRow>
-
-            <TableRow
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/roboto"
+                android:textAlignment="center"
+                tools:text="652344424" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_address"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/address"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/address" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/birthdate_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/birthdate"
+            android:padding="@dimen/small_margin"
+            android:textAlignment="center"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/address"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="C/Pepita nº Alicante" />
-            </TableRow>
-
-            <TableRow
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/birthdate"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/roboto"
+                android:textAlignment="center"
+                tools:text="12/12/2013" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_phone"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/phone"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/phone" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/email"
+            android:padding="@dimen/small_margin"
+            android:textAlignment="center"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/birthdate_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/phone"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="652344424" />
-            </TableRow>
-
-            <TableRow
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/roboto"
+                android:textAlignment="center"
+                tools:text="hola@gmail.com" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_birthdate"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/birthdate"
-                    android:textAlignment="textEnd"
-                    tools:text="Fecha nacimiento" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/admin"
+            android:padding="@dimen/small_margin"
+            android:textAlignment="center"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/birthdate_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/birthdate"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="12/12/2013" />
-            </TableRow>
-
-            <TableRow
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_admin"
+                style="@style/TextAppearance.Material3.TitleSmall"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_email"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/email"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/email" />
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/roboto"
-                    android:textAlignment="center"
-                    tools:text="hola@gmail.com" />
+                android:layout_height="wrap_content"
+                android:text="@string/admin"
+                android:textAlignment="textEnd"
+                tools:text="@string/admin" />
 
 
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_admin"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="50dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:text="@string/admin"
-                    android:textAlignment="textEnd"
-                    tools:text="@string/admin" />
-
-
-                <CheckBox
-                    android:id="@+id/checkadmin"
-                    android:layout_width="400dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:focusableInTouchMode="false" />
-            </TableRow>
-
-        </TableLayout>
-
+            <CheckBox
+                android:id="@+id/checkadmin"
+                android:layout_width="400dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:checked="false"
+                android:focusableInTouchMode="false" />
+        </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

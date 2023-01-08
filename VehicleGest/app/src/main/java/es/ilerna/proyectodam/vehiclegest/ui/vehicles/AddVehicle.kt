@@ -10,17 +10,17 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.AddVehicleBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customReverseDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class AddVehicle : DetailFragment() {
+class AddVehicle : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addVehicleBinding: AddVehicleBinding? = null
@@ -112,11 +112,11 @@ class AddVehicle : DetailFragment() {
             val model = getAddVehicleBinding.model.text.toString()
             //Convierte la fecha a formato Date
             val expiryDateITV =
-                customReverseDateFormat(getAddVehicleBinding.expiringItv.text.toString())
+                stringToDateFormat(getAddVehicleBinding.expiringItv.text.toString())
             val description = getAddVehicleBinding.vehicleDescription.text.toString()
             val licensed = getAddVehicleBinding.checkLicensed.isChecked
             val totalDistance = Integer.parseInt(getAddVehicleBinding.totalDistance.text.toString())
-            val photoURL = getAddVehicleBinding.url.text.toString()
+            val photoURL = getAddVehicleBinding.urlphoto.text.toString()
             val vehicle = Vehicle(
                 plateNumber, type, brand, model, expiryDateITV,
                 totalDistance, licensed, description, photoURL
@@ -130,6 +130,13 @@ class AddVehicle : DetailFragment() {
                     Log.w(TAG, "Error añadiendo documento", e)
                 }
         }
+    }
+
+    /**
+     *  Hace el formulario editable
+     */
+    override fun makeFormEditable() {
+        TODO("Not yet implemented")
     }
 
 }

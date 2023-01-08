@@ -98,7 +98,7 @@ class AlertsFragment : Fragment(), Controller.AdapterListener {
      * Al pulsar el botón flotante se abre el fragmento de creación
      */
     override fun onAddButtonClick() {
-        fragmentReplacer(AddAlert(), parentFragmentManager)
+        fragmentReplacer(AlertAdder(), parentFragmentManager)
     }
 
     /**

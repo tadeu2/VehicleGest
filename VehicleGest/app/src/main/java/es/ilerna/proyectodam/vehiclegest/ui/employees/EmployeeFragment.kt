@@ -85,7 +85,7 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
      * Al pulsar el botón flotante se abre el fragmento de creación
      */
     override fun onAddButtonClick() {
-        fragmentReplacer(AddEmployee(), parentFragmentManager)
+        fragmentReplacer(EmployeeAdder(), parentFragmentManager)
     }
 
     /**

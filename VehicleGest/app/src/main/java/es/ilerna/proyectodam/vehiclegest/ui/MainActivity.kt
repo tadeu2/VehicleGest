@@ -11,8 +11,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inspections.ItvFragment
@@ -20,6 +21,11 @@ import es.ilerna.proyectodam.vehiclegest.ui.inventory.InventoryFragment
 import es.ilerna.proyectodam.vehiclegest.ui.login.LoginActivity
 import es.ilerna.proyectodam.vehiclegest.ui.services.ServiceFragment
 import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * Actividad principal de la aplicación
@@ -35,8 +41,10 @@ class MainActivity : AppCompatActivity() {
 
     //Variables para crear el contador de alertas
     private var alertCount: Int = 0
+
     // Referencia a la colección de alertas
     private lateinit var alertCollectionReference: CollectionReference
+
     // Referencia al badge de alertas
     private lateinit var badgeAlert: BadgeDrawable
 
@@ -61,7 +69,8 @@ class MainActivity : AppCompatActivity() {
 
         //Inicializa el icono de alerta
         alertCollectionReference = dbFirestore.collection("alert")
-        badgeAlert = BadgeDrawable.create(this) //Creamos el badge de alerta para la barra de navegación
+        badgeAlert =
+            BadgeDrawable.create(this) //Creamos el badge de alerta para la barra de navegación
 
         //Carga el fragmento de vehículos como inicial
         fragmentReplacer(VehiclesFragment(), supportFragmentManager)
@@ -91,6 +100,23 @@ class MainActivity : AppCompatActivity() {
                 R.id.employees -> fragmentReplacer(EmployeeFragment(), supportFragmentManager)
             }
             true
+        }
+
+        val inspectionDate = Date()
+        val scope = CoroutineScope(Dispatchers.Default)
+
+        scope.launch {
+            while (true) {
+                val currentDate = Date()
+                if (Controller.isInspectionExpired(inspectionDate, currentDate)) {
+                    println("La inspección ha caducado")
+                } else {
+                    println("La inspección todavía no ha caducado")
+                }
+
+                // Duerme durante una hora antes de verificar de nuevo
+                delay(3_600_000)
+            }
         }
 
     }
@@ -129,7 +155,11 @@ class MainActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.app_bar_items, menu)
         //Crea el contador de alertas y lo asocia al icono de la campana
-        BadgeUtils.attachBadgeDrawable(badgeAlert, activityMainBinding.appBarMain.topToolbar, R.id.alert_icon)
+        BadgeUtils.attachBadgeDrawable(
+            badgeAlert,
+            activityMainBinding.appBarMain.topToolbar,
+            R.id.alert_icon
+        )
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -143,6 +173,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
+
 
 }
 

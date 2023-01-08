@@ -85,7 +85,7 @@ class VehiclesFragment : Fragment(), Controller.AdapterListener {
      * @param documentSnapshot Documento seleccionado
      */
     override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        fragmentReplacer(VehicleDetail(documentSnapshot!!), parentFragmentManager)
+        fragmentReplacer(VehicleDetailModel(documentSnapshot!!), parentFragmentManager)
     }
 
     /**

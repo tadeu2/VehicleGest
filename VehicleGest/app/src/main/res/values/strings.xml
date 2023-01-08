@@ -73,9 +73,10 @@
     <string name="solution_description">Solution</string>
     <string name="solved_date">Solved Date</string>
     <string name="alert_details">Alert Details</string>
-    <string name="check_solved">Solucionado</string>
     <string name="date_solved">Date Solved</string>
     <string name="solved">Solved</string>
     <string name="solution">Solution</string>
+    <string name="urlphoto">Photo URL</string>
+    <string name="personal_information">Personal Information</string>
 
 </resources>

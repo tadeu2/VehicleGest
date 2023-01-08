@@ -9,9 +9,10 @@ import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.customDateFormat
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 
 /**
@@ -20,7 +21,7 @@ import es.ilerna.proyectodam.vehiclegest.models.ITV
  */
 class ItvDetail(
     private val documentSnapshot: DocumentSnapshot
-) : DetailFragment() {
+) : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailItvBinding: DetailItvBinding? = null
@@ -46,15 +47,20 @@ class ItvDetail(
             //Referencia a la base de datos
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("ITV")
 
-            //Escuchador del boton cerrar
-            getDetailItvBinding.bar.btclose.setOnClickListener {
-                fragmentReplacer(ItvFragment(), parentFragmentManager)
-            }
-
-            //Escuchador del boton borrar
-            getDetailItvBinding.bar.btdelete.setOnClickListener {
-                delDocumentSnapshot(documentSnapshot)
-                fragmentReplacer(ItvFragment(), parentFragmentManager)
+            //Iniciliza los escuchadores de los botones
+            with(getDetailItvBinding.bar) {
+                btsave.visibility = View.VISIBLE
+                btedit.visibility = View.GONE
+                setListeners(
+                    documentSnapshot,
+                    parentFragmentManager,
+                    ItvFragment(),
+                    DetailItvBinding::class.java,
+                    btclose,
+                    btdelete,
+                    btsave,
+                    btedit,
+                )
             }
 
             //Llama a la función que rellena los datos en el formulario
@@ -73,23 +79,33 @@ class ItvDetail(
         val itv: ITV? = documentSnapshot.toObject(ITV::class.java)
         //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
         //El formato se puede modificar en strings.xml
-        getDetailItvBinding.date.setText(itv?.date?.let { customDateFormat(it) })
+        getDetailItvBinding.date.setText(dateToStringFormat(itv?.date))
     }
 
     override fun fillDataFromForm(): Any {
-        TODO("Not yet implemented")
-    }
-
-    override fun addDocumentToDataBase() {
-        TODO("Not yet implemented")
+        getDetailItvBinding.apply {
+            return ITV(
+                stringToDateFormat(date.text.toString())
+            )
+        }
     }
 
     /**
-     *  Edita los datos de la ficha seleccionada
-     *  @param documentSnapshot Instantanea de firestore de la ITV
+     *  Hace el formulario editable
      */
-    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
-        TODO("Not yet implemented")
+    override fun makeFormEditable() {
+        getDetailItvBinding.apply {
+            date.isFocusableInTouchMode = true
+
+            //Escuchador del botón de fecha
+            date.setOnClickListener {
+                //Abre el selector de fecha
+                DatePickerFragment { day, month, year ->
+                    //Muestra la fecha en el campo de texto
+                    date.setText(String.format("$day/$month/$year"))
+                }.show(parentFragmentManager, "datePicker")
+            }
+        }
     }
 
     /**

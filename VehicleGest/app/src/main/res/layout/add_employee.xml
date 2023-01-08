@@ -91,7 +91,7 @@
                     tools:text="@string/imgurl" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/url"
+                    android:id="@+id/urlphoto"
                     style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="500dp"
                     android:layout_height="48dp"

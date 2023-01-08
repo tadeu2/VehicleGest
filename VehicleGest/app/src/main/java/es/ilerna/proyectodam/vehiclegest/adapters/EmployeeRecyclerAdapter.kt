@@ -65,7 +65,7 @@ class EmployeeRecyclerAdapter(
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                 }
             } catch (exception: Exception) {
-                Controller.mostrarToast(Vehiclegest.instance.applicationContext)
+                Controller.showLongToast("Error al cargar los datos")
                 Log.e("Error", exception.message.toString(), exception)
             }
         }
@@ -102,5 +102,4 @@ class EmployeeRecyclerAdapter(
         }
 
     }
-
 }

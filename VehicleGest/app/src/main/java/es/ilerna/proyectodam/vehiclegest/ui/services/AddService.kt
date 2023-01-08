@@ -13,7 +13,7 @@ import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AddServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,7 +23,7 @@ import java.util.concurrent.Executors
  * Abre una ventana diálogo con los detalles del vehículo
  *
  */
-class AddService : DetailFragment() {
+class AddService : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addServiceBinding: AddServiceBinding? = null
@@ -121,6 +121,13 @@ class AddService : DetailFragment() {
                 Log.w(TAG, "Error añadiendo documento", e)
             }
         }
+    }
+
+    /**
+     *  Hace el formulario editable
+     */
+    override fun makeFormEditable() {
+        TODO("Not yet implemented")
     }
 
     /**

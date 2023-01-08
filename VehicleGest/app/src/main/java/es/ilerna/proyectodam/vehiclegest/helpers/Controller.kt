@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import kotlinx.coroutines.*
@@ -46,8 +47,6 @@ class Controller {
                     // Convertir la imagen descargada a un Bitmap
                     return@withContext BitmapFactory.decodeStream(inputStream) // Devolver el Bitmap
 
-                    // Si hay algún error, devolver null para que no se pinte nada
-                    return@withContext null
                 }
 
                 // Mostrar la imagen en el ImageView si no es null (si no hay ningún error)
@@ -87,7 +86,7 @@ class Controller {
          * Recupera los formatos custom de fecha almacenados en los xml de cadenas string.xml
          * @param time Fecha que querremos darle formato
          */
-        fun customDateFormat(time: Date): String {
+        fun dateToStringFormat(time: Date?): String {
             val simpleDateFormat = SimpleDateFormat(
                 Vehiclegest.instance.resources
                     .getString(R.string.dateFormat), Locale.getDefault()
@@ -112,7 +111,7 @@ class Controller {
         }
 
 
-        fun customReverseDateFormat(time: String): Date {
+        fun stringToDateFormat(time: String): Date {
             val simpleDateFormat = SimpleDateFormat(
                 Vehiclegest.instance.resources
                     .getString(R.string.dateFormat), Locale.getDefault()
@@ -126,10 +125,54 @@ class Controller {
                 .show()
         }
 
-        fun mostrarLongToast(message: String) {
+        fun showLongToast(message: String) {
             Toast.makeText(Vehiclegest.instance.applicationContext, message, Toast.LENGTH_LONG)
                 .show()
         }
+
+        fun isInspectionExpired(expiryDateITV: Date, currentDate: Date): Boolean {
+            // Obtenemos la diferencia en días entre las dos fechas
+            val diff = currentDate.time - expiryDateITV.time
+            val diffDays = diff / (24 * 60 * 60 * 1000)
+
+            // Si la diferencia en días es mayor que el número de días permitidos
+            // para una inspección, entonces la inspección está caducada
+            return diffDays > 365
+        }
+
+
+        fun checkInspectionExpiration(vehicleId: String) :Boolean {
+            val firestore = FirebaseFirestore.getInstance()
+            val collection = firestore.collection("vehicles")
+            val document = collection.document(vehicleId)
+
+            document.get().addOnSuccessListener { snapshot ->
+                val expirationDate = snapshot.getDate("expiryDateITV")
+                if (expirationDate != null) {
+                    val currentDate = Date()
+                    if (currentDate.after(expirationDate)) {
+                        return@addOnSuccessListener
+                    } else {
+                        return@addOnSuccessListener
+                    }
+                }
+            }
+            return false
+        }
+
+       /* fun checkVehicleProblems(){
+            val firestore = FirebaseFirestore.getInstance()
+            val collection = firestore.collection("vehicles")
+            for (vehicle in Vehiclegest.vehiclesList) {
+                val document = collection.document(vehicle.id)
+                document.get().addOnSuccessListener { snapshot ->
+                    val problems = snapshot.get("problems") as ArrayList<String>
+                    if (problems.isNotEmpty()) {
+                        vehicle.problems = problems
+                    }
+                }
+            }
+        }*/
     }
 
     /**
@@ -147,5 +190,7 @@ class Controller {
          */
         fun onAddButtonClick()
     }
+
+
 
 }

@@ -42,9 +42,9 @@
     <string name="model">Modelo</string>
     <string name="buttondelete">Borrar</string>
     <string name="buttonedit">Editar</string>
-    <string name="buttonclose">Close</string>
+    <string name="buttonclose">Cerrar</string>
     <string name="licensed">ITV aprobada</string>
-    <string name="description">Descripcion</string>
+    <string name="description">Descripción</string>
     <string name="logout">Desconectar</string>
     <string name="name">Nombre</string>
     <string name="surname">Apellidos</string>
@@ -69,6 +69,9 @@
     <string name="solution_description">Solution</string>
     <string name="alert_details">Alert Details</string>
     <string name="date_solved">Date Solved</string>
-    <string name="solved">Solved</string>
-    <string name="solution">Solution</string>
+    <string name="solved">Solucionado</string>
+    <string name="solution">Solución</string>
+    <string name="urlphoto">URL Foto</string>
+    <string name="personal_information">Información Personal</string>
+    <string name="solved_date">Fecha de solución</string>
 </resources>

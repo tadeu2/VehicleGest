@@ -5,19 +5,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
+import java.util.concurrent.Executors
 
 
 /**
  * Interfaz para crear escuchadores para las diferentes entidades de la base de datos Firestore
  */
-abstract class DetailFragment : Fragment() {
+abstract class DetailModelFragment : Fragment() {
 
     //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
     private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
@@ -29,21 +34,93 @@ abstract class DetailFragment : Fragment() {
      * Metodo que rellena el formulario con los datos de la entidad
      */
     protected abstract fun bindDataToForm()
+
     /**
      * Metodo que rellena la entidad con los datos del formulario
      */
-    protected abstract fun fillDataFromForm() :Any
+    protected abstract fun fillDataFromForm(): Any
+
+    protected open fun addDocumentToDataBase() {
+        Executors.newSingleThreadExecutor().execute {
+            dbFirestoreReference.add(fillDataFromForm())
+                .addOnSuccessListener { documentReference ->
+                    Log.d(
+                        ContentValues.TAG,
+                        "DocumentSnapshot escrito con ID: ${documentReference.id}"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.w(ContentValues.TAG, "Error añadiendo documento", e)
+                }
+        }
+    }
 
     /**
-     * Añade el documento a la base de datos
+     * Metodo para inicializar los escuchadores de la interfaz
      */
-    protected abstract fun addDocumentToDataBase()
+    protected open fun <T> setListeners(
+        documentSnapshot: DocumentSnapshot?,
+        parentFragmentManager: FragmentManager,
+        fragment: Any,
+        bar: T,
+        btclose: Button,
+        btdelete: Button,
+        btsave: Button,
+        btedit: Button
+    ) {
+        //Escuchador del boton cerrar
+        btclose.setOnClickListener {
+            fragmentReplacer(fragment as Fragment, parentFragmentManager)
+        }
+
+        if(documentSnapshot!!.exists()) {
+            //Escuchador del boton eliminar
+            btdelete.setOnClickListener {
+                delDocumentSnapshot(documentSnapshot)
+                fragmentReplacer(fragment as Fragment, parentFragmentManager)
+            }
+        }
+
+        //Escuchador del boton borrar
+        btdelete.setOnClickListener {
+            delDocumentSnapshot(documentSnapshot)
+            fragmentReplacer(fragment as Fragment, parentFragmentManager)
+        }
+
+        //Escuchador del boton editar
+        btsave.setOnClickListener {
+            updateDocumentToDatabase(documentSnapshot, fillDataFromForm())
+            fragmentReplacer(AlertsFragment(), parentFragmentManager)
+            btsave.visibility = GONE
+            btedit.visibility = VISIBLE
+        }
+
+        btedit.setOnClickListener {
+            //Escuchador del botón de editar
+            makeFormEditable()
+            btsave.visibility = VISIBLE
+            btedit.visibility = GONE
+        }
+    }
+
+    /**
+     *  Hace el formulario editable
+     */
+    protected abstract fun makeFormEditable()
+
     /**
      * Actualiza el documento en la base de datos
      * @param documentSnapshot Documento a actualizar
      * @param any Entidad a actualizar
      */
-    protected abstract fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any)//Editar documento en la base de datos
+    protected open fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
+        Executors.newSingleThreadExecutor().execute {
+            val documentReference = dbFirestoreReference.document(documentSnapshot.id)
+            documentReference.set(any) //Actualiza el documento con los datos del formulario
+                .addOnSuccessListener { Log.d("Vehiclegest", "Document successfully updated!") }
+                .addOnFailureListener { e -> Log.w("vehiclegest", "Error updating document", e) }
+        }
+    }
 
     /**
      *  Borra el documento de la base de datos
