@@ -74,4 +74,7 @@
     <string name="urlphoto">URL Foto</string>
     <string name="personal_information">Información Personal</string>
     <string name="solved_date">Fecha de solución</string>
+    <string name="item_information">Item Information</string>
+    <string name="itv_information">ITV Information</string>
+    <string name="vehicle_information">Vehicle Information</string>
 </resources>

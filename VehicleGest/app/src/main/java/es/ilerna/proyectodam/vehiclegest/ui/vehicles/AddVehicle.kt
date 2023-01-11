@@ -7,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.databinding.AddVehicleBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
+import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
@@ -23,7 +22,7 @@ import java.util.concurrent.Executors
 class AddVehicle : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
-    private var addVehicleBinding: AddVehicleBinding? = null
+    private var addVehicleBinding: DetailVehicleBinding? = null
     private val getAddVehicleBinding get() = addVehicleBinding!!
 
     //Variable para la base de datos
@@ -40,13 +39,6 @@ class AddVehicle : DetailModelFragment() {
      * Metodo que rellena la entidad con los datos del formulario
      */
     override fun fillDataFromForm(): Any {
-        TODO("Not yet implemented")
-    }
-
-    /**
-     * Actualiza el documento en la base de datos
-     */
-    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
         TODO("Not yet implemented")
     }
 
@@ -68,7 +60,7 @@ class AddVehicle : DetailModelFragment() {
             vehicleCollectionReference = FirebaseFirestore.getInstance().collection("vehicle")
 
             //Enlaza al XML del formulario y lo infla
-            addVehicleBinding = AddVehicleBinding.inflate(inflater, container, false)
+            addVehicleBinding = DetailVehicleBinding.inflate(inflater, container, false)
 
             /**
              * Crea un escuchador para el botón de salvar

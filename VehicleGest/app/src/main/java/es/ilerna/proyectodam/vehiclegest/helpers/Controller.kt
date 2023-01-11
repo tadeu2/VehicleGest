@@ -112,11 +112,14 @@ class Controller {
 
 
         fun stringToDateFormat(time: String): Date {
+           if (time == "") {
+               return Date()
+           }
             val simpleDateFormat = SimpleDateFormat(
                 Vehiclegest.instance.resources
                     .getString(R.string.dateFormat), Locale.getDefault()
             )
-            return simpleDateFormat.parse(time) as Date
+            return simpleDateFormat.parse(time)!!
         }
 
 
@@ -190,7 +193,5 @@ class Controller {
          */
         fun onAddButtonClick()
     }
-
-
 
 }

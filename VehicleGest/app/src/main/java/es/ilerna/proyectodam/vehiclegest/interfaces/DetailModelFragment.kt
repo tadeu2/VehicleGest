@@ -15,12 +15,14 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showLongToast
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showShortToast
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import java.util.concurrent.Executors
 
 
 /**
- * Interfaz para crear escuchadores para las diferentes entidades de la base de datos Firestore
+ * Interfaz que sirve como base para los fragmentos que muestran los detalles de un modelo
  */
 abstract class DetailModelFragment : Fragment() {
 
@@ -40,6 +42,14 @@ abstract class DetailModelFragment : Fragment() {
      */
     protected abstract fun fillDataFromForm(): Any
 
+    /**
+     *  Hace el formulario editable
+     */
+    protected abstract fun makeFormEditable()
+
+    /**
+     *  Añade el documento a la base de datos
+     */
     protected open fun addDocumentToDataBase() {
         Executors.newSingleThreadExecutor().execute {
             dbFirestoreReference.add(fillDataFromForm())
@@ -48,65 +58,67 @@ abstract class DetailModelFragment : Fragment() {
                         ContentValues.TAG,
                         "DocumentSnapshot escrito con ID: ${documentReference.id}"
                     )
+                    showLongToast("Documento añadido correctamente")
                 }
                 .addOnFailureListener { e ->
                     Log.w(ContentValues.TAG, "Error añadiendo documento", e)
+                    showLongToast("Error añadiendo documento")
                 }
         }
     }
 
     /**
      * Metodo para inicializar los escuchadores de la interfaz
+     * @param documentSnapshot Instantanea de firestore de la entidad
+     * @param fragmentManager Administrador de fragmentos
+     * @param fragment Fragmento al que se debe volver
      */
-    protected open fun <T> setListeners(
+    protected open fun setListeners(
         documentSnapshot: DocumentSnapshot?,
         parentFragmentManager: FragmentManager,
         fragment: Any,
-        bar: T,
-        btclose: Button,
-        btdelete: Button,
-        btsave: Button,
-        btedit: Button
+        buttonClose: Button,
+        buttonDelete: Button,
+        buttonSave: Button,
+        buttonEdit: Button
     ) {
         //Escuchador del boton cerrar
-        btclose.setOnClickListener {
+        buttonClose.setOnClickListener {
             fragmentReplacer(fragment as Fragment, parentFragmentManager)
         }
 
-        if(documentSnapshot!!.exists()) {
-            //Escuchador del boton eliminar
-            btdelete.setOnClickListener {
-                delDocumentSnapshot(documentSnapshot)
+        if (documentSnapshot != null) {
+            if (documentSnapshot.exists()) {
+                //Escuchador del boton eliminar
+                buttonDelete.setOnClickListener {
+                    delDocumentSnapshot(documentSnapshot)
+                    fragmentReplacer(fragment as Fragment, parentFragmentManager)
+                }
+
+                //Escuchador del boton editar
+                buttonSave.setOnClickListener {
+                    updateDocumentToDatabase(documentSnapshot, fillDataFromForm())
+                    fragmentReplacer(AlertsFragment(), parentFragmentManager)
+                }
+            } else {
+                showShortToast("El documento no existe")
                 fragmentReplacer(fragment as Fragment, parentFragmentManager)
+            }
+        } else {
+            //Escuchador del boton editar
+            buttonSave.setOnClickListener {
+                addDocumentToDataBase()
+                fragmentReplacer(AlertsFragment(), parentFragmentManager)
             }
         }
 
-        //Escuchador del boton borrar
-        btdelete.setOnClickListener {
-            delDocumentSnapshot(documentSnapshot)
-            fragmentReplacer(fragment as Fragment, parentFragmentManager)
-        }
-
-        //Escuchador del boton editar
-        btsave.setOnClickListener {
-            updateDocumentToDatabase(documentSnapshot, fillDataFromForm())
-            fragmentReplacer(AlertsFragment(), parentFragmentManager)
-            btsave.visibility = GONE
-            btedit.visibility = VISIBLE
-        }
-
-        btedit.setOnClickListener {
+        buttonEdit.setOnClickListener {
             //Escuchador del botón de editar
             makeFormEditable()
-            btsave.visibility = VISIBLE
-            btedit.visibility = GONE
+            buttonSave.visibility = VISIBLE
+            buttonEdit.visibility = GONE
         }
     }
-
-    /**
-     *  Hace el formulario editable
-     */
-    protected abstract fun makeFormEditable()
 
     /**
      * Actualiza el documento en la base de datos
@@ -117,8 +129,14 @@ abstract class DetailModelFragment : Fragment() {
         Executors.newSingleThreadExecutor().execute {
             val documentReference = dbFirestoreReference.document(documentSnapshot.id)
             documentReference.set(any) //Actualiza el documento con los datos del formulario
-                .addOnSuccessListener { Log.d("Vehiclegest", "Document successfully updated!") }
-                .addOnFailureListener { e -> Log.w("vehiclegest", "Error updating document", e) }
+                .addOnSuccessListener {
+                    Log.d("Vehiclegest", "Document successfully updated!")
+                    showShortToast("Documento actualizado correctamente")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("vehiclegest", "Error updating document", e)
+                    showShortToast("Error actualizando documento")
+                }
         }
     }
 
@@ -134,11 +152,12 @@ abstract class DetailModelFragment : Fragment() {
                         ContentValues.TAG,
                         "DocumentSnapshot borrado con ID: ${documentSnapshot.id}"
                     )
+                    showShortToast("Documento borrado correctamente")
                 }
                 .addOnFailureListener { e ->
                     Log.w(ContentValues.TAG, "Error borrando documento", e)
+                    showShortToast("Error borrando documento")
                 }
-
         } catch (exception: Exception) {
             exception.printStackTrace()
         }

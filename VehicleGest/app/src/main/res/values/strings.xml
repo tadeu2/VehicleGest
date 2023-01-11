@@ -35,7 +35,7 @@
     <string name="dialog_error_text">Check that username and password are correct.</string>
     <string name="authError">Error de autenticación</string>
     <string name="accept">Agree</string>
-    <string name="dateFormat">MM/dd/yyyy</string>
+    <string name="dateFormat">dd/MM/yyyy</string>
     <string name="plate_number">Plate Number</string>
     <string name="car_type">Car type</string>
     <string name="brand">Brand</string>
@@ -78,5 +78,9 @@
     <string name="solution">Solution</string>
     <string name="urlphoto">Photo URL</string>
     <string name="personal_information">Personal Information</string>
+    <string name="item_information">Item Information</string>
+    <string name="itv_information">ITV Information</string>
+    <string name="service_information">Service Information</string>
+    <string name="vehicle_information">Vehicle Information</string>
 
 </resources>

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
@@ -24,9 +25,9 @@ class AlertDetail(
 ) : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
-    private var _detailAlertBinding: DetailAlertBinding? = null
+    private var detailAlertBinding: DetailAlertBinding? = null
     private val getDetailAlertBinding
-        get() = _detailAlertBinding ?: throw IllegalStateException("Binding error")
+        get() = detailAlertBinding ?: throw IllegalStateException("Binding error")
 
     /**
      * Inicializa el fragmento
@@ -40,7 +41,7 @@ class AlertDetail(
     ): View {
         try {
             //Enlaza al XML del formulario y lo infla
-            _detailAlertBinding = DetailAlertBinding.inflate(inflater, container, false)
+            detailAlertBinding = DetailAlertBinding.inflate(inflater, container, false)
 
             //Referencia a la base de datos de Firestore
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("alert")
@@ -53,7 +54,6 @@ class AlertDetail(
                     documentSnapshot,
                     parentFragmentManager,
                     AlertsFragment(),
-                    DetailAlertBinding::class.java,
                     btclose,
                     btdelete,
                     btsave,
@@ -76,83 +76,87 @@ class AlertDetail(
      */
     override fun makeFormEditable() {
         getDetailAlertBinding.apply {
-            plateNumber.isFocusableInTouchMode = true
-            plateNumber.isCursorVisible = true
-            date.isFocusableInTouchMode = true
-            alertDescription.isFocusableInTouchMode = true
-            alertDescription.isCursorVisible = true
-            checksolved.isFocusableInTouchMode = true
-            checksolved.isClickable = true
-            dateSolved.isFocusableInTouchMode = true
-            alertSolution.isFocusableInTouchMode = true
-            alertSolution.isCursorVisible = true
+            /* for (i in 0 until root.childCount) {
+                 root.getChildAt(i).isEnabled = true
+                 root.getChildAt(i).setTextColor(resources.getColor(R.color.ic_launcher_background, null))}*/
+            plateNumber.isEnabled = true
+            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            date.isEnabled = true
+            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            description.isEnabled = true
+            description.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            dateSolved.isEnabled = true
+            dateSolved.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            checksolved.isEnabled = true
+            checksolved.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            alertSolution.isEnabled = true
+            alertSolution.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
 
-            //Escuchador del botón de fecha
-            date.setOnClickListener {
-                //Abre el selector de fecha
-                DatePickerFragment { day, month, year ->
-                    //Muestra la fecha en el campo de texto
-                    date.setText(String.format("$day/$month/$year"))
-                }.show(parentFragmentManager, "datePicker")
-            }
+        //Escuchador del botón de fecha
+        date.setOnClickListener {
+            //Abre el selector de fecha
+            DatePickerFragment { day, month, year ->
+                //Muestra la fecha en el campo de texto
+                date.setText(String.format("$day/$month/$year"))
+            }.show(parentFragmentManager, "datePicker")
+        }
 
-            //Escuchador del botón de fecha resuelta
-            dateSolved.setOnClickListener {
-                //Abre el selector de fecha
-                DatePickerFragment { day, month, year ->
-                    //Muestra la fecha en el campo de texto
-                    dateSolved.setText(String.format("$day/$month/$year"))
-                }.show(parentFragmentManager, "datePicker")
-            }
-
+        //Escuchador del botón de fecha resuelta
+        dateSolved.setOnClickListener {
+            //Abre el selector de fecha
+            DatePickerFragment { day, month, year ->
+                //Muestra la fecha en el campo de texto
+                dateSolved.setText(String.format("$day/$month/$year"))
+            }.show(parentFragmentManager, "datePicker")
         }
     }
+}
 
-    /**
-     * Rellena los datos del formulario con los datos
-     */
-    override fun bindDataToForm() {
-        //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-        val alert: Alert? = documentSnapshot.toObject(Alert::class.java)
+/**
+ * Rellena los datos del formulario con los datos
+ */
+override fun bindDataToForm() {
+    //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+    val alert: Alert? = documentSnapshot.toObject(Alert::class.java)
 
-        with(getDetailAlertBinding) {
-            plateNumber.setText(alert?.plateNumber)
-            alertDescription.setText(alert?.description)
-            checksolved.isChecked = alert?.solved == false
-            alertSolution.setText(alert?.solution)
+    with(getDetailAlertBinding) {
+        plateNumber.setText(alert?.plateNumber)
+        description.setText(alert?.description)
+        checksolved.isChecked = alert?.solved!!
+        alertSolution.setText(alert.solution)
 
-            //Formatea los timestamp a fecha normal dd/mm/aa
-            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-            //El formato se puede modificar en strings.xml
-            date.setText(dateToStringFormat(alert?.date))
-            dateSolved.setText(dateToStringFormat(alert?.solveddate))
-        }
+        //Formatea los timestamp a fecha normal dd/mm/aa
+        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+        //El formato se puede modificar en strings.xml
+        date.setText(dateToStringFormat(alert.date))
+        dateSolved.setText(dateToStringFormat(alert.solveddate))
     }
+}
 
-    /**
-     * Devuelve un objeto Alert con los datos del formulario
-     * @return Objeto Alert
-     */
-    override fun fillDataFromForm(): Any {
-        //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-        getDetailAlertBinding.apply {
-            return Alert(
-                plateNumber.text.toString(),
-                Controller.stringToDateFormat(date.text.toString()),
-                alertDescription.text.toString(),
-                checksolved.isChecked,
-                Controller.stringToDateFormat(dateSolved.text.toString()),
-                alertSolution.text.toString()
-            )
-        }
+/**
+ * Devuelve un objeto Alert con los datos del formulario
+ * @return Objeto Alert
+ */
+override fun fillDataFromForm(): Any {
+    //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+    getDetailAlertBinding.apply {
+        return Alert(
+            plateNumber.text.toString(),
+            Controller.stringToDateFormat(date.text.toString()),
+            description.text.toString(),
+            checksolved.isChecked,
+            Controller.stringToDateFormat(dateSolved.text.toString()),
+            alertSolution.text.toString()
+        )
     }
+}
 
-    /**
-     *  Al destruir el fragmento, elimina la referencia al binding
-     */
-    override fun onDestroyView() {
-        super.onDestroyView()
-        //Vaciamos la variable de enlace al xml
-        _detailAlertBinding = null
-    }
+/**
+ *  Al destruir el fragmento, elimina la referencia al binding
+ */
+override fun onDestroyView() {
+    super.onDestroyView()
+    //Vaciamos la variable de enlace al xml
+    detailAlertBinding = null
+}
 }

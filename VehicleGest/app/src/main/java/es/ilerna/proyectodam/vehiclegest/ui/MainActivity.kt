@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
@@ -26,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
+import java.util.concurrent.Executors
 
 /**
  * Actividad principal de la aplicación
@@ -48,44 +50,51 @@ class MainActivity : AppCompatActivity() {
     // Referencia al badge de alertas
     private lateinit var badgeAlert: BadgeDrawable
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    @ExperimentalBadgeUtils
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
         super.onCreate(savedInstanceState)
 
         //Bindeamos el xml con la actividad y lo inflamos
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         //Establecemos la vista de la actividad
         setContentView(activityMainBinding.root)
-        //Barra de navegación inferior
-        setSupportActionBar(activityMainBinding.appBarMain.topToolbar)
 
         // Inicializa Firebase
         dbFirestore = FirebaseFirestore.getInstance()
+        // Inicializa la autenticación de Firebase
         auth = FirebaseAuth.getInstance()
-        // Muestra el email del usuario en el subtitulo de la barra de navegación
-        activityMainBinding.appBarMain.topToolbar.subtitle = auth.currentUser?.email.toString()
 
-        //Activamos el logueo de Firestore para debuggear fallos en el logcat
-        FirebaseFirestore.setLoggingEnabled(true)
+        with(activityMainBinding.appBarMain){
 
-        //Inicializa el icono de alerta
-        alertCollectionReference = dbFirestore.collection("alert")
-        badgeAlert =
-            BadgeDrawable.create(this) //Creamos el badge de alerta para la barra de navegación
+            //Barra de navegación inferior
+            setSupportActionBar(topToolbar)
 
-        //Carga el fragmento de vehículos como inicial
-        fragmentReplacer(VehiclesFragment(), supportFragmentManager)
+            // Muestra el email del usuario en el subtitulo de la barra de navegación
+            topToolbar.subtitle = auth.currentUser?.email.toString()
+            topToolbar.setSubtitleTextColor(
+                resources.getColor(R.color.ic_launcher_background, null))
+            //Activamos el logueo de Firestore para debuggear fallos en el logcat
+            FirebaseFirestore . setLoggingEnabled (true)
 
-        //Escuchador del menú superior
-        activityMainBinding.appBarMain.topToolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.logout_icon -> {
-                    auth.signOut()
-                    checkCurrentUser()
+            //Escuchador del menú superior
+            topToolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.logout_icon -> {
+                        auth.signOut()
+                        checkCurrentUser()
+                    }
+                    R.id.alert_icon -> fragmentReplacer(AlertsFragment(), supportFragmentManager)
                 }
-                R.id.alert_icon -> fragmentReplacer(AlertsFragment(), supportFragmentManager)
+                true
             }
-            true
+
+            //Carga el fragmento de vehículos como inicial
+            fragmentReplacer (VehiclesFragment(), supportFragmentManager
+            )
         }
+
 
         /**
          * Escuchador del menú inferior, al hacer click en cada uno de los iconos se cargar
@@ -121,6 +130,31 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @ExperimentalBadgeUtils
+    private fun initializeAlertsBadge() {
+            alertCollectionReference = dbFirestore.collection("alert")
+            alertCollectionReference.get().addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        alertCount++
+                    }
+                    // Crea el badge de alertas
+                    badgeAlert = BadgeDrawable.create(this)
+                    badgeAlert.number = alertCount
+                    badgeAlert.isVisible = true
+                    // Añade el badge al icono de alertas
+                    BadgeUtils.attachBadgeDrawable(
+                        badgeAlert,
+                        activityMainBinding.appBarMain.topToolbar,
+                        R.id.navigation_alerts
+                    )
+                }
+            }
+            badgeAlert =
+                BadgeDrawable.create(this) //Creamos el badge de alerta para la barra de navegación
+
+    }
+
     /**
      * Cuando la actividad visible para el usuario en el ciclo de vida
      */
@@ -137,29 +171,11 @@ class MainActivity : AppCompatActivity() {
     @ExperimentalBadgeUtils
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        //Crea una subrutina para contar los documentos de alerta y actualiza el contador de la campana
-        alertCollectionReference.get().addOnCompleteListener { task ->
-            //Cada la tarea se completa se reinicia el contador
-            if (task.isSuccessful) {
-                alertCount = 0
-                //Se ejecuta un bucle que cuenta cada documento de la tarea
-                for (document in task.result) {
-                    alertCount++
-                }
-            }
-        }
-        //Asigna al contador de alertas la variable creada en la tarea
-        badgeAlert.number = alertCount
+        initializeAlertsBadge()
 
         //Pinta la barra superior
         val inflater = menuInflater
         inflater.inflate(R.menu.app_bar_items, menu)
-        //Crea el contador de alertas y lo asocia al icono de la campana
-        BadgeUtils.attachBadgeDrawable(
-            badgeAlert,
-            activityMainBinding.appBarMain.topToolbar,
-            R.id.alert_icon
-        )
 
         return super.onCreateOptionsMenu(menu)
     }

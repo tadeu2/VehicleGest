@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
@@ -37,27 +38,25 @@ class AlertAdder : DetailModelFragment() {
         savedInstanceState: Bundle?
     ): View {
         try {
-            //Referencia a la base de datos de Firestore
-            dbFirestoreReference = FirebaseFirestore.getInstance().collection("alert")
             //Enlaza al XML del formulario y lo infla
             addAlertBinding = DetailAlertBinding.inflate(inflater, container, false)
 
+            //Referencia a la base de datos de Firestore
+            dbFirestoreReference = FirebaseFirestore.getInstance().collection("alert")
             makeFormEditable() //Habilita los campos para su edición
-
-            //Inicializa los escuchadores de los botones
-            with(getAddAlertBinding.bar) {
-                btsave.visibility = View.VISIBLE
-                btedit.visibility = View.GONE
+            with(addAlertBinding!!.bar) {
+                btdelete.visibility = View.GONE //Oculta el botón de eliminar
+                btedit.visibility = View.GONE //Oculta el botón de editar
+                btsave.visibility = View.VISIBLE //Muestra el botón de guardar
                 setListeners(
                     null,
                     parentFragmentManager,
                     AlertsFragment(),
-                    DetailAlertBinding::class.java,
                     btclose,
                     btdelete,
                     btsave,
                     btedit
-                )
+                ) //Inicializa los escuchadores de los botones
             }
 
         } catch (exception: Exception) {
@@ -74,17 +73,18 @@ class AlertAdder : DetailModelFragment() {
      * @return Objeto Alerta con los datos del formulario
      */
     override fun fillDataFromForm(): Any {
-        getAddAlertBinding.apply {
-            return Alert(
-                plateNumber.text.toString(),
-                stringToDateFormat(date.text.toString()),
-                alertDescription.text.toString(),
-                checksolved.isChecked,
-                stringToDateFormat(dateSolved.text.toString()),
-                alertSolution.text.toString()
-            )
-        }
+            getAddAlertBinding.apply {
+                return Alert(
+                    plateNumber.text.toString(),
+                    stringToDateFormat(date.text.toString()),
+                    description.text.toString(),
+                    checksolved.isChecked,
+                    stringToDateFormat(dateSolved.text.toString()),
+                    alertSolution.text.toString()
+                )
+            }
     }
+
 
     /**
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
@@ -97,17 +97,25 @@ class AlertAdder : DetailModelFragment() {
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
+
         getAddAlertBinding.apply {
-            plateNumber.isFocusableInTouchMode = true
-            plateNumber.isCursorVisible = true
-            date.isFocusableInTouchMode = true
-            alertDescription.isFocusableInTouchMode = true
-            alertDescription.isCursorVisible = true
-            checksolved.isFocusableInTouchMode = true
-            checksolved.isClickable = true
-            dateSolved.isFocusableInTouchMode = true
-            alertSolution.isFocusableInTouchMode = true
-            alertSolution.isCursorVisible = true
+            plateNumber.isEnabled = true
+            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            date.isEnabled = true
+            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            description.isEnabled = true
+            description.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            dateSolved.isEnabled = true
+            dateSolved.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            checksolved.isEnabled = true
+            checksolved.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            alertSolution.isEnabled = true
+            alertSolution.setTextColor(
+                resources.getColor(
+                    R.color.md_theme_dark_errorContainer,
+                    null
+                )
+            )
 
             //Escuchador del botón de fecha
             date.setOnClickListener {
@@ -129,7 +137,6 @@ class AlertAdder : DetailModelFragment() {
 
         }
     }
-
 
     /**
      * Fase de destrucción del fragmento que elimina la referencia al XML de la interfaz

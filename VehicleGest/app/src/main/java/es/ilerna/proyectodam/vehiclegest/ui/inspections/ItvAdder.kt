@@ -49,7 +49,6 @@ class ItvAdder : DetailModelFragment() {
                 null,
                 parentFragmentManager,
                 ItvFragment(),
-                DetailItvBinding::class.java,
                 btclose,
                 btdelete,
                 btsave,

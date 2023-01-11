@@ -17,10 +17,10 @@ class DatePickerFragment(val listener: (day: Int, month: Int, year: Int) -> Unit
     DialogFragment(), DatePickerDialog.OnDateSetListener {
     //Dialogo que muestra el calendario para seleccionar la fecha
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
         //dialog.datePicker.maxDate = c.timeInMillis //Para que no se pueda seleccionar una fecha posterior a la actual
         return DatePickerDialog(requireContext(), this, year, month, day)
     }
@@ -34,6 +34,6 @@ class DatePickerFragment(val listener: (day: Int, month: Int, year: Int) -> Unit
      */
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         //Escuchador que nos devuelve los datos seleccionados
-        listener(day, month, year)
+    listener(day, month +1, year)
     }
 }

@@ -11,7 +11,10 @@ import java.util.*
  * @para date: Date? (Fecha de la ITV)
  */
 @IgnoreExtraProperties
-data class ITV(var date: Date? = null) : Parcelable {
+data class ITV(
+    var date: Date? = null,
+    var remarks: String? = null
+) : Parcelable {
 
     /**
      * Constructor privado para la creación de objetos ITV a partir de un Parcel
@@ -19,7 +22,9 @@ data class ITV(var date: Date? = null) : Parcelable {
      */
     private constructor(parcel: Parcel) : this() {
         date = Timestamp(parcel.readLong(), 0).toDate()
+        remarks = parcel.readString()
     }
+
 
     /**
      * Método que describe el contenido del objeto ITV
@@ -31,6 +36,7 @@ data class ITV(var date: Date? = null) : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         date?.time?.let { dest.writeLong(it) }
+        dest.writeString(remarks)
     }
 
     /**

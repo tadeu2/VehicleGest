@@ -1,23 +1,17 @@
 package es.ilerna.proyectodam.vehiclegest.ui.inventory
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.databinding.AddItemBinding
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
-import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del artículo a añadir.
@@ -42,32 +36,32 @@ class AddItem : DetailModelFragment() {
         //Enlaza al XML del formulario y lo infla
         addItemBinding = DetailItemBinding.inflate(inflater, container, false)
 
-        with(getAddItemBinding){}
-        //Carga la foto en el formulario a partir de la URL almacenada
-        getAddItemBinding.urlphoto.doAfterTextChanged {
-            //Carga la foto en el formulario a partir de la URL almacenada
-            Controller().showImageFromUrl(
-                getAddItemBinding.itemImage,
-                getAddItemBinding.urlphoto.text.toString(),
-            )
-        }
-
         makeFormEditable() //Habilita los campos para su edición
 
         //Inicializa los escuchadores de los botones
-        with(getAddAlertBinding.bar) {
+        with(getAddItemBinding.bar) {
             btsave.visibility = android.view.View.VISIBLE
             btedit.visibility = android.view.View.GONE
             setListeners(
                 null,
                 parentFragmentManager,
                 AlertsFragment(),
-                es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding::class.java,
                 btclose,
                 btdelete,
                 btsave,
                 btedit
             )
+        }
+        //Escuchador para la imagen al cambiar la url
+        with(getAddItemBinding) {
+            //Carga la foto en el formulario a partir de la URL almacenada
+            itemUrlphoto.doAfterTextChanged {
+                //Carga la foto en el formulario a partir de la URL almacenada
+                Controller().showImageFromUrl(
+                    itemImage,
+                    itemUrlphoto.text.toString()
+                )
+            }
         }
 
         //Llama a la función que rellena los datos en el formulario
@@ -75,46 +69,36 @@ class AddItem : DetailModelFragment() {
     }
 
     /**
+     * Metodo que rellena la entidad con los datos del formulario
+     * @return Item con los datos del formulario
+     */
+    override fun fillDataFromForm(): Any {
+        //Rellena el objeto con los datos del formulario
+        getAddItemBinding.apply {
+            return {
+                Item(
+                    plateNumber.text.toString(),
+                    name.text.toString(),
+                    itemUrlphoto.text.toString(),
+                    itemDescription.text.toString()
+                )
+            }
+        }
+
+    }
+
+    /**
      * Metodo que rellena el formulario con los datos de la entidad
      */
     override fun bindDataToForm() {
-        TODO("Not yet implemented")
+        //No se implementa en este fragmento
     }
-
-    /**
-     * Metodo que rellena la entidad con los datos del formulario
-     */
-    override fun fillDataFromForm(): Any {
-        TODO("Not yet implemented")
-    }
-
-
-    /**
-     * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
-     */
-    override fun addDocumentToDataBase() {
-        Executors.newSingleThreadExecutor().execute {
-            val plateNumber = getAddItemBinding.plateNumber.text.toString()
-            val name = getAddItemBinding.name.text.toString()
-            val description = getAddItemBinding.itemDescription.text.toString()
-            val photoURL = getAddItemBinding.urlphoto.text.toString()
-
-            val item = Item(
-                plateNumber, name, description, photoURL
-            )
-            dbFirestoreReference.add(item).addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot escrito con ID: ${documentReference.id}")
-            }.addOnFailureListener { e ->
-                Log.w(TAG, "Error añadiendo documento", e)
-            }
-    }
-}
 
     /**
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        TODO("Not yet implemented")
+        //No se implementa en este fragmento
     }
 
 }

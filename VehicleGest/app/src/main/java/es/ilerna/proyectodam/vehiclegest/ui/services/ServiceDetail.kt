@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.models.Alert
 import es.ilerna.proyectodam.vehiclegest.models.Service
 
 /**
@@ -43,15 +45,19 @@ class ServiceDetail(
             //Enlaza al XML del formulario y lo infla
             detailServiceBinding = DetailServiceBinding.inflate(inflater, container, false)
 
-            //Escuchador del boton cerrar
-            getDetailServiceBinding.bar.btclose.setOnClickListener {
-                fragmentReplacer(ServiceFragment(), parentFragmentManager)
-            }
-
-            //Escuchador del boton borrar, borrará el servicio y volverá al fragmento de servicios
-            getDetailServiceBinding.bar.btdelete.setOnClickListener {
-                delDocumentSnapshot(documentSnapshot)
-                fragmentReplacer(ServiceFragment(), parentFragmentManager)
+            //Inicializa los escuchadores de los botones
+            with(getDetailServiceBinding.bar) {
+                btsave.visibility = View.GONE
+                btedit.visibility = View.VISIBLE
+                setListeners(
+                    documentSnapshot,
+                    parentFragmentManager,
+                    ServiceFragment(),
+                    btclose,
+                    btdelete,
+                    btsave,
+                    btedit
+                )
             }
 
             //Llama a la función que rellena los datos en el formulario
@@ -82,29 +88,36 @@ class ServiceDetail(
      * Metodo que rellena la entidad con los datos del formulario
      */
     override fun fillDataFromForm(): Any {
-        TODO("Not yet implemented")
-    }
-
-    /**
-     * Añade el documento a la base de datos
-     */
-    override fun addDocumentToDataBase() {
-        TODO("Not yet implemented")
+        getDetailServiceBinding.apply {
+            return Service(
+                plateNumber.text.toString(),
+                Controller.stringToDateFormat(date.text.toString()),
+                costumer.text.toString(),
+                remarks.text.toString()
+            )
+        }
     }
 
     /**
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        TODO("Not yet implemented")
-    }
+        getDetailServiceBinding.apply {
+            plateNumber.isClickable = true
+            plateNumber.isFocusableInTouchMode = true
+            costumer.isClickable = true
+          remarks.isClickable = true
+            date.isClickable = true
 
-    /**
-     * Edita los datos del servicio
-     * @param documentSnapshot Instantanea de firestore del servicio
-     */
-    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
-        TODO("Not yet implemented")
+            //Escuchador del botón de fecha
+            date.setOnClickListener {
+                //ºAbre el selector de fecha
+                DatePickerFragment { day, month, year ->
+                    //Muestra la fecha en el campo de texto
+                    date.setText(String.format("$day/$month/$year"))
+                }.show(parentFragmentManager, "datePicker")
+            }
+        }
     }
 
     /**

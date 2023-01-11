@@ -36,14 +36,13 @@
             android:id="@+id/divider"
             android:layout_width="393dp"
             android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
             android:layout_margin="@dimen/medium_margin"
+            android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/employee_title"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="338dp"
-            />
+            tools:layout_editor_absoluteY="338dp" />
 
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -56,6 +55,7 @@
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:srcCompat="@drawable/no_image_available"
             app:strokeWidth="@dimen/small_margin"
+            tools:ignore="ImageContrastCheck"
             tools:srcCompat="@drawable/no_image_available" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -66,6 +66,7 @@
             android:fontFamily="@font/roboto"
             android:hint="@string/urlphoto"
             android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,9 +77,9 @@
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:enabled="false"
                 android:singleLine="true"
+                android:textColor="@android:color/black"
                 tools:text="www.url.com/photo" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,6 +92,7 @@
             android:hint="@string/DNI"
             android:padding="@dimen/small_margin"
             android:textAlignment="center"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,8 +103,8 @@
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:enabled="false"
+                android:textColor="@android:color/black"
                 tools:text="4423442FDF" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,12 +124,11 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name"
-                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                tools:text="nombre" />
+                android:enabled="false"
+                android:textColor="@android:color/black"
+                tools:text="Nombre" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -138,7 +139,7 @@
             android:fontFamily="@font/roboto"
             android:hint="@string/surname"
             android:padding="@dimen/small_margin"
-            android:textAlignment="center"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,11 +147,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/surname"
-                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:enabled="false"
+                android:textColor="@android:color/black"
                 tools:text="Caruncho Serrano" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -160,6 +160,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
+            android:textColorHint="@android:color/black"
             android:hint="@string/address"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -168,13 +169,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/address"
-                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="@font/roboto"
-                android:textAlignment="center"
+                android:enabled="false"
+                android:textColor="@android:color/black"
                 tools:text="C/Pepita nº Alicante" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -185,8 +183,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:hint="@string/phone"
+            android:textColorHint="@android:color/black"
             android:padding="@dimen/small_margin"
-            android:textAlignment="center"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -194,13 +192,11 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phone"
-                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="@font/roboto"
-                android:textAlignment="center"
+                android:enabled="false"
+                android:inputType="phone"
+                android:textColor="@android:color/black"
                 tools:text="652344424" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -211,8 +207,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:hint="@string/birthdate"
+            android:textColorHint="@android:color/black"
             android:padding="@dimen/small_margin"
-            android:textAlignment="center"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -223,10 +219,9 @@
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="@font/roboto"
-                android:textAlignment="center"
+                android:enabled="false"
+                android:focusable="false"
+                android:textColor="@android:color/black"
                 tools:text="12/12/2013" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -237,8 +232,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:hint="@string/email"
+            android:textColorHint="@android:color/black"
             android:padding="@dimen/small_margin"
-            android:textAlignment="center"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -249,10 +244,8 @@
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="@font/roboto"
-                android:textAlignment="center"
+                android:enabled="false"
+                android:textColor="@android:color/black"
                 tools:text="hola@gmail.com" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -264,29 +257,30 @@
             android:fontFamily="@font/roboto"
             android:hint="@string/admin"
             android:padding="@dimen/small_margin"
-            android:textAlignment="center"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/birthdate_layout">
+            app:layout_constraintTop_toBottomOf="@id/email_layout">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/label_admin"
                 style="@style/TextAppearance.Material3.TitleSmall"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/admin"
-                android:textAlignment="textEnd"
+                android:textAlignment="textStart"
                 tools:text="@string/admin" />
-
 
             <CheckBox
                 android:id="@+id/checkadmin"
-                android:layout_width="400dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
                 android:checked="false"
-                android:focusableInTouchMode="false" />
+                android:enabled="false" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

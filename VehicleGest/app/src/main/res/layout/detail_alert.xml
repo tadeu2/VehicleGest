@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainScroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentStart="true"
@@ -13,7 +12,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <include
             android:id="@+id/bar"
@@ -30,7 +28,7 @@
             style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/solved_date"
+            android:text="@string/alert_details"
             android:textAlignment="center"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,10 +41,10 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
+            android:enabled="false"
             android:hint="@string/plate_number"
             android:padding="@dimen/small_margin"
-            android:textAlignment="center"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,10 +54,9 @@
                 android:id="@+id/plate_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:fontFamily="@font/roboto"
                 android:singleLine="true"
-                android:textColor="#8D6E63"
+                android:textColor="@android:color/black"
                 tools:text="1234ABC" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,10 +65,10 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
+            android:enabled="false"
             android:hint="@string/date"
             android:padding="@dimen/small_margin"
-            android:textAlignment="center"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,13 +78,13 @@
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusableInTouchMode="false"
                 android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:inputType="date"
                 android:singleLine="true"
+                android:textColor="@android:color/black"
                 tools:text="13/12/2023" />
-
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <View
             android:id="@+id/divider"
@@ -112,24 +109,24 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
             android:hint="@string/description"
+            android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/label_description">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/alert_description"
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:lineHeight="10dp"
                 android:nestedScrollingEnabled="true"
-                android:padding="@dimen/small_margin"
                 android:scrollbars="vertical"
-                android:textColorHint="#8D6E63" />
+                android:textColor="@android:color/black"
+                tools:ignore="DuplicateSpeakableTextCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <View
@@ -156,8 +153,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:padding="@dimen/small_margin"
-            android:clickable="false"
             app:errorEnabled="true"
             app:layout_constraintEnd_toStartOf="@id/date_solved_layout"
             app:layout_constraintStart_toStartOf="parent"
@@ -168,11 +163,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:button="@null"
-                android:focusableInTouchMode="false"
-                android:clickable="false"
                 android:checked="false"
                 android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                android:hint="@string/solved" />
+                android:enabled="false"
+                android:hint="@string/solved"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -181,9 +177,9 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:enabled="true"
-            android:fontFamily="@font/roboto"
+            android:enabled="false"
             android:hint="@string/date_solved"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/solved_layout"
@@ -193,23 +189,23 @@
                 android:id="@+id/date_solved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
                 android:focusableInTouchMode="false"
-                android:maxLines="1"
-                android:padding="@dimen/small_margin"
-                android:textAlignment="center"
-                android:textColor="#8D6E63"
+                android:inputType="date"
+                android:cursorVisible="false"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
                 tools:text="12/12/2023" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/solution_layout"
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
             android:hint="@string/solution"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -219,17 +215,13 @@
                 android:id="@+id/alert_solution"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:lineHeight="10dp"
                 android:nestedScrollingEnabled="true"
                 android:padding="@dimen/small_margin"
                 android:scrollbars="vertical"
                 android:textAlignment="viewStart"
-                android:textColorHint="#8D6E63" />
+                android:textColor="@android:color/black"
+                android:textColorHint="#8D6E63"
+                tools:ignore="DuplicateSpeakableTextCheck" />
         </com.google.android.material.textfield.TextInputLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>

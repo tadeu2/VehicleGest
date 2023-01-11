@@ -55,7 +55,6 @@ class ItvDetail(
                     documentSnapshot,
                     parentFragmentManager,
                     ItvFragment(),
-                    DetailItvBinding::class.java,
                     btclose,
                     btdelete,
                     btsave,

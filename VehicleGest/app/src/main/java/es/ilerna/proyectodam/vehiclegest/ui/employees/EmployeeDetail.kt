@@ -57,7 +57,6 @@ class EmployeeDetail(
                     documentSnapshot,
                     parentFragmentManager,
                     AlertsFragment(),
-                    es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding::class.java,
                     btclose,
                     btdelete,
                     btsave,
