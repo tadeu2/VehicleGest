@@ -45,9 +45,10 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
             //Referencia a la base de datos de Firebase
             itemCollectionReference = Firebase.firestore.collection("inventory")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
-                onAddButtonClick()
-            }
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)
+                ?.setOnClickListener {
+                    onAddButtonClick()
+                }
         } catch (exception: Exception) {
             exception.printStackTrace()
         }
@@ -65,24 +66,24 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-    try {
-        //Pintar el fragment
-        fragmentInventoryBinding = FragmentInventoryBinding.inflate(inflater, container, false)
+        try {
+            //Pintar el fragment
+            fragmentInventoryBinding = FragmentInventoryBinding.inflate(inflater, container, false)
 
-        //Enlaza el recycler a la variable
-        recyclerView = getfragmentInventoryBinding.recycleritems
-        //Le asigna un manager lineal en el contexto de este fragmento
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.setHasFixedSize(true) //Para que no se recargue la vista al hacer scroll
+            //Enlaza el recycler a la variable
+            recyclerView = getfragmentInventoryBinding.recycleritems
+            //Le asigna un manager lineal en el contexto de este fragmento
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.setHasFixedSize(true) //Para que no se recargue la vista al hacer scroll
 
-        //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-        itemRecyclerAdapter = ItemRecyclerAdapter(itemCollectionReference, this)
-        //Asigna ese adapter al recyclerview
-        recyclerView.adapter = itemRecyclerAdapter
-    } catch (exception: Exception) {
-        Log.e("InventoryFragment", exception.message.toString() ,exception)
-        exception.printStackTrace()
-    }
+            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
+            itemRecyclerAdapter = ItemRecyclerAdapter(itemCollectionReference, this)
+            //Asigna ese adapter al recyclerview
+            recyclerView.adapter = itemRecyclerAdapter
+        } catch (exception: Exception) {
+            Log.e("InventoryFragment", exception.message.toString(), exception)
+            exception.printStackTrace()
+        }
         return getfragmentInventoryBinding.root
     }
 
@@ -98,7 +99,7 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
      * Abre el formulario de creación de items
      */
     override fun onAddButtonClick() {
-        fragmentReplacer(AddItem(), parentFragmentManager)
+        fragmentReplacer(ItemAdder(), parentFragmentManager)
     }
 
     /**

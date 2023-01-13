@@ -36,29 +36,29 @@ class RegisterActivity : AppCompatActivity() {
         // Inicializamos la variable auth de firebase
         firebaseAuth = Firebase.auth
 
-        activityRegisterBinding.btRegister.setOnClickListener {
-            //Con el binding le pasamos los campos de texto de la actividad de autenticacion
+        //Con el binding le pasamos los campos de texto de la actividad de autenticacion
+        with(activityRegisterBinding) {
+            btRegister.setOnClickListener {
+                val username: String = tieUsername.text.toString()
+                val password: String = tiePassword.text.toString()
+                val passwordRepeat: String = tiePassword2.text.toString()
 
-            val username: String = activityRegisterBinding.tieUsername.text.toString()
-            val password: String = activityRegisterBinding.tiePassword.text.toString()
-            val passwordRepeat: String = activityRegisterBinding.tiePassword2.text.toString()
-
-            if (username.isBlank()) {
-                activityRegisterBinding.tilUsername.error = getString(R.string.invalid_username)
-                Log.w(ContentValues.TAG, "regInWithEmail:Username lenght")
-            } else if (password.isBlank() || password.length < 6) {
-                activityRegisterBinding.tilPassword.error = getString(R.string.invalid_password)
-                Log.w(ContentValues.TAG, "regInWithEmail: Invalid password lenght")
-            } else if (password != passwordRepeat) {
-                activityRegisterBinding.tilPassword.error = getString(R.string.match_password)
-                activityRegisterBinding.tilPassword2.error = getString(R.string.match_password)
-                Log.w(ContentValues.TAG, "regInWithEmail: Invalid password lenght")
-            } else {
-                activityRegisterBinding.tilUsername.error = null
-                activityRegisterBinding.tilPassword.error = null
-                userRegistration(username, password)
+                if (username.isBlank()) {
+                    tilUsername.error = getString(R.string.invalid_username)
+                    Log.w(ContentValues.TAG, "El nombre de usuario no puede estar vacío")
+                } else if (password.isBlank() || password.length < 6) {
+                    tilPassword.error = getString(R.string.invalid_password)
+                    Log.w(ContentValues.TAG, "Longitud de contraseña no válida")
+                } else if (password != passwordRepeat) {
+                    tilPassword.error = getString(R.string.match_password)
+                    tilPassword2.error = getString(R.string.match_password)
+                    Log.w(ContentValues.TAG, "Longitud de contraseña no válida")
+                } else {
+                    tilUsername.error = null
+                    tilPassword.error = null
+                    userRegistration(username, password)
+                }
             }
-
         }
     }
 

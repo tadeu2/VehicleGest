@@ -54,6 +54,7 @@
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:srcCompat="@drawable/no_image_available"
             app:strokeWidth="@dimen/small_margin"
+            tools:ignore="ImageContrastCheck"
             tools:srcCompat="@drawable/no_image_available" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -61,9 +62,11 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
             android:hint="@string/urlphoto"
             android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,8 +77,8 @@
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
                 tools:text="1234ABC" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,9 +87,11 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
             android:hint="@string/plate_number"
             android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,8 +101,8 @@
                 android:id="@+id/plate_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
                 tools:text="1234ABC" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,9 +111,11 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
             android:hint="@string/car_type"
             android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,8 +125,8 @@
                 android:id="@+id/type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
                 tools:text="Berlina" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,8 +147,8 @@
                 android:id="@+id/brand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
                 tools:text="AUDI" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,9 +157,11 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
             android:hint="@string/name"
             android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -162,8 +171,8 @@
                 android:id="@+id/model"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
                 tools:text="A5" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -175,6 +184,7 @@
             android:fontFamily="@font/roboto"
             android:hint="@string/name"
             android:padding="@dimen/small_margin"
+            android:enabled="false"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -186,8 +196,45 @@
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
                 android:focusableInTouchMode="false"
+                android:maxLines="1"
+                android:inputType="date"
                 tools:text="12/12/2023" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/itvpassed_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/admin"
+            android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expiring_itv_layout">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_itvpassed"
+                style="@style/TextAppearance.Material3.TitleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/admin"
+                android:textAlignment="textStart"
+                tools:text="@string/admin" />
+
+            <CheckBox
+                android:id="@+id/checkitvpassed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:checked="false"
+                android:enabled="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/total_distance_layout"
@@ -212,26 +259,26 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/checkLicensed_layout"
+            android:id="@+id/checkItvPassed_layout"
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:hint="@string/total_distance"
             android:padding="@dimen/small_margin"
+
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/total_distance_layout">
 
             <CheckBox
-                android:id="@+id/checkLicensed"
+                android:id="@+id/checkItvPassed"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:checked="false"
-                android:clickable="false"
-                android:focusable="false" />
+                android:enabled="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -242,6 +289,8 @@
             android:fontFamily="@font/roboto"
             android:hint="@string/description"
             android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
+            android:enabled="false"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -251,8 +300,7 @@
                 android:id="@+id/vehicle_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+               android:textColor="@android:color/black"
                 android:nestedScrollingEnabled="true"
                 android:scrollbars="vertical"
                 android:textAlignment="textStart"

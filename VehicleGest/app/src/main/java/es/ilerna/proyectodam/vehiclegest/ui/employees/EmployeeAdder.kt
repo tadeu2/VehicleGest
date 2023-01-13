@@ -6,12 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doAfterTextChanged
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Employee
@@ -45,37 +43,22 @@ class EmployeeAdder : DetailModelFragment() {
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("employees")
 
-            //Carga la foto en el formulario a partir de la URL almacenada
-            getAddEmployeeBinding.urlphoto.doAfterTextChanged {
-                //Carga la foto en el formulario a partir de la URL almacenada
-                Controller().showImageFromUrl(
-                    getAddEmployeeBinding.employeeImage,
-                    getAddEmployeeBinding.urlphoto.text.toString()
-                )
+            makeFormEditable() //Habilita los campos para su edición
+            with(addEmployeeBinding!!.bar) {
+                btdelete.visibility = View.GONE //Oculta el botón de eliminar
+                btedit.visibility = View.GONE //Oculta el botón de editar
+                btsave.visibility = View.VISIBLE //Muestra el botón de guardar
+                setListeners(
+                    null,
+                    parentFragmentManager,
+                    EmployeeFragment(),
+                    btclose,
+                    btdelete,
+                    btsave,
+                    btedit
+                ) //Inicializa los escuchadores de los botones
             }
 
-            //Escuchador del botón de añadir
-            getAddEmployeeBinding.bar.btsave.setOnClickListener {
-                //añade un empleado a la base de datos
-                addDocumentToDataBase()
-                //Vuelve a la pantalla de empleados
-                fragmentReplacer(EmployeeFragment(), parentFragmentManager)
-            }
-
-            //Escuchador del botón de cerrar
-            getAddEmployeeBinding.bar.btclose.setOnClickListener {
-                //Vuelve a la pantalla de empleados
-                fragmentReplacer(EmployeeFragment(), parentFragmentManager)
-            }
-
-            //Escuchador del botón de fecha
-            getAddEmployeeBinding.birthdate.setOnClickListener {
-                //Abre el selector de fecha
-                DatePickerFragment { day, month, year ->
-                    //Muestra la fecha en el campo de texto
-                    getAddEmployeeBinding.birthdate.setText(String.format("$day/$month/$year"))
-                }.show(parentFragmentManager, "datePicker")
-            }
         } catch (exception: Exception) {
             Log.w(TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -109,16 +92,38 @@ class EmployeeAdder : DetailModelFragment() {
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        //No se implementa en este fragmento
-    }
+        getAddEmployeeBinding.apply {
+            employeeDni.isEnabled = true
+            employeeDni.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            name.isEnabled = true
+            name.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            surname.isEnabled = true
+            surname.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            address.isEnabled = true
+            address.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            email.isEnabled = true
+            email.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            phone.isEnabled = true
+            phone.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            birthdate.isEnabled = true
+            birthdate.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            urlphoto.isEnabled = true
+            urlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            checkadmin.isEnabled = true
+            checkadmin.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
 
-    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
-        //No se implementa en este fragmento
+            //Escuchador del botón de fecha
+            birthdate.setOnClickListener {
+                //Abre el selector de fecha
+                DatePickerFragment { day, month, year ->
+                    //Muestra la fecha en el campo de texto
+                    birthdate.setText(String.format("$day/$month/$year"))
+                }.show(parentFragmentManager, "datePicker")
+            }
+        }
     }
 
     override fun bindDataToForm() {
         //No se implementa en este fragmento
     }
-
-
 }

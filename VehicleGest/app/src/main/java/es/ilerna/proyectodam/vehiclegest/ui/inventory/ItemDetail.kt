@@ -13,6 +13,7 @@ import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
+import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
@@ -45,17 +46,20 @@ class ItemDetail(
             detailItemBinding = DetailItemBinding.inflate(inflater, container, false)
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("inventory")
 
-            //Escuchador del boton cerrar
-            getDetailItemBinding.bar.btclose.setOnClickListener {
-                fragmentReplacer(InventoryFragment(), parentFragmentManager)
+            //Inicializa los escuchadores de los botones
+            with(getDetailItemBinding.bar) {
+                btsave.visibility = View.GONE
+                btedit.visibility = View.VISIBLE
+                setListeners(
+                    documentSnapshot,
+                    parentFragmentManager,
+                    InventoryFragment(),
+                    btclose,
+                    btdelete,
+                    btsave,
+                    btedit,
+                )
             }
-
-            //Escuchador del boton borrar
-            getDetailItemBinding.bar.btdelete.setOnClickListener {
-                delDocumentSnapshot(documentSnapshot)
-                fragmentReplacer(InventoryFragment(), parentFragmentManager)
-            }
-
             bindDataToForm()//Llama a la función que rellena los datos en el formulario
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -70,12 +74,14 @@ class ItemDetail(
     override fun bindDataToForm() {
         //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
         val item: Item? = documentSnapshot.toObject(Item::class.java)
-        getDetailItemBinding.name.setText(item?.name)
-        getDetailItemBinding.plateNumber.setText(item?.plateNumber)
-        getDetailItemBinding.itemDescription.setText(item?.description)
-
-        //Carga la foto en el formulario a partir de la URL almacenada
-        Controller().showImageFromUrl(getDetailItemBinding.itemImage, item?.photoURL.toString())
+        with(getDetailItemBinding) {
+            //Rellena los campos del formulario con los datos del objeto
+            name.setText(item?.name)
+            itemDescription.setText(item?.description)
+            plateNumber.setText(item?.plateNumber)
+            //Carga la foto en el formulario a partir de la URL almacenada
+            Controller().showImageFromUrl(itemImage, item?.photoURL.toString())
+        }
     }
 
     /**
@@ -86,27 +92,15 @@ class ItemDetail(
     }
 
     /**
-     * Añade el documento a la base de datos
-     */
-    override fun addDocumentToDataBase() {
-        TODO("Not yet implemented")
-    }
-
-    /**
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        TODO("Not yet implemented")
+        getDetailItemBinding.apply {
+            name.isEnabled = true
+            plateNumber.isEnabled = true
+            itemDescription.isEnabled = true
+        }
     }
-
-    /**
-     * Borra el documento de la base de datos
-     * @param documentSnapshot Instantanea de firestore del item
-     */
-    override fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
-        TODO("Not yet implemented")
-    }
-
     /**
      * Al destruir la vista, elimina la referencia al binding
      */

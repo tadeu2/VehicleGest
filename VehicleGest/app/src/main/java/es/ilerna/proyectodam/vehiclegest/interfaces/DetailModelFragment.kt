@@ -17,7 +17,6 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showLongToast
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showShortToast
-import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import java.util.concurrent.Executors
 
 
@@ -90,7 +89,7 @@ abstract class DetailModelFragment : Fragment() {
         if (documentSnapshot != null) {
             if (documentSnapshot.exists()) {
                 //Escuchador del boton eliminar
-                buttonDelete.setOnClickListener {
+                 buttonDelete.setOnClickListener {
                     delDocumentSnapshot(documentSnapshot)
                     fragmentReplacer(fragment as Fragment, parentFragmentManager)
                 }
@@ -98,7 +97,7 @@ abstract class DetailModelFragment : Fragment() {
                 //Escuchador del boton editar
                 buttonSave.setOnClickListener {
                     updateDocumentToDatabase(documentSnapshot, fillDataFromForm())
-                    fragmentReplacer(AlertsFragment(), parentFragmentManager)
+                    fragmentReplacer(fragment as Fragment, parentFragmentManager)
                 }
             } else {
                 showShortToast("El documento no existe")
@@ -108,7 +107,7 @@ abstract class DetailModelFragment : Fragment() {
             //Escuchador del boton editar
             buttonSave.setOnClickListener {
                 addDocumentToDataBase()
-                fragmentReplacer(AlertsFragment(), parentFragmentManager)
+                fragmentReplacer(fragment as Fragment, parentFragmentManager)
             }
         }
 

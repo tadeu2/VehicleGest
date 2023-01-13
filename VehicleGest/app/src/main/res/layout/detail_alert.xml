@@ -54,6 +54,7 @@
                 android:id="@+id/plate_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_margin"
                 android:fontFamily="@font/roboto"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
@@ -113,6 +114,7 @@
             android:fontFamily="@font/roboto"
             android:hint="@string/description"
             android:padding="@dimen/small_margin"
+
             android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -215,6 +217,7 @@
                 android:id="@+id/alert_solution"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/small_margin"
                 android:nestedScrollingEnabled="true"
                 android:padding="@dimen/small_margin"
                 android:scrollbars="vertical"

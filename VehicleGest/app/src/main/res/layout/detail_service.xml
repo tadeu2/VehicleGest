@@ -51,7 +51,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:hint="@string/plate_number"
+            android:textColorHint="@android:color/black"
             android:padding="@dimen/small_margin"
+            android:enabled="false"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,8 +63,8 @@
                 android:id="@+id/plate_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:focusableInTouchMode="false"
+                android:textColor="@android:color/black"
+                android:maxLines="1"
                 tools:text="1234ABC" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,6 +75,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:hint="@string/costumer"
+            android:textColorHint="@android:color/black"
+            android:enabled="false"
             android:padding="@dimen/small_margin"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -84,8 +88,7 @@
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:textColor="@android:color/black"
                 tools:text="Alcampo" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +113,8 @@
             android:layout_height="wrap_content"
             android:cursorVisible="false"
             android:focusableInTouchMode="false"
+            android:inputType="date"
+            android:textColor="@android:color/black"
             tools:text="24/12/22" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,6 +126,7 @@
             android:fontFamily="@font/roboto"
             android:hint="@string/remarks"
             android:padding="@dimen/small_margin"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -134,8 +140,7 @@
         android:padding="10dp"
         android:scrollbars="vertical"
         android:textAlignment="textStart"
-        android:cursorVisible="false"
-        android:focusableInTouchMode="false"
+        android:textColor="@android:color/black"
         tools:text="This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine

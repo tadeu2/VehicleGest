@@ -41,9 +41,10 @@ class VehiclesFragment : Fragment(), Controller.AdapterListener {
             //Referencia a la base de datos de Firebase
             vehiclesCollectionReference = Firebase.firestore.collection("vehicle")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
-                onAddButtonClick()
-            }
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)
+                ?.setOnClickListener {
+                    onAddButtonClick()
+                }
         } catch (exception: Exception) {
             exception.printStackTrace()
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -85,14 +86,14 @@ class VehiclesFragment : Fragment(), Controller.AdapterListener {
      * @param documentSnapshot Documento seleccionado
      */
     override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        fragmentReplacer(VehicleDetailModel(documentSnapshot!!), parentFragmentManager)
+        fragmentReplacer(VehicleDetail(documentSnapshot!!), parentFragmentManager)
     }
 
     /**
      * Al pulsar el botón flotante se abre el formulario de creación
      */
     override fun onAddButtonClick() {
-        fragmentReplacer(AddVehicle(), parentFragmentManager)
+        fragmentReplacer(VehicleAdder(), parentFragmentManager)
     }
 
     /**

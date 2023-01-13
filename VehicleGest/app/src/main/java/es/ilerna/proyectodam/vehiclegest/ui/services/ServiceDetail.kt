@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
-import es.ilerna.proyectodam.vehiclegest.models.Alert
 import es.ilerna.proyectodam.vehiclegest.models.Service
 
 /**
@@ -72,16 +72,17 @@ class ServiceDetail(
      * Rellena los datos del formulario con los datos del servicio
      */
     override fun bindDataToForm() {
-        //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-        val service: Service? = documentSnapshot.toObject(Service::class.java)
-        getDetailServiceBinding.plateNumber.setText(service?.plateNumber.toString())
-        getDetailServiceBinding.costumer.setText(service?.costumer.toString())
-        getDetailServiceBinding.remarks.setText(service?.remarks.toString())
+        with(getDetailServiceBinding) {
+            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+            val service: Service? = documentSnapshot.toObject(Service::class.java)
+            plateNumber.setText(service?.plateNumber.toString())
+            costumer.setText(service?.costumer.toString())
+            remarks.setText(service?.remarks.toString())
 
-        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-        //El formato se puede modificar en strings.xml
-        getDetailServiceBinding.date.setText(service?.date?.let { dateToStringFormat(it) })
-
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            date.setText(service?.date?.let { dateToStringFormat(it) })
+        }
     }
 
     /**
@@ -103,11 +104,14 @@ class ServiceDetail(
      */
     override fun makeFormEditable() {
         getDetailServiceBinding.apply {
-            plateNumber.isClickable = true
-            plateNumber.isFocusableInTouchMode = true
-            costumer.isClickable = true
-          remarks.isClickable = true
-            date.isClickable = true
+            plateNumber.isEnabled = true
+            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            costumer.isEnabled = true
+            costumer.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            remarks.isEnabled = true
+            remarks.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            date.isEnabled = true
+            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
 
             //Escuchador del botón de fecha
             date.setOnClickListener {

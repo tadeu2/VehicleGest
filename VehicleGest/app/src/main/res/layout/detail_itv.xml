@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:hint="@string/date"
+            android:textColorHint="@android:color/black"
             android:padding="@dimen/small_margin"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,10 +64,11 @@
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusableInTouchMode="false"
+                android:maxLines="1"
                 android:cursorVisible="false"
-                android:singleLine="true"
-                android:textAlignment="center"
+                android:focusableInTouchMode="false"
+                android:inputType="date"
+                android:textColor="@android:color/black"
                 tools:text="24/12/22" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,21 +80,21 @@
             android:fontFamily="@font/roboto"
             android:hint="@string/remarks"
             android:padding="@dimen/small_margin"
+            android:enabled="false"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_layout">
 
-
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/itv_remarks"
+            android:id="@+id/remarks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:cursorVisible="false"
-            android:focusableInTouchMode="false"
             android:nestedScrollingEnabled="true"
             android:scrollbars="vertical"
             android:textAlignment="textStart"
+            android:textColor="@android:color/black"
             tools:text="This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
@@ -84,7 +85,8 @@ class ItvDetail(
     override fun fillDataFromForm(): Any {
         getDetailItvBinding.apply {
             return ITV(
-                stringToDateFormat(date.text.toString())
+                stringToDateFormat(date.text.toString()),
+                remarks.text.toString()
             )
         }
     }
@@ -94,7 +96,10 @@ class ItvDetail(
      */
     override fun makeFormEditable() {
         getDetailItvBinding.apply {
-            date.isFocusableInTouchMode = true
+            date.isEnabled = true
+            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            remarks.isEnabled = true
+            remarks.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
 
             //Escuchador del botón de fecha
             date.setOnClickListener {

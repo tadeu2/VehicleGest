@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
+import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 
@@ -41,19 +43,23 @@ class ItvAdder : DetailModelFragment() {
             //Enlaza al XML del formulario y lo infla
             addItvBinding = DetailItvBinding.inflate(inflater, container, false)
 
+            makeFormEditable() //Habilita los campos para su edición
+
             //Añade los listeners a los botones
             with(getAddItvBinding.bar) {
-                btsave.visibility = View.VISIBLE
-                btedit.visibility = View.GONE
-            setListeners(
-                null,
-                parentFragmentManager,
-                ItvFragment(),
-                btclose,
-                btdelete,
-                btsave,
-                btedit
-            )}
+                btdelete.visibility = View.GONE //Oculta el botón de eliminar
+                btedit.visibility = View.GONE //Oculta el botón de editar
+                btsave.visibility = View.VISIBLE //Muestra el botón de guardar
+                setListeners(
+                    null,
+                    parentFragmentManager,
+                    ItvFragment(),
+                    btclose,
+                    btdelete,
+                    btsave,
+                    btedit
+                )
+            }
 
         } catch (exception: Exception) {
             Log.e(TAG, exception.message.toString(), exception)
@@ -76,7 +82,8 @@ class ItvAdder : DetailModelFragment() {
         getAddItvBinding.apply {
             //Rellena los datos del formulario
             return ITV(
-                stringToDateFormat(date.text.toString())
+                stringToDateFormat(date.text.toString()),
+                remarks.text.toString()
             )
         }
     }
@@ -85,7 +92,22 @@ class ItvAdder : DetailModelFragment() {
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        //No se implementa en este fragmento
+        with(getAddItvBinding) {
+            //Hace editable el formulario
+            date.isEnabled = true
+            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            remarks.isEnabled = true
+            remarks.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+
+            //Escuchador del botón de fecha
+            date.setOnClickListener {
+                //Abre el selector de fecha
+                DatePickerFragment { day, month, year ->
+                    //Muestra la fecha en el campo de texto
+                    date.setText(String.format("$day/$month/$year"))
+                }.show(parentFragmentManager, "datePicker")
+            }
+        }
     }
 
     /**

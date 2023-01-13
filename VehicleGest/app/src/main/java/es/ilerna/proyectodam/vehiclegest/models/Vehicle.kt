@@ -1,9 +1,7 @@
 package es.ilerna.proyectodam.vehiclegest.models
 
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
@@ -16,6 +14,7 @@ import java.util.*
  *  @param type Tipo de vehículo
  *  @param expiryDateITV Fecha de caducidad de la ITV
  *  @param totalDistance Distancia total recorrida
+ *  @param itvPassed ITV pasada
  *  @param description Descripción del vehículo
  *  @param photoURL URL de la foto del vehículo
  */
@@ -27,7 +26,7 @@ data class Vehicle(
     var model: String? = null,
     var expiryDateITV: Date? = null,
     var totalDistance: Int? = 0,
-    var licensed: Boolean? = null,
+    var itvPassed: Boolean? = null,
     var description: String? = null,
     var photoURL: String? = null
 ) : Parcelable {
@@ -43,7 +42,7 @@ data class Vehicle(
         model = parcel.readString()
         expiryDateITV = Timestamp(parcel.readLong(), 0).toDate()
         totalDistance = parcel.readInt()
-        licensed = parcel.readBoolean()
+        itvPassed = parcel.readBoolean()
         description = parcel.readString()
         photoURL = parcel.readString()
     }
@@ -68,7 +67,7 @@ data class Vehicle(
         dest.writeString(model)
         expiryDateITV?.time?.let { dest.writeLong(it) }
         totalDistance?.let { dest.writeInt(it) }
-        licensed?.let { dest.writeBoolean(it) }
+        itvPassed?.let { dest.writeBoolean(it) }
         dest.writeString(description)
         dest.writeString(photoURL)
     }

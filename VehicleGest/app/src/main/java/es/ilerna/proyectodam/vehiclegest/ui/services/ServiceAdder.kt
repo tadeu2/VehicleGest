@@ -6,20 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
-import java.util.concurrent.Executors
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  *
  */
-class AddService : DetailModelFragment() {
+class ServiceAdder : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addServiceBinding: DetailServiceBinding? = null
@@ -61,19 +59,6 @@ class AddService : DetailModelFragment() {
                 )
             }
 
-            with(getAddServiceBinding) {
-                //Escucha el botón de fecha
-                date.setOnClickListener {
-                    //Crea un nuevo fragmento de diálogo
-                    DatePickerFragment { day, month, year ->
-                        // Actualiza el campo de fecha
-                        date.setText(String.format("$day/$month/$year"))
-                    }
-                        // Muestra el diálogo
-                        .show(parentFragmentManager, "datePicker")
-                }
-            }
-
         } catch (exception: Exception) {
             exception.printStackTrace()
             Log.e(TAG, "Error al crear la vista del fragmento", exception)
@@ -85,9 +70,18 @@ class AddService : DetailModelFragment() {
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        for(i in 0 until getAddServiceBinding.root.childCount) {
-            getAddServiceBinding.root.getChildAt(i).focusable = View.FOCUSABLE
-            getAddServiceBinding.root.getChildAt(i).isClickable = true
+        with(getAddServiceBinding){
+            plateNumber.isEnabled = true
+            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            date.isEnabled = true
+            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            costumer.isEnabled = true
+            costumer.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            date.isEnabled = true
+            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            remarks.isEnabled = true
+            remarks.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))    
+
         }
     }
 

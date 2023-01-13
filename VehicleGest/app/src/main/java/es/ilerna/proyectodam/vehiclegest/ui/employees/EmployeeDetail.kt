@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
@@ -56,7 +57,7 @@ class EmployeeDetail(
                 setListeners(
                     documentSnapshot,
                     parentFragmentManager,
-                    AlertsFragment(),
+                    EmployeeFragment(),
                     btclose,
                     btdelete,
                     btsave,
@@ -79,22 +80,24 @@ class EmployeeDetail(
      */
     override fun makeFormEditable() {
         getDetailEmployeeBinding.apply {
-            name.isFocusableInTouchMode = true
-            name.isCursorVisible = true
-            surname.isFocusableInTouchMode = true
-            surname.isCursorVisible = true
-            employeeDni.isFocusableInTouchMode = true
-            employeeDni.isCursorVisible = true
-            phone.isFocusableInTouchMode = true
-            phone.isCursorVisible = true
-            address.isFocusableInTouchMode = true
-            address.isCursorVisible = true
-            birthdate.isFocusableInTouchMode = true
-            urlphoto.isFocusableInTouchMode = true
-            urlphoto.isCursorVisible = true
-            email.isFocusableInTouchMode = true
-            email.isCursorVisible = true
-            checkadmin.isFocusableInTouchMode = true
+            name.isEnabled = true
+            name.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            surname.isEnabled = true
+            surname.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            employeeDni.isEnabled = true
+            employeeDni.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            phone.isEnabled = true
+            phone.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            address.isEnabled = true
+            address.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            birthdate.isEnabled = true
+            birthdate.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            urlphoto.isEnabled = true
+            urlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            email.isEnabled = true
+            email.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            checkadmin.isEnabled = true
+            checkadmin.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
 
             //Escuchador del botón de fecha
             birthdate.setOnClickListener {

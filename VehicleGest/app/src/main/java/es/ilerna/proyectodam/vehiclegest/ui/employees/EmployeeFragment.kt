@@ -42,12 +42,13 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
             //Referencia a la base de datos de Firebase
             employeeCollectionReference = Firebase.firestore.collection("employees")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
-                onAddButtonClick()
-            }
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)
+                ?.setOnClickListener {
+                    onAddButtonClick()
+                }
         } catch (exception: Exception) {
-            exception.printStackTrace()
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
+            exception.printStackTrace()
         }
     }
 
@@ -66,6 +67,7 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
 
             employeeRecyclerAdapter = EmployeeRecyclerAdapter(employeeCollectionReference, this)
             recyclerView.adapter = employeeRecyclerAdapter
+
         } catch (exception: Exception) {
             exception.printStackTrace()
             Log.e(ContentValues.TAG, exception.message.toString(), exception)

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
@@ -16,7 +16,7 @@ import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 /**
  * Abre una ventana diálogo con los detalles del artículo a añadir.
  */
-class AddItem : DetailModelFragment() {
+class ItemAdder : DetailModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addItemBinding: DetailItemBinding? = null
@@ -42,10 +42,11 @@ class AddItem : DetailModelFragment() {
         with(getAddItemBinding.bar) {
             btsave.visibility = android.view.View.VISIBLE
             btedit.visibility = android.view.View.GONE
+            btdelete.visibility = android.view.View.GONE
             setListeners(
                 null,
                 parentFragmentManager,
-                AlertsFragment(),
+                InventoryFragment(),
                 btclose,
                 btdelete,
                 btsave,
@@ -98,7 +99,17 @@ class AddItem : DetailModelFragment() {
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        //No se implementa en este fragmento
+        //Habilita los campos para su edición
+        getAddItemBinding.apply {
+            plateNumber.isEnabled = true
+            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            name.isEnabled = true
+            name.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            itemUrlphoto.isEnabled = true
+            itemUrlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            itemDescription.isEnabled = true
+            itemDescription.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+        }
     }
 
 }

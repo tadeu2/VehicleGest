@@ -46,9 +46,10 @@ class ServiceFragment : Fragment(), Controller.AdapterListener {
             serviceCollectionReference = Firebase.firestore.collection("service")
 
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
-                onAddButtonClick()
-            }
+            activity?.findViewById<FloatingActionButton>(R.id.addButton)
+                ?.setOnClickListener {
+                    onAddButtonClick()
+                }
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -87,7 +88,7 @@ class ServiceFragment : Fragment(), Controller.AdapterListener {
      * Al pulsar el botón flotante se abre el fragmento de creación
      */
     override fun onAddButtonClick() {
-        fragmentReplacer(AddService(), parentFragmentManager)
+        fragmentReplacer(ServiceAdder(), parentFragmentManager)
     }
 
     /**
