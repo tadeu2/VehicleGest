@@ -77,4 +77,6 @@
     <string name="item_information">Item Information</string>
     <string name="itv_information">ITV Information</string>
     <string name="vehicle_information">Vehicle Information</string>
+    <string name="itv_passed">ITV passed</string>
+    <string name="kilometer">Kilometer</string>
 </resources>

@@ -89,16 +89,12 @@ class VehicleDetail(
 
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            expiringItv.setText(vehicle?.expiryDateITV?.let {
+            expiringItvDate.setText(vehicle?.expiryDateITV?.let {
                 dateToStringFormat(
                     it
                 )
             })
-            //Añade la cadena km de kilometros al final del número
-            totalDistance.setText(buildString {
-                append(vehicle?.totalDistance.toString())
-                append(" KM")
-            })
+
             //Carga la foto en el formulario a partir de la URL almacenada
             Controller().showImageFromUrl(
                 vehicleImage,
@@ -113,13 +109,15 @@ class VehicleDetail(
      */
     override fun fillDataFromForm(): Any {
         getDetailVehicleBinding.apply {
+            val inputString = totalDistance.text.toString()
+            val inputNumber = if(inputString.isNullOrEmpty()) 0 else inputString.toInt()
             return Vehicle(
                 plateNumber.text.toString(),
                 type.text.toString(),
                 brand.text.toString(),
                 model.text.toString(),
-                stringToDateFormat(expiringItv.text.toString()),
-                totalDistance.text.toString().toInt(),
+                stringToDateFormat(expiringItvDate.text.toString()),
+                inputNumber,
                 checkItvPassed.isChecked,
                 vehicleDescription.text.toString(),
                 urlphoto.text.toString()
@@ -155,8 +153,8 @@ class VehicleDetail(
                     null
                 )
             )
-            expiringItv.isEnabled = true
-            expiringItv.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            expiringItvDate.isEnabled = true
+            expiringItvDate.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             totalDistance.isEnabled = true
             totalDistance.setTextColor(
                 resources.getColor(
@@ -168,11 +166,11 @@ class VehicleDetail(
             urlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
 
             //Escuchador del botón de fecha
-            expiringItv.setOnClickListener {
+            expiringItvDate.setOnClickListener {
                 //Abre el selector de fecha
                 DatePickerFragment { day, month, year ->
                     //Muestra la fecha en el campo de texto
-                    expiringItv.setText(String.format("$day/$month/$year"))
+                    expiringItvDate.setText(String.format("$day/$month/$year"))
                 }.show(parentFragmentManager, "datePicker")
             }
         }

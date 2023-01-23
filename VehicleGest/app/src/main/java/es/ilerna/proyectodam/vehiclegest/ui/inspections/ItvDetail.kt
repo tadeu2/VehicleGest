@@ -50,8 +50,8 @@ class ItvDetail(
 
             //Iniciliza los escuchadores de los botones
             with(getDetailItvBinding.bar) {
-                btsave.visibility = View.VISIBLE
-                btedit.visibility = View.GONE
+                btsave.visibility = View.GONE
+                btedit.visibility = View.VISIBLE
                 setListeners(
                     documentSnapshot,
                     parentFragmentManager,
@@ -77,9 +77,14 @@ class ItvDetail(
     override fun bindDataToForm() {
         //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
         val itv: ITV? = documentSnapshot.toObject(ITV::class.java)
-        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-        //El formato se puede modificar en strings.xml
-        getDetailItvBinding.date.setText(dateToStringFormat(itv?.date))
+       with(getDetailItvBinding){
+           //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+           //El formato se puede modificar en strings.xml
+           date.setText(dateToStringFormat(itv?.date))
+          remarks.setText(itv?.remarks)
+       }
+
+
     }
 
     override fun fillDataFromForm(): Any {

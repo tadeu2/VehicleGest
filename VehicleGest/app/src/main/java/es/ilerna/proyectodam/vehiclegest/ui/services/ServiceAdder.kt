@@ -37,17 +37,18 @@ class ServiceAdder : DetailModelFragment() {
         savedInstanceState: Bundle?
     ): View {
         try {
-            //Inicializa la base de datos
-            dbFirestoreReference = FirebaseFirestore.getInstance().collection("service")
-
             //Enlaza al XML del formulario y lo infla
             addServiceBinding = DetailServiceBinding.inflate(inflater, container, false)
+
+            //Inicializa la base de datos
+            dbFirestoreReference = FirebaseFirestore.getInstance().collection("service")
 
             makeFormEditable() //Habilita los campos para su edición
 
             with(getAddServiceBinding.bar) {
                 btsave.visibility = View.VISIBLE
                 btedit.visibility = View.GONE
+                btdelete.visibility = View.GONE
                 setListeners(
                     null,
                     parentFragmentManager,

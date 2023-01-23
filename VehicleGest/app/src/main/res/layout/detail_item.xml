@@ -66,6 +66,7 @@
             android:hint="@string/urlphoto"
             android:padding="@dimen/small_margin"
             android:textColorHint="@android:color/black"
+            android:enabled="false"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -89,6 +90,7 @@
             android:hint="@string/name"
             android:textColorHint="@android:color/black"
             android:padding="@dimen/small_margin"
+            android:enabled="false"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,8 +101,7 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:textColor="@android:color/black"
                 tools:text="Alicates" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,10 +148,12 @@
                 android:id="@+id/item_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
+                android:inputType="textAutoCorrect|textMultiLine"
+                android:justificationMode="inter_word"
                 android:nestedScrollingEnabled="true"
                 android:scrollbars="vertical"
                 android:textAlignment="textStart"
+                android:textColor="@android:color/black"
                 tools:text="This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine

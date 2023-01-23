@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
@@ -88,7 +89,14 @@ class ItemDetail(
      * Metodo que rellena la entidad con los datos del formulario
      */
     override fun fillDataFromForm(): Any {
-        TODO("Not yet implemented")
+        getDetailItemBinding.apply {
+            return Item(
+                plateNumber.text.toString(),
+                name.text.toString(),
+                itemDescription.text.toString(),
+                itemUrlphoto.text.toString()
+            )
+        }
     }
 
     /**
@@ -97,8 +105,13 @@ class ItemDetail(
     override fun makeFormEditable() {
         getDetailItemBinding.apply {
             name.isEnabled = true
+            name.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             plateNumber.isEnabled = true
+            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             itemDescription.isEnabled = true
+            itemDescription.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            itemUrlphoto.isEnabled = true
+            itemUrlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
         }
     }
     /**

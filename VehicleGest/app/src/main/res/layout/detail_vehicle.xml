@@ -77,7 +77,9 @@
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textUri"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@android:color/black"
                 tools:text="1234ABC" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -159,7 +161,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:fontFamily="@font/roboto"
-            android:hint="@string/name"
+            android:hint="@string/model"
             android:padding="@dimen/small_margin"
             android:textColorHint="@android:color/black"
             app:errorEnabled="true"
@@ -177,149 +179,130 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/expiring_itv_layout"
+            android:id="@+id/check_itv_passed_layout"
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:fontFamily="@font/roboto"
-            android:hint="@string/name"
-            android:padding="@dimen/small_margin"
+            android:hint="@string/itv_passed"
+            android:padding="0dp"
+            android:textColorHint="@android:color/black"
+            app:errorEnabled="true"
+            app:layout_constraintBottom_toTopOf="@+id/total_distance_layout"
+            app:layout_constraintEnd_toStartOf="@id/expiring_itv_date_layout"
+            app:layout_constraintHorizontal_bias="0.34"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/model_layout">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkItvPassed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-10dp"
+                android:button="@null"
+                android:checked="false"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:enabled="false"
+                android:gravity="center"
+                android:hint="@string/itv_passed"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/expiring_itv_date_layout"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:enabled="false"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/itv_expiration_date"
+            android:paddingTop="30dp"
+            android:textColorHint="@android:color/black"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/check_itv_passed_layout"
             app:layout_constraintTop_toBottomOf="@id/model_layout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/expiring_itv"
+                android:id="@+id/expiring_itv_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:cursorVisible="false"
                 android:focusableInTouchMode="false"
-                android:maxLines="1"
+                android:gravity="center_vertical"
                 android:inputType="date"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
                 tools:text="12/12/2023" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/itvpassed_layout"
+            android:id="@+id/total_distance_layout"
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
-            android:hint="@string/admin"
+            android:hint="@string/total_distance"
             android:padding="@dimen/small_margin"
             android:textColorHint="@android:color/black"
             app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/total_distance_unit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/expiring_itv_layout">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/label_itvpassed"
-                style="@style/TextAppearance.Material3.TitleSmall"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/admin"
-                android:textAlignment="textStart"
-                tools:text="@string/admin" />
-
-            <CheckBox
-                android:id="@+id/checkitvpassed"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
-                android:checked="false"
-                android:enabled="false" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/total_distance_layout"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:hint="@string/name"
-            android:padding="@dimen/small_margin"
-            app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/expiring_itv_layout">
+            app:layout_constraintTop_toBottomOf="@id/expiring_itv_date_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/total_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                tools:text="123KM" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/checkItvPassed_layout"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:hint="@string/total_distance"
-            android:padding="@dimen/small_margin"
-
-            app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/total_distance_layout">
-
-            <CheckBox
-                android:id="@+id/checkItvPassed"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:checked="false"
-                android:enabled="false"/>
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                tools:text="123" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/total_distance_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="1"
+            android:text="@string/kilometer"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@+id/description_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/total_distance_layout"
+            app:layout_constraintTop_toBottomOf="@id/expiring_itv_date_layout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/description_layout"
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:fontFamily="@font/roboto"
             android:hint="@string/description"
             android:padding="@dimen/small_margin"
             android:textColorHint="@android:color/black"
-            android:enabled="false"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/model_layout">
+            app:layout_constraintTop_toBottomOf="@id/total_distance_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/vehicle_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:textColor="@android:color/black"
+                android:inputType="textAutoCorrect|textMultiLine"
+                android:justificationMode="inter_word"
                 android:nestedScrollingEnabled="true"
                 android:scrollbars="vertical"
-                android:textAlignment="textStart"
+                android:textColor="@android:color/black"
                 tools:text="This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
-                    a usually four-wheeled vehicle designed primarily for passenger
-                    transportation and commonly propelled by an internal-combustion engine
-                    using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine
                     using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,

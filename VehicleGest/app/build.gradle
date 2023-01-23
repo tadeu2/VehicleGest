@@ -39,15 +39,13 @@ android {
         jvmTarget = '1.8'
     }
     buildToolsVersion = "33.0.1"
+    packagingOptions {
+        resources {
+            pickFirsts += ['META-INF/DEPENDENCIES', 'META-INF/AL2.0', 'META-INF/LGPL2.1', 'xsd/catalog.xml', 'META-INF/LICENSE.md']
+        }
+    }
 
     //pongo este exclude porque da error al compilar
-    packagingOptions {
-        pickFirst 'META-INF/DEPENDENCIES'
-        pickFirst 'META-INF/AL2.0'
-        pickFirst 'META-INF/LGPL2.1'
-        pickFirst 'xsd/catalog.xml'
-        pickFirst 'META-INF/LICENSE.md'
-    }
     dependencies {
 
         //Dependencias básicas de android

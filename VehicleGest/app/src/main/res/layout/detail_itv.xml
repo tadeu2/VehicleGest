@@ -26,7 +26,7 @@
             style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/item_information"
+            android:text="@string/itv_information"
             android:textAlignment="center"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,15 +87,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_layout">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/remarks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="true"
-            android:scrollbars="vertical"
-            android:textAlignment="textStart"
-            android:textColor="@android:color/black"
-            tools:text="This is a automobile, byname auto, also called motorcar or car,
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/remarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:nestedScrollingEnabled="true"
+                android:scrollbars="vertical"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/black"
+                tools:text="This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine
                     using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,

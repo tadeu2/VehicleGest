@@ -42,7 +42,7 @@ class VehicleAdder : DetailModelFragment() {
 
         try {
             //Inicializa la base de datos
-            vehicleCollectionReference = FirebaseFirestore.getInstance().collection("vehicle")
+            dbFirestoreReference = FirebaseFirestore.getInstance().collection("vehicle")
 
             //Enlaza al XML del formulario y lo infla
             addVehicleBinding = DetailVehicleBinding.inflate(inflater, container, false)
@@ -83,19 +83,19 @@ class VehicleAdder : DetailModelFragment() {
      */
     override fun fillDataFromForm(): Any {
         getAddVehicleBinding.apply {
-            return {
-                Vehicle(
+            val inputString = totalDistance.text.toString()
+            val inputNumber = if(inputString.isNullOrEmpty()) 0 else inputString.toInt()
+            return Vehicle(
                     plateNumber.text.toString(),
                     type.text.toString(),
                     brand.text.toString(),
                     model.text.toString(),
-                    stringToDateFormat(expiringItv.text.toString()),
-                    totalDistance.text.toString().toInt(),
+                    stringToDateFormat(expiringItvDate.text.toString()),
+                    inputNumber,
                     checkItvPassed.isChecked,
                     vehicleDescription.text.toString(),
                     urlphoto.text.toString()
                 )
-            }
         }
     }
 
@@ -112,8 +112,8 @@ class VehicleAdder : DetailModelFragment() {
             brand.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             model.isEnabled = true
             model.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            expiringItv.isEnabled = true
-            expiringItv.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            expiringItvDate.isEnabled = true
+            expiringItvDate.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             totalDistance.isEnabled = true
             totalDistance.setTextColor(
                 resources.getColor(
@@ -138,11 +138,11 @@ class VehicleAdder : DetailModelFragment() {
             urlphoto.isEnabled = true
             urlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             //Escuchador del botón de fecha
-            expiringItv.setOnClickListener {
+            expiringItvDate.setOnClickListener {
                 //Abre el selector de fecha
                 DatePickerFragment { day, month, year ->
                     //Muestra la fecha en el campo de texto
-                    expiringItv.setText(String.format("$day/$month/$year"))
+                    expiringItvDate.setText(String.format("$day/$month/$year"))
                 }.show(parentFragmentManager, "datePicker")
             }
         }

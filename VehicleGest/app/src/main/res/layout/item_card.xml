@@ -92,28 +92,6 @@
 
         </LinearLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/description_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/description"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_image"
-            app:layout_constraintTop_toBottomOf="@id/linear1"
-            tools:text="@string/description" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/item_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_image"
-            app:layout_constraintTop_toBottomOf="@id/description_label"
-            tools:text="Está dentro del vehículo en la guantera" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

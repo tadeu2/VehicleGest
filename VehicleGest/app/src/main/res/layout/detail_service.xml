@@ -92,7 +92,6 @@
                 tools:text="Alcampo" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/date_layout"
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
@@ -127,21 +126,24 @@
             android:hint="@string/remarks"
             android:padding="@dimen/small_margin"
             android:textColorHint="@android:color/black"
+            android:enabled="false"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_layout">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/remarks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="true"
-        android:padding="10dp"
-        android:scrollbars="vertical"
-        android:textAlignment="textStart"
-        android:textColor="@android:color/black"
-        tools:text="This is a automobile, byname auto, also called motorcar or car,
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/remarks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textAutoCorrect|textMultiLine"
+                android:justificationMode="inter_word"
+                android:nestedScrollingEnabled="true"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/black"
+                tools:text="This is a automobile, byname auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine
                     using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
@@ -44,6 +45,9 @@ class ServiceDetail(
         try {
             //Enlaza al XML del formulario y lo infla
             detailServiceBinding = DetailServiceBinding.inflate(inflater, container, false)
+
+            //Referencia a la base de datos de Firebase
+            dbFirestoreReference = FirebaseFirestore.getInstance().collection("employees")
 
             //Inicializa los escuchadores de los botones
             with(getDetailServiceBinding.bar) {
