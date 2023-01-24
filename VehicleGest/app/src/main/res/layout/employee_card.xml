@@ -81,19 +81,19 @@
                     android:id="@+id/dni"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="1234ABC" />
+                    tools:text="44513234m" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Berlina" />
+                    tools:text="Antonio" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/surname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Audi" />
+                    tools:text="Perez" />
 
 
             </LinearLayout>

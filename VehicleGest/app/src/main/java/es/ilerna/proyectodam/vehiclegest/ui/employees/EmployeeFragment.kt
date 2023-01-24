@@ -1,7 +1,6 @@
 package es.ilerna.proyectodam.vehiclegest.ui.employees
 
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
@@ -88,51 +89,60 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
     private fun setSearchViewListeners() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-
+                if (query.isEmpty()) {
+                    getAllData()
+                }
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                filterData(newText)
+                if (newText.isEmpty()) {
+                    getAllData()
+                } else {
+                    filterData(newText);
+                }
                 return false
             }
         })
-    }
 
-    private fun filterData(searchString: String) {
-        val employeeFiltered = employeeCollectionReference.whereLessThanOrEqualTo(
-            "dni",
-            searchString
-        )
-
-        employeeCollectionReference.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Controller.showShortToast("failed")
-                Log.w(TAG, "Listen failed.", e)
-                return@addSnapshotListener
-            }
-            if (snapshot != null) {
-                Controller.showShortToast("data")
-                Log.d(TAG, "Current data: ${snapshot.metadata}")
-            } else {
-                Controller.showShortToast("null")
-                Log.d(TAG, "Current data: null")
-            }
+        searchView.setOnCloseListener {
+            getAllData()
+            false
         }
+    }
 
-
-        employeeFiltered.get()
-            .addOnSuccessListener { result ->
-                if (result.isEmpty) {
-                } else {
-                    employeeRecyclerAdapter.updateData(ArrayList(result.documents))
-                    Log.v(TAG, "filtro correcto${searchString.toString()}")
-                }
-            }.addOnFailureListener { exception ->
-                Log.w(TAG, "Fallo en filtro", exception)
+    fun getAllData() {
+        employeeCollectionReference.get()
+            .addOnSuccessListener { task ->
+                employeeRecyclerAdapter.updateData(task.documents as ArrayList<DocumentSnapshot>)
             }
     }
 
+    fun generateFilterQuery(searchString: String): List<Query> {
+        var queryDni = employeeCollectionReference
+            .whereGreaterThanOrEqualTo("dni", searchString)
+            .whereLessThanOrEqualTo("dni", searchString + "\uf8ff")
+        var querySurname = employeeCollectionReference
+            .whereGreaterThanOrEqualTo("surname", searchString)
+            .whereLessThanOrEqualTo("surname", searchString + "\uf8ff")
+        return listOf(queryDni, querySurname)
+    }
+
+    fun updateData(documentList: List<DocumentSnapshot>) {
+        employeeRecyclerAdapter.updateData(documentList as ArrayList<DocumentSnapshot>)
+    }
+
+    fun filterData(searchString: String) {
+        val queryList = generateFilterQuery(searchString)
+        val tempList = ArrayList<DocumentSnapshot>()
+        queryList.forEach { query ->
+            query.get()
+                .addOnSuccessListener { task ->
+                    tempList.addAll(task.documents)
+                    updateData(tempList)
+                }
+        }
+    }
 
     /**
      * Al seleccionar un item de la lista se abre el fragmento de detalle

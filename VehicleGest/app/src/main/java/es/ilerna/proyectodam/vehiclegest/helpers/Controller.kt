@@ -28,56 +28,36 @@ class Controller {
      * @param url Parámetro que contiene la URL de la imagen
      * @param imageView Parámetro que contiene el ImageView donde se pintará la imagen
      */
-    @OptIn(DelicateCoroutinesApi::class) //Para evitar el warning de que la función es experimental
+    @OptIn(DelicateCoroutinesApi::class)
     fun showImageFromUrl(imageView: ImageView, url: String) {
-        // Crear una coroutine con el contexto de la UI
-        // Se usa el contexto de la UI porque se va a pintar en un ImageView
         GlobalScope.launch(Dispatchers.Main) {
-            // Descargar la imagen en una coroutine suspendida
             try {
-                val bitmap = withContext(Dispatchers.IO) {
+                if (url.isNullOrEmpty()) {
+                    Log.e("Error", "La URL está vacía")
 
-                    // Establecer la conexión con la URL y descargar la imagen
-                    val urlConnection =
-                        URL(url).openConnection() as HttpURLConnection //Abrir la conexión
-                    urlConnection.doInput = true // Indica que se va a descargar
-                    urlConnection.connect() // Conectar con la URL y descargar la imagen
-                    val inputStream =
-                        urlConnection.inputStream  // Obtener el InputStream de la imagen
-                    // Convertir la imagen descargada a un Bitmap
-                    return@withContext BitmapFactory.decodeStream(inputStream) // Devolver el Bitmap
-
+                    return@launch
                 }
-
-                // Mostrar la imagen en el ImageView si no es null (si no hay ningún error)
+                val bitmap = withContext(Dispatchers.IO) {
+                    val urlConnection = URL(url).openConnection() as HttpURLConnection
+                    urlConnection.doInput = true
+                    urlConnection.connect()
+                    val inputStream = urlConnection.inputStream
+                    return@withContext BitmapFactory.decodeStream(inputStream)
+                }
                 if (bitmap != null) {
-                    // Pintar la imagen en el ImageView
                     imageView.setImageBitmap(bitmap)
                 } else {
-                    // Si no se ha podido descargar la imagen, mostrar un mensaje de error
                     Log.e("Error", "No se puede mostrar la imagen")
                 }
             } catch (exception: Exception) {
-                // Si hay algún error, imprimir un mensaje en la consola
                 Log.e(ContentValues.TAG, exception.message.toString(), exception)
             } catch (exception: MalformedURLException) {
-                // Si hay algún error, imprimir un mensaje en la consola
                 Log.e(ContentValues.TAG, exception.message.toString(), exception)
-                Toast.makeText(
-                    Vehiclegest.instance.applicationContext,
-                    "Error en la URL de la imagen",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(imageView.context, "Error en la URL de la imagen", Toast.LENGTH_SHORT).show()
             } catch (exception: URISyntaxException) {
-                // Si hay algún error, imprimir un mensaje en la consola
                 Log.e(ContentValues.TAG, exception.message.toString(), exception)
-                Toast.makeText(
-                    imageView.context,
-                    "Error en la sintaxis de URL de la imagen",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(imageView.context, "Error en la sintaxis de URL de la imagen", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 

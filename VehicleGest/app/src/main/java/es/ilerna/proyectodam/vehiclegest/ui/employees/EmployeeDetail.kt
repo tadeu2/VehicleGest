@@ -15,7 +15,6 @@ import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStri
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Employee
-import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 
 /**
  * Abre una ventana diálogo con los detalles del empleado
@@ -124,18 +123,30 @@ class EmployeeDetail(
             surname.setText(employee?.surname)
             employeeDni.setText(employee?.dni)
             phone.setText(employee?.phone)
+            address.setText(employee?.address)
             urlphoto.setText(employee?.photoURL)
+            email.setText(employee?.email)
             checkadmin.isChecked = employee?.admin == true
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
             birthdate.setText(dateToStringFormat(employee?.birthdate))
+
+            //Carga la foto en el formulario a partir de la URL almacenada
+            //Si no hay foto, muestra una imagen por defecto. Usamos post para que se ejecute después
+            //de que se haya cargado el formulario
+            employeeImage.post {
+                if (employee?.photoURL.toString().isNullOrEmpty()) {
+                    employeeImage.setImageResource(R.drawable.no_image_available)
+                } else {
+                    Controller().showImageFromUrl(
+                        employeeImage,
+                        employee?.photoURL.toString()
+                    )
+                }
+            }
         }
-        //Carga la foto en el formulario a partir de la URL almacenada
-        Controller().showImageFromUrl(
-            getDetailEmployeeBinding.employeeImage,
-            employee?.photoURL.toString(),
-        )
     }
+
 
     /**
      * Devuelve un objeto de tipo empleado con los datos del formulario
@@ -144,14 +155,15 @@ class EmployeeDetail(
     override fun fillDataFromForm(): Employee {
         getDetailEmployeeBinding.apply {
             return Employee(
+                employeeDni.text.toString(),
                 name.text.toString(),
                 surname.text.toString(),
-                employeeDni.text.toString(),
-                phone.text.toString(),
                 address.text.toString(),
                 email.text.toString(),
+                phone.text.toString(),
                 Controller.stringToDateFormat(birthdate.text.toString()),
                 urlphoto.text.toString(),
+                checkadmin.isChecked
             )
         }
     }
