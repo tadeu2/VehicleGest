@@ -1,6 +1,7 @@
 package es.ilerna.proyectodam.vehiclegest.ui.employees
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -86,31 +87,49 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
 
     private fun setSearchViewListeners() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                filterData(query)
+            override fun onQueryTextSubmit(query: String): Boolean {
+
                 return false
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
+            override fun onQueryTextChange(newText: String): Boolean {
                 filterData(newText)
                 return false
             }
         })
     }
 
-    private fun filterData(searchString: String?) {
-        val employeeFiltered = employeeCollectionReference.whereEqualTo(
-            "dni".lowercase(),
-            searchString?.lowercase() ?: ""
+    private fun filterData(searchString: String) {
+        val employeeFiltered = employeeCollectionReference.whereLessThanOrEqualTo(
+            "dni",
+            searchString
         )
-        employeeFiltered.whereEqualTo("surname".lowercase(), searchString?.lowercase() ?: "")
+
+        employeeCollectionReference.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Controller.showShortToast("failed")
+                Log.w(TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
+            if (snapshot != null) {
+                Controller.showShortToast("data")
+                Log.d(TAG, "Current data: ${snapshot.metadata}")
+            } else {
+                Controller.showShortToast("null")
+                Log.d(TAG, "Current data: null")
+            }
+        }
+
 
         employeeFiltered.get()
             .addOnSuccessListener { result ->
                 if (result.isEmpty) {
                 } else {
                     employeeRecyclerAdapter.updateData(ArrayList(result.documents))
+                    Log.v(TAG, "filtro correcto${searchString.toString()}")
                 }
+            }.addOnFailureListener { exception ->
+                Log.w(TAG, "Fallo en filtro", exception)
             }
     }
 
