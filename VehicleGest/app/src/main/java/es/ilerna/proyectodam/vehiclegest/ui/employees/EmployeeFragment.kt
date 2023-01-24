@@ -99,11 +99,11 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
     }
 
     private fun filterData(searchString: String?) {
-        val employeeFiltered = employeeCollectionReference.whereLessThanOrEqualTo(
+        val employeeFiltered = employeeCollectionReference.whereEqualTo(
             "dni".lowercase(),
             searchString?.lowercase() ?: ""
         )
-        employeeFiltered.whereLessThanOrEqualTo("surname".lowercase(), searchString?.lowercase() ?: "")
+        employeeFiltered.whereEqualTo("surname".lowercase(), searchString?.lowercase() ?: "")
 
         employeeFiltered.get()
             .addOnSuccessListener { result ->
