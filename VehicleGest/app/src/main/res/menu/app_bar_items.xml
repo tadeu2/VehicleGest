@@ -19,5 +19,4 @@
         android:tint="?attr/colorControlNormal"
         android:title="@string/logout"
         app:showAsAction="ifRoom" />
-
 </menu>

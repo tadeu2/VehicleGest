@@ -4,6 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:liftOnScroll="true">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topDetailToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:elevation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:menu="@menu/detail_navigation_menu"
+            app:subtitle="Login"
+            app:title="Vehiclegest"
+            app:titleTextColor="@color/md_theme_light_surface">
+        </com.google.android.material.appbar.MaterialToolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btclose"
         style="?attr/materialIconButtonFilledTonalStyle"
@@ -56,5 +80,6 @@
         app:iconSize="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

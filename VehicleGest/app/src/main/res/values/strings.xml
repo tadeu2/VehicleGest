@@ -84,5 +84,6 @@
     <string name="vehicle_information">Vehicle Information</string>
     <string name="itv_passed">ITV passed</string>
     <string name="kilometer">Kilometer</string>
+    <string name="close">Close</string>
 
 </resources>

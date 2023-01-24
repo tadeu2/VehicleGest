@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import es.ilerna.proyectodam.vehiclegest.adapters.EmployeeRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentEmployeesBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
 
 /**
  * Fragmento de listado de empleados
@@ -34,6 +36,7 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
     private lateinit var employeeRecyclerAdapter: EmployeeRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var employeeCollectionReference: CollectionReference
+    private lateinit var searchView: SearchView
 
     //Fase de creación del fragmento
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +77,43 @@ class EmployeeFragment : Fragment(), Controller.AdapterListener {
         }
         return getFragmentEmployeesBinding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        searchView = (activity as MainActivity).findViewById(R.id.searchView)
+        setSearchViewListeners()
+    }
+
+    private fun setSearchViewListeners() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filterData(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterData(newText)
+                return false
+            }
+        })
+    }
+
+    private fun filterData(searchString: String?) {
+        val employeeFiltered = employeeCollectionReference.whereLessThanOrEqualTo(
+            "dni".lowercase(),
+            searchString?.lowercase() ?: ""
+        )
+        employeeFiltered.whereLessThanOrEqualTo("surname".lowercase(), searchString?.lowercase() ?: "")
+
+        employeeFiltered.get()
+            .addOnSuccessListener { result ->
+                if (result.isEmpty) {
+                } else {
+                    employeeRecyclerAdapter.updateData(ArrayList(result.documents))
+                }
+            }
+    }
+
 
     /**
      * Al seleccionar un item de la lista se abre el fragmento de detalle

@@ -169,6 +169,8 @@ abstract class DetailModelFragment : Fragment() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val toolbar = R.id.topDetailToolbar
+
         //Inicializa las variables y sconde barras de navegación pasándole las referencias
         navBarTop = requireActivity().findViewById(R.id.topToolbar)
         navBarTop.visibility = GONE

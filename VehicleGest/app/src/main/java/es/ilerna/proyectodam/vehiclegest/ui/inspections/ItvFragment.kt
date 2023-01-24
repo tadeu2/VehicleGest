@@ -42,6 +42,7 @@ class ItvFragment : Fragment(), Controller.AdapterListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
+
             //Referencia a la base de datos de Firebase
             itvCollectionReference = Firebase.firestore.collection("ITV")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion

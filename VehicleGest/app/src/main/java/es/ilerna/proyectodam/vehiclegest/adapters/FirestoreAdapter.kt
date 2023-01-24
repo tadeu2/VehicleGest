@@ -3,6 +3,7 @@ package es.ilerna.proyectodam.vehiclegest.adapters
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
+import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 
 /**
  * Clase abstracta
@@ -15,13 +16,13 @@ import com.google.firebase.firestore.*
  */
 
 abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
-    private val queryFirestoreDatabase: Query
+    private var queryFirestoreDatabase: Query
 ) : RecyclerView.Adapter<fireStoreViewHolder>(), EventListener<QuerySnapshot> {
     //Listener de la consulta a la base de datos
     private var listenerRegistration: ListenerRegistration? = null
 
     //Lista de instantaneas de documento
-    private val documentSnapshotArrayList = ArrayList<DocumentSnapshot>()
+    private var documentSnapshotArrayList = ArrayList<DocumentSnapshot>()
 
     /**
      * Función que inicializa el listener de la consulta a la base de datos
@@ -125,4 +126,8 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
         return documentSnapshotArrayList[position]
     }
 
+    fun updateData(query:ArrayList<DocumentSnapshot>) {
+        documentSnapshotArrayList = query
+        notifyDataSetChanged()
+    }
 }
