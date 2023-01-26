@@ -6,18 +6,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.FormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Employee
 
 /**
  * Abre una ventana para añadir un empleado
  */
-class EmployeeAdder : DetailModelFragment() {
+class EmployeeAdderFragment : Fragment(), FormModelFragment {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addEmployeeBinding: DetailEmployeeBinding? = null
@@ -25,6 +27,8 @@ class EmployeeAdder : DetailModelFragment() {
     //Getter para el binding
     private val getAddEmployeeBinding
         get() = addEmployeeBinding ?: throw IllegalStateException("Binding error")
+
+    override lateinit var dbFirestoreReference: CollectionReference //Referencia a la base de datos de Firestore
 
     /**
      * Fase de creación del fragmento
@@ -48,15 +52,6 @@ class EmployeeAdder : DetailModelFragment() {
                 btdelete.visibility = View.GONE //Oculta el botón de eliminar
                 btedit.visibility = View.GONE //Oculta el botón de editar
                 btsave.visibility = View.VISIBLE //Muestra el botón de guardar
-                setListeners(
-                    null,
-                    parentFragmentManager,
-                    EmployeeFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                ) //Inicializa los escuchadores de los botones
             }
 
         } catch (exception: Exception) {

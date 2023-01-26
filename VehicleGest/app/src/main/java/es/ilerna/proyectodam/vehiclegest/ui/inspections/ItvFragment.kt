@@ -7,33 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ItvRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInspectionBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
 
 /**
  * Fragmento de listado de itv
  */
-class ItvFragment : Fragment(), Controller.AdapterListener {
+class ItvFragment : FragmentModel() {
 
     //Enlaza el fragmento al xml
     private var fragmentInspectionBinding: FragmentInspectionBinding? = null
     private val getFragmentInspectionBinding
         get() = fragmentInspectionBinding ?: throw IllegalStateException("Binding error")
-
-    //Crea una variable para el adaptador
-    private lateinit var itvRecyclerAdapter: ItvRecyclerAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var itvCollectionReference: CollectionReference //Consulta de firestore
 
     /**
      * Fase de creación del fragmento
@@ -44,7 +37,7 @@ class ItvFragment : Fragment(), Controller.AdapterListener {
         try {
 
             //Referencia a la base de datos de Firebase
-            itvCollectionReference = Firebase.firestore.collection("ITV")
+            collectionReference = Firebase.firestore.collection("ITV")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
             activity?.findViewById<FloatingActionButton>(R.id.addButton)
                 ?.setOnClickListener {
@@ -70,16 +63,11 @@ class ItvFragment : Fragment(), Controller.AdapterListener {
             //Pintar el fragment
             fragmentInspectionBinding =
                 FragmentInspectionBinding.inflate(inflater, container, false)
-
-            //Pintar el recyclerview
-            //Enlaza el recycler a la variable
-            recyclerView = getFragmentInspectionBinding.recycleritv
-            //Le asigna un manager lineal en el contexto de este fragmento
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.setHasFixedSize(true) //Para que no se recargue el tamaño del recycler
             //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            itvRecyclerAdapter = ItvRecyclerAdapter(itvCollectionReference, this)
-            recyclerView.adapter = itvRecyclerAdapter //Asigna el adaptador al recycler
+            recyclerAdapter = ItvRecyclerAdapter(collectionReference, this)
+
+            //Configura el recycler view con un layout manager y un adaptador
+            configRecyclerView(getFragmentInspectionBinding.recycleritv)
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -92,31 +80,28 @@ class ItvFragment : Fragment(), Controller.AdapterListener {
      * @param documentSnapshot Documento de firestore
      */
     override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        fragmentReplacer(ItvDetail(documentSnapshot!!), parentFragmentManager)
+        fragmentReplacer(ItvDetailFragment(documentSnapshot!!), parentFragmentManager)
     }
 
     /**
      * Al pulsar el botón flotante se abre el fragmento de creación
      */
     override fun onAddButtonClick() {
-        fragmentReplacer(ItvAdder(), parentFragmentManager)
+        fragmentReplacer(ItvAdderFragment(), parentFragmentManager)
     }
 
     /**
-     * Al iniciar el fragmento se inicia el escuchador del adapter
+     * Crea un fragmento de detalle de empleado
+     * @param item Documento de la base de datos
+     * @return Fragmento de detalle de empleado
      */
-    override fun onStart() {
-        super.onStart()
-        itvRecyclerAdapter.startListening()
-    }
+    override fun getDetailFragment(item: DocumentSnapshot): Fragment = ItvDetailFragment(item)
 
     /**
-     * Al parar el fragmento se para el escuchador del adapter
+     * Crea un fragmento de añadir empleado
+     * @return Fragmento de añadir empleado
      */
-    override fun onStop() {
-        super.onStop()
-        itvRecyclerAdapter.stopListening()
-    }
+    override fun getAdderFragment(): Fragment = ItvAdderFragment()
 
     /**
      * Al destruir el fragmento se destruye el binding
@@ -125,5 +110,22 @@ class ItvFragment : Fragment(), Controller.AdapterListener {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
         fragmentInspectionBinding = null
+    }
+
+    /**
+     * Actualiza los datos del adaptador a partir de una lista de documentos
+     * @param documentSnapshots Lista de documentos a partir de los que se actualiza el adaptador
+     */
+    override fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: ArrayList<DocumentSnapshot>) {
+        (recyclerAdapter as ItvRecyclerAdapter).updateData(documentSnapshots)
+    }
+
+    /**
+     * Genera una lista de filtros a partir de un string de búsqueda
+     * @param searchString String de búsqueda
+     * @return Lista de filtros
+     */
+    override fun generateFilteredItemListFromString(searchString: String): List<Query> {
+        TODO("PARA BUSCAR POR FECHA")
     }
 }

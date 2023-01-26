@@ -11,18 +11,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
-import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  * @param documentSnapshot Instantanea de firestore del item
  */
-class ItemDetail(
-    private val documentSnapshot: DocumentSnapshot
-) : DetailModelFragment() {
+class ItemDetailFragment(
+    documentSnapshot: DocumentSnapshot?
+) : DetailFormModelFragment(documentSnapshot) {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailItemBinding: DetailItemBinding? = null
@@ -51,15 +52,6 @@ class ItemDetail(
             with(getDetailItemBinding.bar) {
                 btsave.visibility = View.GONE
                 btedit.visibility = View.VISIBLE
-                setListeners(
-                    documentSnapshot,
-                    parentFragmentManager,
-                    InventoryFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit,
-                )
             }
             bindDataToForm()//Llama a la función que rellena los datos en el formulario
         } catch (exception: Exception) {
@@ -73,15 +65,28 @@ class ItemDetail(
      * Función que rellena los datos del formulario
      */
     override fun bindDataToForm() {
-        //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-        val item: Item? = documentSnapshot.toObject(Item::class.java)
-        with(getDetailItemBinding) {
-            //Rellena los campos del formulario con los datos del objeto
-            name.setText(item?.name)
-            itemDescription.setText(item?.description)
-            plateNumber.setText(item?.plateNumber)
-            //Carga la foto en el formulario a partir de la URL almacenada
-            Controller().showImageFromUrl(itemImage, item?.photoURL.toString())
+        CoroutineScope(Dispatchers.Main).launch {
+            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+            val item: Item? = documentSnapshot?.toObject(Item::class.java)
+            with(getDetailItemBinding) {
+                //Rellena los campos del formulario con los datos del objeto
+                name.setText(item?.name)
+                itemDescription.setText(item?.description)
+                plateNumber.setText(item?.plateNumber)
+                //Carga la foto en el formulario a partir de la URL almacenada
+                if (item?.photoURL.toString().isEmpty()) {
+                    itemImage.post {
+                        itemImage.setImageResource(R.drawable.no_image_available)
+                    }
+                } else {
+                    val bitmapFromUrl = Controller().getBitmapFromUrl(
+                        item?.photoURL.toString()
+                    ).await()
+                    itemImage.post {
+                        itemImage.setImageBitmap(bitmapFromUrl)
+                    }
+                }
+            }
         }
     }
 
@@ -109,11 +114,22 @@ class ItemDetail(
             plateNumber.isEnabled = true
             plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             itemDescription.isEnabled = true
-            itemDescription.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            itemDescription.setTextColor(
+                resources.getColor(
+                    R.color.md_theme_dark_errorContainer,
+                    null
+                )
+            )
             itemUrlphoto.isEnabled = true
-            itemUrlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            itemUrlphoto.setTextColor(
+                resources.getColor(
+                    R.color.md_theme_dark_errorContainer,
+                    null
+                )
+            )
         }
     }
+
     /**
      * Al destruir la vista, elimina la referencia al binding
      */

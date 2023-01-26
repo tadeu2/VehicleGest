@@ -6,23 +6,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.FormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  *
  */
-class ServiceAdder : DetailModelFragment() {
+class ServiceAdderFragment : Fragment(), FormModelFragment {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addServiceBinding: DetailServiceBinding? = null
     private val getAddServiceBinding
         get() = addServiceBinding ?: throw IllegalStateException("Binding error")
+
+    override lateinit var dbFirestoreReference: CollectionReference //Referencia a la base de datos de Firestore
 
     /**
      * Fase de creación de la vista del fragmento
@@ -49,15 +53,6 @@ class ServiceAdder : DetailModelFragment() {
                 btsave.visibility = View.VISIBLE
                 btedit.visibility = View.GONE
                 btdelete.visibility = View.GONE
-                setListeners(
-                    null,
-                    parentFragmentManager,
-                    ServiceFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                )
             }
 
         } catch (exception: Exception) {
@@ -71,18 +66,12 @@ class ServiceAdder : DetailModelFragment() {
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        with(getAddServiceBinding){
-            plateNumber.isEnabled = true
-            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            date.isEnabled = true
-            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            costumer.isEnabled = true
-            costumer.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            date.isEnabled = true
-            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            remarks.isEnabled = true
-            remarks.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))    
-
+        with(getAddServiceBinding) {
+            val views = arrayOf(plateNumber, date, costumer, remarks)
+            for (view in views) {
+                view.isEnabled = true
+                view.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            }
         }
     }
 

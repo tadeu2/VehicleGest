@@ -13,7 +13,7 @@ import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 
 /**
@@ -21,8 +21,8 @@ import es.ilerna.proyectodam.vehiclegest.models.Alert
  * @param documentSnapshot Instantanea de firestore de la alerta
  */
 class AlertDetail(
-    private val documentSnapshot: DocumentSnapshot,
-) : DetailModelFragment() {
+    documentSnapshot: DocumentSnapshot?
+) : DetailFormModelFragment(documentSnapshot) {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailAlertBinding: DetailAlertBinding? = null
@@ -50,15 +50,6 @@ class AlertDetail(
             with(getDetailAlertBinding.bar) {
                 btsave.visibility = View.GONE
                 btedit.visibility = View.VISIBLE
-                setListeners(
-                    documentSnapshot,
-                    parentFragmentManager,
-                    AlertsFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                )
             }
 
             bindDataToForm() //Llama a la función que rellena los datos en el formulario
@@ -75,22 +66,14 @@ class AlertDetail(
      * Hace editable el formulario
      */
     override fun makeFormEditable() {
+
         getDetailAlertBinding.apply {
-            /* for (i in 0 until root.childCount) {
-                 root.getChildAt(i).isEnabled = true
-                 root.getChildAt(i).setTextColor(resources.getColor(R.color.ic_launcher_background, null))}*/
-            plateNumber.isEnabled = true
-            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            date.isEnabled = true
-            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            description.isEnabled = true
-            description.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            dateSolved.isEnabled = true
-            dateSolved.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            checksolved.isEnabled = true
-            checksolved.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            alertSolution.isEnabled = true
-            alertSolution.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            val enableColor = resources.getColor(R.color.md_theme_dark_errorContainer, null)
+            val viewsToEnable = arrayOf(plateNumber, date, description, dateSolved, checksolved, alertSolution)
+            viewsToEnable.forEach {
+                it.isEnabled = true
+                it.setTextColor(enableColor)
+            }
 
         //Escuchador del botón de fecha
         date.setOnClickListener {
@@ -117,19 +100,20 @@ class AlertDetail(
  */
 override fun bindDataToForm() {
     //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-    val alert: Alert? = documentSnapshot.toObject(Alert::class.java)
+    val alert: Alert? = documentSnapshot?.toObject(Alert::class.java)
 
     with(getDetailAlertBinding) {
-        plateNumber.setText(alert?.plateNumber)
-        description.setText(alert?.description)
-        checksolved.isChecked = alert?.solved!!
-        alertSolution.setText(alert.solution)
+        val views = arrayOf(Pair(plateNumber, alert?.plateNumber), Pair(description, alert?.description), Pair(alertSolution, alert?.solution))
+        views.forEach {
+                (view, value) -> view.setText(value)
+        }
+        checksolved.isChecked = alert?.solved ?: false
 
         //Formatea los timestamp a fecha normal dd/mm/aa
         //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
         //El formato se puede modificar en strings.xml
-        date.setText(dateToStringFormat(alert.date))
-        dateSolved.setText(dateToStringFormat(alert.solveddate))
+        date.setText(dateToStringFormat(alert?.date))
+        dateSolved.setText(dateToStringFormat(alert?.solveddate))
     }
 }
 

@@ -14,16 +14,19 @@ import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  * @param documentSnapshot Instantanea de firestore del vehículo
  */
 class VehicleDetail(
-    private val documentSnapshot: DocumentSnapshot
-) : DetailModelFragment() {
+    documentSnapshot: DocumentSnapshot?
+) : DetailFormModelFragment(documentSnapshot) {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailVehicleBinding: DetailVehicleBinding? = null
@@ -50,18 +53,6 @@ class VehicleDetail(
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("vehicle")
             //Escuchador del boton cerrar
 
-            with(getDetailVehicleBinding.bar) {
-                setListeners(
-                    documentSnapshot,
-                    parentFragmentManager,
-                    VehiclesFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                )
-            }
-
             bindDataToForm() //Llama a la función que rellena los datos en el formulario
 
         } catch (exception: Exception) {
@@ -75,31 +66,39 @@ class VehicleDetail(
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
     override fun bindDataToForm() {
+        CoroutineScope(Dispatchers.Main).launch {
+            with(getDetailVehicleBinding) {
+                //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+                val vehicle: Vehicle? = documentSnapshot?.toObject(Vehicle::class.java)
+                urlphoto.setText(vehicle?.photoURL)
+                plateNumber.setText(vehicle?.plateNumber)
+                type.setText(vehicle?.type)
+                brand.setText(vehicle?.brand)
+                model.setText(vehicle?.model)
+                vehicleDescription.setText(vehicle?.description)
+                checkItvPassed.isChecked = vehicle?.itvPassed == false
 
-        with(getDetailVehicleBinding) {
-            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val vehicle: Vehicle? = documentSnapshot.toObject(Vehicle::class.java)
-            urlphoto.setText(vehicle?.photoURL)
-            plateNumber.setText(vehicle?.plateNumber)
-            type.setText(vehicle?.type)
-            brand.setText(vehicle?.brand)
-            model.setText(vehicle?.model)
-            vehicleDescription.setText(vehicle?.description)
-            checkItvPassed.isChecked = vehicle?.itvPassed == false
+                //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                //El formato se puede modificar en strings.xml
+                expiringItvDate.setText(vehicle?.expiryDateITV?.let {
+                    dateToStringFormat(
+                        it
+                    )
+                })
 
-            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-            //El formato se puede modificar en strings.xml
-            expiringItvDate.setText(vehicle?.expiryDateITV?.let {
-                dateToStringFormat(
-                    it
-                )
-            })
-
-            //Carga la foto en el formulario a partir de la URL almacenada
-            Controller().showImageFromUrl(
-                vehicleImage,
-                urlphoto.text.toString()
-            )
+                if (vehicle?.photoURL.toString().isEmpty()) {
+                    vehicleImage.post {
+                        vehicleImage.setImageResource(R.drawable.no_image_available)
+                    }
+                } else {
+                    val bitmapFromUrl = Controller().getBitmapFromUrl(
+                        vehicle?.photoURL.toString()
+                    ).await()
+                    vehicleImage.post {
+                        vehicleImage.setImageBitmap(bitmapFromUrl)
+                    }
+                }
+            }
         }
 
     }
@@ -110,7 +109,7 @@ class VehicleDetail(
     override fun fillDataFromForm(): Any {
         getDetailVehicleBinding.apply {
             val inputString = totalDistance.text.toString()
-            val inputNumber = if(inputString.isNullOrEmpty()) 0 else inputString.toInt()
+            val inputNumber = if (inputString.isNullOrEmpty()) 0 else inputString.toInt()
             return Vehicle(
                 plateNumber.text.toString(),
                 type.text.toString(),
@@ -130,42 +129,22 @@ class VehicleDetail(
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        getDetailVehicleBinding.apply {
-            plateNumber.isEnabled = true
-            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            type.isEnabled = true
-            type.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            brand.isEnabled = true
-            brand.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            model.isEnabled = true
-            model.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            vehicleDescription.isEnabled = true
-            vehicleDescription.setTextColor(
-                resources.getColor(
-                    R.color.md_theme_dark_errorContainer,
-                    null
-                )
+        with(getDetailVehicleBinding) {
+            val views = arrayOf(
+                plateNumber,
+                type,
+                brand,
+                model,
+                expiringItvDate,
+                totalDistance,
+                checkItvPassed,
+                vehicleDescription,
+                urlphoto
             )
-            checkItvPassed.isEnabled = true
-            checkItvPassed.setTextColor(
-                resources.getColor(
-                    R.color.md_theme_dark_errorContainer,
-                    null
-                )
-            )
-            expiringItvDate.isEnabled = true
-            expiringItvDate.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            totalDistance.isEnabled = true
-            totalDistance.setTextColor(
-                resources.getColor(
-                    R.color.md_theme_dark_errorContainer,
-                    null
-                )
-            )
-            urlphoto.isEnabled = true
-            urlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-
-            //Escuchador del botón de fecha
+            for (view in views) {
+                view.isEnabled = true
+                view.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            }
             expiringItvDate.setOnClickListener {
                 //Abre el selector de fecha
                 DatePickerFragment { day, month, year ->

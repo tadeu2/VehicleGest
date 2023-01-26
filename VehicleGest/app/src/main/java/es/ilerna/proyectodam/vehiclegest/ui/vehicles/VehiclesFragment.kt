@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
@@ -19,32 +20,25 @@ import es.ilerna.proyectodam.vehiclegest.adapters.VehicleRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentVehiclesBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
+import java.util.ArrayList
 
 /**
  * Fragmento de listado de vehículos
  */
-class VehiclesFragment : Fragment(), Controller.AdapterListener {
+class VehiclesFragment : FragmentModel(){
 
     //Enlaza el fragmento con el xml
     private var fragmentVehiclesBinding: FragmentVehiclesBinding? = null
     private val getFragmentVehiclesBinding
         get() = fragmentVehiclesBinding ?: throw IllegalStateException("Binding is null")
 
-    //Crea una variable para el adaptador
-    private lateinit var vehicleRecyclerAdapter: VehicleRecyclerAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var vehiclesCollectionReference: CollectionReference
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
             //Referencia a la base de datos de Firebase
-            vehiclesCollectionReference = Firebase.firestore.collection("vehicle")
-            //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)
-                ?.setOnClickListener {
-                    onAddButtonClick()
-                }
+            collectionReference = Firebase.firestore.collection("vehicle")
+
         } catch (exception: Exception) {
             exception.printStackTrace()
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -66,18 +60,10 @@ class VehiclesFragment : Fragment(), Controller.AdapterListener {
         //Enlaza el fragmento a el xml y lo infla
         fragmentVehiclesBinding = FragmentVehiclesBinding.inflate(inflater, container, false)
 
-        //Pintar el recyclerview
-        //Enlaza el recycler a la variable
-        recyclerView = getFragmentVehiclesBinding.recyclerVehicles
-        //Le asigna un manager lineal en el contexto de este fragmento
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.setHasFixedSize(true) //Para que no se recargue el recycler al cambiar de tamaño
-
         //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-        vehicleRecyclerAdapter = VehicleRecyclerAdapter(vehiclesCollectionReference, this)
-        //Asigna ese adapter al recyclerview
-        recyclerView.adapter = vehicleRecyclerAdapter
+        recyclerAdapter = VehicleRecyclerAdapter(collectionReference, this)
 
+        configRecyclerView(getFragmentVehiclesBinding.recyclerVehicles)
         return getFragmentVehiclesBinding.root
     }
 
@@ -97,20 +83,17 @@ class VehiclesFragment : Fragment(), Controller.AdapterListener {
     }
 
     /**
-     * Al iniciar la vista, inicializa el escuchador del adaptador
+     * Crea un fragmento de detalle de empleado
+     * @param item Documento de la base de datos
+     * @return Fragmento de detalle de empleado
      */
-    override fun onStart() {
-        super.onStart()
-        vehicleRecyclerAdapter.startListening()
-    }
+    override fun getDetailFragment(item: DocumentSnapshot): Fragment = VehicleDetail(item)
 
     /**
-     * Al parar la vista, para el escuchador del adaptador
+     * Crea un fragmento de añadir empleado
+     * @return Fragmento de añadir empleado
      */
-    override fun onStop() {
-        super.onStop()
-        vehicleRecyclerAdapter.stopListening()
-    }
+    override fun getAdderFragment(): Fragment = VehicleAdder()
 
     /**
      * Al destruir la vista, elimina el enlace con el xml
@@ -119,6 +102,26 @@ class VehiclesFragment : Fragment(), Controller.AdapterListener {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
         fragmentVehiclesBinding = null
+    }
+
+    /**
+     * Actualiza los datos del adaptador a partir de una lista de documentos
+     * @param documentSnapshots Lista de documentos a partir de los que se actualiza el adaptador
+     */
+    override fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: ArrayList<DocumentSnapshot>) {
+        (recyclerAdapter as VehicleRecyclerAdapter).updateData(documentSnapshots)
+    }
+
+    /**
+     * Genera una lista de filtros a partir de un string de búsqueda
+     * @param searchString String de búsqueda
+     * @return Lista de filtros
+     */
+    override fun generateFilteredItemListFromString(searchString: String): List<Query> {
+        val queryplateNumber = collectionReference
+            .whereGreaterThanOrEqualTo("platenumber", searchString)
+            .whereLessThanOrEqualTo("platenumber", searchString + "\uf8ff")
+        return listOf(queryplateNumber)
     }
 }
 

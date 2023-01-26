@@ -10,6 +10,7 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.RecyclerAdapterListener
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,11 +20,11 @@ import java.util.concurrent.Executors
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
  * @param queryFirestoreDatabase Parámetro que contiene la consulta a la base de datos
- * @param adapterListener Parámetro que contiene el listener del adapter
+ * @param recyclerAdapterListener Parámetro que contiene el listener del adapter
  */
 class AlertRecyclerAdapter(
     queryFirestoreDatabase: Query,
-    private val adapterListener: Controller.AdapterListener
+    private val recyclerAdapterListener: RecyclerAdapterListener
 ) : FirestoreAdapter<AlertRecyclerAdapter.AlertViewHolder>(queryFirestoreDatabase) {
     /**
      * Clase interna
@@ -37,11 +38,11 @@ class AlertRecyclerAdapter(
         /**
          * Función que se encarga de pintar los datos en la tarjeta
          * @param documentSnapshot Parámetro que contiene la instancia de la alerta
-         * @param adapterListener Parámetro que contiene el listener de la tarjeta
+         * @param recyclerAdapterListener Parámetro que contiene el listener de la tarjeta
          */
         fun bindDataToCardView(
             documentSnapshot: DocumentSnapshot,
-            adapterListener: Controller.AdapterListener
+            recyclerAdapterListener: RecyclerAdapterListener
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
@@ -62,7 +63,7 @@ class AlertRecyclerAdapter(
                     }
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     alertCardBinding.alertCard.setOnClickListener {
-                        adapterListener.onItemSelected(documentSnapshot)
+                        recyclerAdapterListener.onItemSelected(documentSnapshot)
                     }
                 }
             } catch (exception: Exception) {
@@ -102,7 +103,7 @@ class AlertRecyclerAdapter(
         //Obtiene la instancia de la alerta en la posición indicada por el parámetro position
         getSnapshot(position)?.let { documentSnapshot ->
             //Pinta los datos en la tarjeta de la alerta en la posición indicada por el parámetro position
-            alertViewHolder.bindDataToCardView(documentSnapshot, adapterListener)
+            alertViewHolder.bindDataToCardView(documentSnapshot, recyclerAdapterListener)
         }
     }
 }

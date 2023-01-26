@@ -13,16 +13,16 @@ import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 
 /**
  * Abre una ventana diálogo con los detalles de la ITV
  * @param documentSnapshot Instantanea de firestore de la ITV
  */
-class ItvDetail(
-    private val documentSnapshot: DocumentSnapshot
-) : DetailModelFragment() {
+class ItvDetailFragment(
+    documentSnapshot: DocumentSnapshot?
+) : DetailFormModelFragment(documentSnapshot) {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailItvBinding: DetailItvBinding? = null
@@ -52,15 +52,6 @@ class ItvDetail(
             with(getDetailItvBinding.bar) {
                 btsave.visibility = View.GONE
                 btedit.visibility = View.VISIBLE
-                setListeners(
-                    documentSnapshot,
-                    parentFragmentManager,
-                    ItvFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit,
-                )
             }
 
             //Llama a la función que rellena los datos en el formulario
@@ -76,7 +67,7 @@ class ItvDetail(
      */
     override fun bindDataToForm() {
         //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-        val itv: ITV? = documentSnapshot.toObject(ITV::class.java)
+        val itv: ITV? = documentSnapshot?.toObject(ITV::class.java)
        with(getDetailItvBinding){
            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
            //El formato se puede modificar en strings.xml

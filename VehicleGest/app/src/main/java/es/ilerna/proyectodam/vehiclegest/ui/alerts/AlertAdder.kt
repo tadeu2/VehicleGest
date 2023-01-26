@@ -6,24 +6,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailAlertBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.FormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Alert
 
 /**
  * Clase que representa el fragmento de añadir alerta
  */
-class AlertAdder : DetailModelFragment() {
+class AlertAdder : Fragment(), FormModelFragment {
     private var addAlertBinding: DetailAlertBinding? =
         null //Variable para enlazar el achivo de código con el XML de interfaz
 
     //Getter para el binding
     private val getAddAlertBinding
         get() = addAlertBinding ?: throw IllegalStateException("Binding error")
+
+    override lateinit var dbFirestoreReference: CollectionReference//Referencia a la base de datos de Firestore
 
     /**
      * Fase de creación del fragmento
@@ -48,15 +52,6 @@ class AlertAdder : DetailModelFragment() {
                 btdelete.visibility = View.GONE //Oculta el botón de eliminar
                 btedit.visibility = View.GONE //Oculta el botón de editar
                 btsave.visibility = View.VISIBLE //Muestra el botón de guardar
-                setListeners(
-                    null,
-                    parentFragmentManager,
-                    AlertsFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                ) //Inicializa los escuchadores de los botones
             }
 
         } catch (exception: Exception) {
@@ -73,16 +68,16 @@ class AlertAdder : DetailModelFragment() {
      * @return Objeto Alerta con los datos del formulario
      */
     override fun fillDataFromForm(): Any {
-            getAddAlertBinding.apply {
-                return Alert(
-                    plateNumber.text.toString(),
-                    stringToDateFormat(date.text.toString()),
-                    description.text.toString(),
-                    checksolved.isChecked,
-                    stringToDateFormat(dateSolved.text.toString()),
-                    alertSolution.text.toString()
-                )
-            }
+        getAddAlertBinding.apply {
+            return Alert(
+                plateNumber.text.toString(),
+                stringToDateFormat(date.text.toString()),
+                description.text.toString(),
+                checksolved.isChecked,
+                stringToDateFormat(dateSolved.text.toString()),
+                alertSolution.text.toString()
+            )
+        }
     }
 
 

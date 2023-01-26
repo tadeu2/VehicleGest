@@ -6,18 +6,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.FormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 
 /**
  * Clase que representa el fragmento de añadir ITV
  */
-class ItvAdder : DetailModelFragment() {
+class ItvAdderFragment : Fragment(), FormModelFragment {
 
     //Enlace al xml de la interfaz
     private var addItvBinding: DetailItvBinding? = null
@@ -25,6 +28,8 @@ class ItvAdder : DetailModelFragment() {
     //Getter para el binding
     private val getAddItvBinding
         get() = addItvBinding ?: throw IllegalStateException("Binding error")
+
+    override lateinit var dbFirestoreReference: CollectionReference //Referencia a la base de datos de Firestore
 
     /**
      * Fase de creación del fragmento
@@ -50,15 +55,6 @@ class ItvAdder : DetailModelFragment() {
                 btdelete.visibility = View.GONE //Oculta el botón de eliminar
                 btedit.visibility = View.GONE //Oculta el botón de editar
                 btsave.visibility = View.VISIBLE //Muestra el botón de guardar
-                setListeners(
-                    null,
-                    parentFragmentManager,
-                    ItvFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                )
             }
 
         } catch (exception: Exception) {

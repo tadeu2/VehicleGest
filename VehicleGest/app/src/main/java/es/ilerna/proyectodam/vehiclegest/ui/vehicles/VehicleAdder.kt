@@ -6,26 +6,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.FormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
  */
-class VehicleAdder : DetailModelFragment() {
+class VehicleAdder : Fragment(), FormModelFragment {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addVehicleBinding: DetailVehicleBinding? = null
     private val getAddVehicleBinding get() = addVehicleBinding!!
 
-    //Variable para la base de datos
-    private lateinit var vehicleCollectionReference: CollectionReference
+    override lateinit var dbFirestoreReference: CollectionReference
 
     /**
      * Fase de creación de la vista del fragmento
@@ -53,15 +54,6 @@ class VehicleAdder : DetailModelFragment() {
                 btsave.visibility = View.VISIBLE
                 btedit.visibility = View.GONE
                 btdelete.visibility = View.GONE
-                setListeners(
-                    null,
-                    parentFragmentManager,
-                    VehiclesFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                )
             }
 
         } catch (exception: Exception) {
@@ -75,7 +67,7 @@ class VehicleAdder : DetailModelFragment() {
      * Metodo que rellena el formulario con los datos de la entidad
      */
     override fun bindDataToForm() {
-        TODO("Not yet implemented")
+        //no se implementa en este fragmento
     }
 
     /**
@@ -103,41 +95,12 @@ class VehicleAdder : DetailModelFragment() {
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        getAddVehicleBinding.apply {
-            plateNumber.isEnabled = true
-            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            type.isEnabled = true
-            type.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            brand.isEnabled = true
-            brand.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            model.isEnabled = true
-            model.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            expiringItvDate.isEnabled = true
-            expiringItvDate.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            totalDistance.isEnabled = true
-            totalDistance.setTextColor(
-                resources.getColor(
-                    R.color.md_theme_dark_errorContainer,
-                    null
-                )
-            )
-            checkItvPassed.isEnabled = true
-            checkItvPassed.setTextColor(
-                resources.getColor(
-                    R.color.md_theme_dark_errorContainer,
-                    null
-                )
-            )
-            vehicleDescription.isEnabled = true
-            vehicleDescription.setTextColor(
-                resources.getColor(
-                    R.color.md_theme_dark_errorContainer,
-                    null
-                )
-            )
-            urlphoto.isEnabled = true
-            urlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            //Escuchador del botón de fecha
+        with(getAddVehicleBinding) {
+            val views = arrayOf(plateNumber, type, brand, model, expiringItvDate, totalDistance, checkItvPassed, vehicleDescription, urlphoto)
+            for (view in views) {
+                view.isEnabled = true
+                view.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            }
             expiringItvDate.setOnClickListener {
                 //Abre el selector de fecha
                 DatePickerFragment { day, month, year ->

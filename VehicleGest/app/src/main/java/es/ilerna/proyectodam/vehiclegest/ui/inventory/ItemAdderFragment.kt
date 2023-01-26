@@ -4,24 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.FormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Item
-import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 
 /**
  * Abre una ventana diálogo con los detalles del artículo a añadir.
  */
-class ItemAdder : DetailModelFragment() {
+class ItemAdderFragment : Fragment(), FormModelFragment {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var addItemBinding: DetailItemBinding? = null
     private val getAddItemBinding
         get() = addItemBinding ?: throw IllegalStateException("Binding error")
+
+    override lateinit var dbFirestoreReference: CollectionReference //Referencia a la base de datos de Firestore
 
     /**
      * Inicializa el fragmento
@@ -40,31 +41,10 @@ class ItemAdder : DetailModelFragment() {
 
         //Inicializa los escuchadores de los botones
         with(getAddItemBinding.bar) {
-            btsave.visibility = android.view.View.VISIBLE
-            btedit.visibility = android.view.View.GONE
-            btdelete.visibility = android.view.View.GONE
-            setListeners(
-                null,
-                parentFragmentManager,
-                InventoryFragment(),
-                btclose,
-                btdelete,
-                btsave,
-                btedit
-            )
+            btsave.visibility = View.VISIBLE
+            btedit.visibility = View.GONE
+            btdelete.visibility = View.GONE
         }
-        //Escuchador para la imagen al cambiar la url
-        with(getAddItemBinding) {
-            //Carga la foto en el formulario a partir de la URL almacenada
-            itemUrlphoto.doAfterTextChanged {
-                //Carga la foto en el formulario a partir de la URL almacenada
-                Controller().showImageFromUrl(
-                    itemImage,
-                    itemUrlphoto.text.toString()
-                )
-            }
-        }
-
         //Llama a la función que rellena los datos en el formulario
         return getAddItemBinding.root
     }
@@ -106,9 +86,17 @@ class ItemAdder : DetailModelFragment() {
             name.isEnabled = true
             name.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             itemUrlphoto.isEnabled = true
-            itemUrlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            itemUrlphoto.setTextColor(
+                resources.getColor(
+                    R.color.md_theme_dark_errorContainer, null
+                )
+            )
             itemDescription.isEnabled = true
-            itemDescription.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            itemDescription.setTextColor(
+                resources.getColor(
+                    R.color.md_theme_dark_errorContainer, null
+                )
+            )
         }
     }
 

@@ -6,21 +6,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.databinding.ItemCardBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.interfaces.RecyclerAdapterListener
 import es.ilerna.proyectodam.vehiclegest.models.Item
-import java.util.concurrent.Executors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
  * @param queryFireStoreDatabase Parámetro que contiene la consulta a la base de datos
- * @param adapterListener Parámetro que contiene el listener del adapter
+ * @param recyclerAdapterListener Parámetro que contiene el listener del adapter
  *
  */
 class ItemRecyclerAdapter(
     queryFireStoreDatabase: Query,
-    private val adapterListener: Controller.AdapterListener
+    private val recyclerAdapterListener: RecyclerAdapterListener
 ) : FirestoreAdapter<ItemRecyclerAdapter.ItemViewHolder>(queryFireStoreDatabase) {
     /**
      * Clase interna
@@ -36,29 +39,30 @@ class ItemRecyclerAdapter(
          */
         fun bindDataToCardview(
             documentSnapshot: DocumentSnapshot,
-            adapterListener: Controller.AdapterListener
+            recyclerAdapterListener: RecyclerAdapterListener
         ) {
             try {
-                //Crea un hilo paralelo para descargar las imagenes de una URL
-                val executorService = Executors.newSingleThreadExecutor()
-                executorService.execute {
+                //Crea un hilo paralelo para que no se bloquee la UI
+                CoroutineScope(Dispatchers.Main).launch {
 
-                    //Inicializamos un objeto a partir de una instántanea
-                    val item: Item? = documentSnapshot.toObject(Item::class.java)
+                    with(itemCardBinding) {
+                        //Inicializamos un objeto a partir de una instántanea
+                        val item: Item? = documentSnapshot.toObject(Item::class.java)
 
-                    //La asignamos a los datos del formulario
-                    itemCardBinding.plateNumber.text = item?.plateNumber.toString()
-                    itemCardBinding.name.text = item?.name.toString()
+                        //La asignamos a los datos del formulario
+                        plateNumber.text = item?.plateNumber.toString()
+                        name.text = item?.name.toString()
 
-                    //Carga la foto en el formulario a partir de la URL almacenada
-                    Controller().showImageFromUrl(
-                        itemCardBinding.itemImage,
-                        item?.photoURL.toString(),
-                    )
+                        val bitmapFromUrl =
+                            Controller().getBitmapFromUrl(item?.photoURL.toString()).await()
+                        itemImage.post {
+                            itemImage.setImageBitmap(bitmapFromUrl)
+                        }
 
-                    //Iniciamos el escuchador que accionamos al pulsar una ficha
-                    itemCardBinding.itemCard.setOnClickListener {
-                        adapterListener.onItemSelected(documentSnapshot)
+                        //Iniciamos el escuchador que accionamos al pulsar una ficha
+                        itemCard.setOnClickListener {
+                            recyclerAdapterListener.onItemSelected(documentSnapshot)
+                        }
                     }
                 }
             } catch (exception: Exception) {
@@ -77,8 +81,11 @@ class ItemRecyclerAdapter(
      * @param viewType Parámetro que contiene el tipo de vista
      * @return Devuelve el holder creado con la vista de la tarjeta
      */
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(
+    override fun onCreateViewHolder(
+        viewGroup: ViewGroup,
+        viewType: Int
+    ): ItemRecyclerAdapter.ItemViewHolder {
+        return ItemRecyclerAdapter.ItemViewHolder(
             //Infla la vista de la tarjeta y la devuelve
             ItemCardBinding.inflate(
                 LayoutInflater.from(viewGroup.context),
@@ -93,11 +100,14 @@ class ItemRecyclerAdapter(
      * @param itemViewHolder Parámetro que contiene el holder
      * @param position Parámetro que contiene la posición del objeto en la lista
      */
-    override fun onBindViewHolder(itemViewHolder: ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        itemViewHolder: ItemRecyclerAdapter.ItemViewHolder,
+        position: Int
+    ) {
         //Obtiene el objeto de la lista
         getSnapshot(position)?.let { documentSnapshot ->
             //Llama a la función que rellena los datos de la tarjeta
-            itemViewHolder.bindDataToCardview(documentSnapshot, adapterListener)
+            itemViewHolder.bindDataToCardview(documentSnapshot, recyclerAdapterListener)
         }
     }
 

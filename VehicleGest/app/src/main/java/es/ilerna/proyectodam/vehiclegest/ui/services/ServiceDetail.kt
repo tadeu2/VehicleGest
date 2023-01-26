@@ -13,7 +13,7 @@ import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
 
 /**
@@ -21,8 +21,8 @@ import es.ilerna.proyectodam.vehiclegest.models.Service
  * @param documentSnapshot Instantanea de firestore del servicio
  */
 class ServiceDetail(
-    private val documentSnapshot: DocumentSnapshot
-) : DetailModelFragment() {
+    documentSnapshot: DocumentSnapshot?
+) : DetailFormModelFragment(documentSnapshot) {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailServiceBinding: DetailServiceBinding? = null
@@ -53,15 +53,6 @@ class ServiceDetail(
             with(getDetailServiceBinding.bar) {
                 btsave.visibility = View.GONE
                 btedit.visibility = View.VISIBLE
-                setListeners(
-                    documentSnapshot,
-                    parentFragmentManager,
-                    ServiceFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                )
             }
 
             //Llama a la función que rellena los datos en el formulario
@@ -78,7 +69,7 @@ class ServiceDetail(
     override fun bindDataToForm() {
         with(getDetailServiceBinding) {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            val service: Service? = documentSnapshot.toObject(Service::class.java)
+            val service: Service? = documentSnapshot?.toObject(Service::class.java)
             plateNumber.setText(service?.plateNumber.toString())
             costumer.setText(service?.costumer.toString())
             remarks.setText(service?.remarks.toString())

@@ -10,6 +10,7 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ItvCardBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.RecyclerAdapterListener
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,11 +20,11 @@ import java.util.concurrent.Executors
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
  * @param queryFireStoreDatabase Parámetro que contiene la consulta a la base de datos
- *  @param adapterListener Parámetro que contiene el listener del adapter
+ *  @param recyclerAdapterListener Parámetro que contiene el listener del adapter
  */
 class ItvRecyclerAdapter(
     queryFireStoreDatabase: Query,
-    private val adapterListener: Controller.AdapterListener
+    private val recyclerAdapterListener: RecyclerAdapterListener
 ) : FirestoreAdapter<ItvRecyclerAdapter.ItvViewHolder>(queryFireStoreDatabase) {
 
     /**
@@ -41,7 +42,7 @@ class ItvRecyclerAdapter(
          * Rellena cada ITV de la tarjeta con los datos del objeto vehiculo
          */
         fun bindDataToCardview(
-            documentSnapshot: DocumentSnapshot, adapterListener: Controller.AdapterListener
+            documentSnapshot: DocumentSnapshot, recyclerAdapterListener: RecyclerAdapterListener
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
@@ -61,7 +62,7 @@ class ItvRecyclerAdapter(
                     }
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                     itvCardBinding.itvCard.setOnClickListener {
-                        adapterListener.onItemSelected(documentSnapshot)
+                        recyclerAdapterListener.onItemSelected(documentSnapshot)
                     }
                 }
 
@@ -99,7 +100,7 @@ class ItvRecyclerAdapter(
         //Obtiene la instancia de la tarjeta
         getSnapshot(position)?.let { documentSnapshot ->
             //Rellena la tarjeta con los datos del objeto
-            itvViewHolder.bindDataToCardview(documentSnapshot, adapterListener)
+            itvViewHolder.bindDataToCardview(documentSnapshot, recyclerAdapterListener)
         }
     }
 

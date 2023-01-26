@@ -6,33 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ItemRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
 
 /**
  * Fragmento de listado de inventario
  */
-class InventoryFragment : Fragment(), Controller.AdapterListener {
+class InventoryFragment : FragmentModel() {
 
     //Inicializamos el binding con el XML de la interfaz
     private var fragmentInventoryBinding: FragmentInventoryBinding? = null
     private val getfragmentInventoryBinding
         get() = fragmentInventoryBinding ?: throw IllegalStateException("Binding error")
-
-    //Crea una variable para el adaptador
-    private lateinit var itemRecyclerAdapter: ItemRecyclerAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var itemCollectionReference: CollectionReference //Consulta de firestore
 
     /**
      * Fase de creación del fragmento
@@ -43,12 +33,9 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
         try {
 
             //Referencia a la base de datos de Firebase
-            itemCollectionReference = Firebase.firestore.collection("inventory")
+            collectionReference = Firebase.firestore.collection("inventory")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)
-                ?.setOnClickListener {
-                    onAddButtonClick()
-                }
+
         } catch (exception: Exception) {
             exception.printStackTrace()
         }
@@ -70,16 +57,11 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
             //Pintar el fragment
             fragmentInventoryBinding = FragmentInventoryBinding.inflate(inflater, container, false)
 
-            //Enlaza el recycler a la variable
-            recyclerView = getfragmentInventoryBinding.recycleritems
-            //Le asigna un manager lineal en el contexto de este fragmento
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.setHasFixedSize(true) //Para que no se recargue la vista al hacer scroll
-
             //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            itemRecyclerAdapter = ItemRecyclerAdapter(itemCollectionReference, this)
-            //Asigna ese adapter al recyclerview
-            recyclerView.adapter = itemRecyclerAdapter
+            recyclerAdapter = ItemRecyclerAdapter(collectionReference, this)
+
+            //Configura el recyclerview
+            configRecyclerView(getfragmentInventoryBinding.recycleritems)
         } catch (exception: Exception) {
             Log.e("InventoryFragment", exception.message.toString(), exception)
             exception.printStackTrace()
@@ -88,35 +70,17 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
     }
 
     /**
-     * Abre el formulario de creación de vehículos
-     * @param documentSnapshot Instanntanea del documento
+     * Crea un fragmento de detalle de empleado
+     * @param item Documento de la base de datos
+     * @return Fragmento de detalle de empleado
      */
-    override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        fragmentReplacer(ItemDetail(documentSnapshot!!), parentFragmentManager)
-    }
+    override fun getDetailFragment(item: DocumentSnapshot): Fragment = ItemDetailFragment(item)
 
     /**
-     * Abre el formulario de creación de items
+     * Crea un fragmento de añadir empleado
+     * @return Fragmento de añadir empleado
      */
-    override fun onAddButtonClick() {
-        fragmentReplacer(ItemAdder(), parentFragmentManager)
-    }
-
-    /**
-     * Al iniciar el fragmento, se inicia el escuchador del adapter
-     */
-    override fun onStart() {
-        super.onStart()
-        itemRecyclerAdapter.startListening()
-    }
-
-    /**
-     * Al parar el fragmento, se para el escuchador del adapter
-     */
-    override fun onStop() {
-        super.onStop()
-        itemRecyclerAdapter.stopListening()
-    }
+    override fun getAdderFragment(): Fragment = ItemAdderFragment()
 
     /**
      * Al destruir el fragmento, se destruye el binding
@@ -126,5 +90,25 @@ class InventoryFragment : Fragment(), Controller.AdapterListener {
         //Vaciamos la variable de enlace al xml
         fragmentInventoryBinding = null
 
+    }
+
+    /**
+     * Actualiza los datos del adaptador a partir de una lista de documentos
+     * @param documentSnapshots Lista de documentos a partir de los que se actualiza el adaptador
+     */
+    override fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: ArrayList<DocumentSnapshot>) {
+        (recyclerAdapter as ItemRecyclerAdapter).updateData(documentSnapshots)
+    }
+
+    /**
+     * Genera una lista de filtros a partir de un string de búsqueda
+     * @param searchString String de búsqueda
+     * @return Lista de filtros
+     */
+    override fun generateFilteredItemListFromString(searchString: String): List<Query> {
+        val queryPlateNumber = collectionReference
+            .whereGreaterThanOrEqualTo("platenumber", searchString)
+            .whereLessThanOrEqualTo("platenumber", searchString + "\uf8ff")
+        return listOf(queryPlateNumber)
     }
 }

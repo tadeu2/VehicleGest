@@ -13,16 +13,19 @@ import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
-import es.ilerna.proyectodam.vehiclegest.interfaces.DetailModelFragment
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Employee
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Abre una ventana diálogo con los detalles del empleado
  * @param documentSnapshot Instantanea de firestore del empleado
  */
-class EmployeeDetail(
-    private val documentSnapshot: DocumentSnapshot
-) : DetailModelFragment() {
+class EmployeeDetailFragment(
+    documentSnapshot: DocumentSnapshot?
+) : DetailFormModelFragment(documentSnapshot) {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailEmployeeBinding: DetailEmployeeBinding? = null
@@ -48,21 +51,13 @@ class EmployeeDetail(
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("employees")
 
+            //Fragmento al que se regresa cada vez que se pulsa el botón de atrás
+            mainFragment = EmployeeFragment()
 
             //Inicializa los escuchadores de los botones
             with(getDetailEmployeeBinding.bar) {
                 btsave.visibility = View.GONE
                 btedit.visibility = View.VISIBLE
-                setListeners(
-                    documentSnapshot,
-                    parentFragmentManager,
-                    EmployeeFragment(),
-                    btclose,
-                    btdelete,
-                    btsave,
-                    btedit
-                )
-
             }
             //Llama a la función que rellena los datos en el formulario
             bindDataToForm()
@@ -78,35 +73,17 @@ class EmployeeDetail(
      * Hace editable el formulario
      */
     override fun makeFormEditable() {
-        getDetailEmployeeBinding.apply {
-            name.isEnabled = true
-            name.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            surname.isEnabled = true
-            surname.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            employeeDni.isEnabled = true
-            employeeDni.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            phone.isEnabled = true
-            phone.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            address.isEnabled = true
-            address.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            birthdate.isEnabled = true
-            birthdate.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            urlphoto.isEnabled = true
-            urlphoto.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            email.isEnabled = true
-            email.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            checkadmin.isEnabled = true
-            checkadmin.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-
-            //Escuchador del botón de fecha
+        with(getDetailEmployeeBinding) {
+            val views = arrayOf(name, surname, employeeDni, phone, address, birthdate, urlphoto, email, checkadmin)
+            for (view in views) {
+                view.isEnabled = true
+                view.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            }
             birthdate.setOnClickListener {
-                //Abre el selector de fecha
                 DatePickerFragment { day, month, year ->
-                    //Muestra la fecha en el campo de texto
                     birthdate.setText(String.format("$day/$month/$year"))
                 }.show(parentFragmentManager, "datePicker")
             }
-
         }
     }
 
@@ -114,35 +91,41 @@ class EmployeeDetail(
      * Rellena los datos del formulario con los datos
      */
     override fun bindDataToForm() {
-        //Obtiene el empleado de la base de datos
-        val employee: Employee? = documentSnapshot.toObject(Employee::class.java)
-        //Rellena los campos del formulario con los datos del empleado
-        with(getDetailEmployeeBinding) {
+        CoroutineScope(Dispatchers.Main).launch {
+            //Obtiene el empleado de la base de datos
+            val employee: Employee? = documentSnapshot?.toObject(Employee::class.java)
+            //Rellena los campos del formulario con los datos del empleado
+            with(getDetailEmployeeBinding) {
 
-            name.setText(employee?.name)
-            surname.setText(employee?.surname)
-            employeeDni.setText(employee?.dni)
-            phone.setText(employee?.phone)
-            address.setText(employee?.address)
-            urlphoto.setText(employee?.photoURL)
-            email.setText(employee?.email)
-            checkadmin.isChecked = employee?.admin == true
-            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-            //El formato se puede modificar en strings.xml
-            birthdate.setText(dateToStringFormat(employee?.birthdate))
+                name.setText(employee?.name)
+                surname.setText(employee?.surname)
+                employeeDni.setText(employee?.dni)
+                phone.setText(employee?.phone)
+                address.setText(employee?.address)
+                urlphoto.setText(employee?.photoURL)
+                email.setText(employee?.email)
+                checkadmin.isChecked = employee?.admin == true
+                //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                //El formato se puede modificar en strings.xml
+                birthdate.setText(dateToStringFormat(employee?.birthdate))
 
-            //Carga la foto en el formulario a partir de la URL almacenada
-            //Si no hay foto, muestra una imagen por defecto. Usamos post para que se ejecute después
-            //de que se haya cargado el formulario
-            employeeImage.post {
-                if (employee?.photoURL.toString().isNullOrEmpty()) {
-                    employeeImage.setImageResource(R.drawable.no_image_available)
+                //Carga la foto en el formulario a partir de la URL almacenada
+                //Si no hay foto, muestra una imagen por defecto. Usamos post para que se ejecute después
+                //de que se haya cargado el formulario
+
+                if (employee?.photoURL.toString().isEmpty()) {
+                    employeeImage.post {
+                        employeeImage.setImageResource(R.drawable.no_image_available)
+                    }
                 } else {
-                    Controller().showImageFromUrl(
-                        employeeImage,
+                    val bitmapFromUrl = Controller().getBitmapFromUrl(
                         employee?.photoURL.toString()
-                    )
+                    ).await()
+                    employeeImage.post {
+                        employeeImage.setImageBitmap(bitmapFromUrl)
+                    }
                 }
+
             }
         }
     }

@@ -7,33 +7,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.AlertRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentAlertsBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
 
 /**
  * Fragmento de listado de alertas
  */
-class AlertsFragment : Fragment(), Controller.AdapterListener {
+class AlertsFragment : FragmentModel() {
 
     //Enlaza el fragmento al xml
-    private var _fragmentAlertsBinding: FragmentAlertsBinding? = null
+    private var fragmentAlertsBinding: FragmentAlertsBinding? = null
     private val getFragmentAlertsBinding
-        get() = _fragmentAlertsBinding ?: throw IllegalStateException("Binding error")
+        get() = fragmentAlertsBinding ?: throw IllegalStateException("Binding error")
 
-    //Crea una variable para el adaptador
-    private lateinit var alertRecyclerAdapter: AlertRecyclerAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var alertsCollectionReference: CollectionReference //Consulta de firestore
+    /**
+     * Crea un fragmento de detalle de empleado
+     * @param item Documento de la base de datos
+     * @return Fragmento de detalle de empleado
+     */
+    override fun getDetailFragment(item: DocumentSnapshot): Fragment = AlertDetail(item)
+
+    /**
+     * Crea un fragmento de añadir empleado
+     * @return Fragmento de añadir empleado
+     */
+    override fun getAdderFragment(): Fragment = AlertAdder()
 
     /**
      * Fase de creación del fragmento
@@ -42,11 +45,7 @@ class AlertsFragment : Fragment(), Controller.AdapterListener {
         super.onCreate(savedInstanceState)
         try {
             //Referencia a la base de datos de Firebase
-            alertsCollectionReference = Firebase.firestore.collection("alert")
-            //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)?.setOnClickListener {
-                onAddButtonClick()
-            }
+            collectionReference = Firebase.firestore.collection("alert")
         } catch (exception: Exception) {
             exception.printStackTrace()
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -66,19 +65,14 @@ class AlertsFragment : Fragment(), Controller.AdapterListener {
     ): View {
         try {
             //Enlaza el fragmento a el xml y lo infla
-            _fragmentAlertsBinding = FragmentAlertsBinding.inflate(inflater, container, false)
-
-            //Pintar el recyclerview
-            //Enlaza el recycler a la variable
-            recyclerView = getFragmentAlertsBinding.recycleralerts
-            //Le asigna un manager lineal en el contexto de este fragmento
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.setHasFixedSize(true)
+            fragmentAlertsBinding = FragmentAlertsBinding.inflate(inflater, container, false)
 
             //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            alertRecyclerAdapter = AlertRecyclerAdapter(alertsCollectionReference, this)
-            //Asigna ese adapter al recyclerview
-            recyclerView.adapter = alertRecyclerAdapter
+            recyclerAdapter = AlertRecyclerAdapter(collectionReference, this)
+
+            //Configura el recycler view con un layout manager y un adaptador
+            configRecyclerView(getFragmentAlertsBinding.recycleralerts)
+
         } catch (exception: Exception) {
             Log.w(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -87,34 +81,26 @@ class AlertsFragment : Fragment(), Controller.AdapterListener {
     }
 
     /**
-     * Al seleccinar un elemento del recycler se abre el detalle
-     * @param documentSnapshot Documento de firestore
+     * Actualiza los datos del adaptador a partir de una lista de documentos
+     * @param documentSnapshots Lista de documentos a partir de los que se actualiza el adaptador
      */
-    override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        fragmentReplacer(AlertDetail(documentSnapshot!!), parentFragmentManager)
+    override fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: ArrayList<DocumentSnapshot>) {
+        (recyclerAdapter as AlertRecyclerAdapter).updateData(documentSnapshots)
     }
 
     /**
-     * Al pulsar el botón flotante se abre el fragmento de creación
+     * Genera una lista de filtros a partir de un string de búsqueda
+     * @param searchString String de búsqueda
+     * @return Lista de filtros
      */
-    override fun onAddButtonClick() {
-        fragmentReplacer(AlertAdder(), parentFragmentManager)
-    }
-
-    /**
-     * Al iniciar el fragmento el escuchador del adaptador se activa
-     */
-    override fun onStart() {
-        super.onStart()
-        alertRecyclerAdapter.startListening()
-    }
-
-    /**
-     * Al parar el fragmento el escuchador del adaptador se desactiva
-     */
-    override fun onStop() {
-        super.onStop()
-        alertRecyclerAdapter.stopListening()
+    override fun generateFilteredItemListFromString(searchString: String): List<Query> {
+        val queryDni = collectionReference
+            .whereGreaterThanOrEqualTo("dni", searchString)
+            .whereLessThanOrEqualTo("dni", searchString + "\uf8ff")
+        val querySurname = collectionReference
+            .whereGreaterThanOrEqualTo("surname", searchString)
+            .whereLessThanOrEqualTo("surname", searchString + "\uf8ff")
+        return listOf(queryDni, querySurname)
     }
 
     /**
@@ -123,6 +109,6 @@ class AlertsFragment : Fragment(), Controller.AdapterListener {
     override fun onDestroyView() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
-        _fragmentAlertsBinding = null
+        fragmentAlertsBinding = null
     }
 }

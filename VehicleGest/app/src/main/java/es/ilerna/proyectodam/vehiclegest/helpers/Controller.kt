@@ -1,6 +1,7 @@
 package es.ilerna.proyectodam.vehiclegest.helpers
 
 import android.content.ContentValues
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import kotlinx.coroutines.*
@@ -29,37 +31,33 @@ class Controller {
      * @param imageView Parámetro que contiene el ImageView donde se pintará la imagen
      */
     @OptIn(DelicateCoroutinesApi::class)
-    fun showImageFromUrl(imageView: ImageView, url: String) {
-        GlobalScope.launch(Dispatchers.Main) {
+    fun getBitmapFromUrl(url: String): Deferred<Bitmap?> {
+        return GlobalScope.async(Dispatchers.Main) {
             try {
-                if (url.isNullOrEmpty()) {
+                if (url.isEmpty()) {
                     Log.e("Error", "La URL está vacía")
-
-                    return@launch
+                    return@async null
                 }
-                val bitmap = withContext(Dispatchers.IO) {
+                withContext(Dispatchers.IO) {
                     val urlConnection = URL(url).openConnection() as HttpURLConnection
                     urlConnection.doInput = true
                     urlConnection.connect()
                     val inputStream = urlConnection.inputStream
                     return@withContext BitmapFactory.decodeStream(inputStream)
                 }
-                if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap)
-                } else {
-                    Log.e("Error", "No se puede mostrar la imagen")
-                }
             } catch (exception: Exception) {
                 Log.e(ContentValues.TAG, exception.message.toString(), exception)
+                return@async null
             } catch (exception: MalformedURLException) {
                 Log.e(ContentValues.TAG, exception.message.toString(), exception)
-                Toast.makeText(imageView.context, "Error en la URL de la imagen", Toast.LENGTH_SHORT).show()
+                return@async null
             } catch (exception: URISyntaxException) {
                 Log.e(ContentValues.TAG, exception.message.toString(), exception)
-                Toast.makeText(imageView.context, "Error en la sintaxis de URL de la imagen", Toast.LENGTH_SHORT).show()
+                return@async null
             }
         }
     }
+
 
     companion object {
         /**
@@ -90,11 +88,14 @@ class Controller {
             }
         }
 
+        fun setDefaultImage(imageView: ImageView) {
+            imageView.setImageResource(R.drawable.no_image_available)
+        }
 
         fun stringToDateFormat(time: String): Date {
-           if (time == "") {
-               return Date()
-           }
+            if (time == "") {
+                return Date()
+            }
             val simpleDateFormat = SimpleDateFormat(
                 Vehiclegest.instance.resources
                     .getString(R.string.dateFormat), Locale.getDefault()
@@ -124,7 +125,7 @@ class Controller {
         }
 
 
-        fun checkInspectionExpiration(vehicleId: String) :Boolean {
+        fun checkInspectionExpiration(vehicleId: String): Boolean {
             val firestore = FirebaseFirestore.getInstance()
             val collection = firestore.collection("vehicles")
             val document = collection.document(vehicleId)
@@ -143,7 +144,7 @@ class Controller {
             return false
         }
 
-       /* fun checkVehicleProblems(){
+        /* fun checkVehicleProblems(){
             val firestore = FirebaseFirestore.getInstance()
             val collection = firestore.collection("vehicles")
             for (vehicle in Vehiclegest.vehiclesList) {
@@ -157,21 +158,4 @@ class Controller {
             }
         }*/
     }
-
-    /**
-     * Interfaz para implementar como se comportará al hacer click a una ficha
-     */
-    interface AdapterListener {
-        /**
-         * Función que determina que hacer al hacer click a una ficha
-         * @param documentSnapshot Parámetro que contiene la instancia
-         */
-        fun onItemSelected(documentSnapshot: DocumentSnapshot?)
-
-        /**
-         * Función que determina que hacer al hacer click al botón de añadir
-         */
-        fun onAddButtonClick()
-    }
-
 }

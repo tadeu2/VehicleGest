@@ -6,21 +6,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.EmployeeCardBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.interfaces.RecyclerAdapterListener
 import es.ilerna.proyectodam.vehiclegest.models.Employee
-import java.util.concurrent.Executors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
  * Implementa a RecyclerView.Adapter
  * @param queryFireStoreDatabase Parámetro que contiene la consulta a la base de datos
- * @param adapterListener Parámetro que contiene el listener del adapter
+ * @param recyclerAdapterListener Parámetro que contiene el listener del adapter
  */
 class EmployeeRecyclerAdapter(
     queryFireStoreDatabase: Query,
-    private val adapterListener: Controller.AdapterListener
+    private val recyclerAdapterListener: RecyclerAdapterListener
 ) : FirestoreAdapter<EmployeeRecyclerAdapter.EmployeeViewHolder>(queryFireStoreDatabase) {
 
     /**
@@ -35,16 +37,15 @@ class EmployeeRecyclerAdapter(
         /**
          * Función que se encarga de pintar los datos en la tarjeta
          * @param documentSnapshot Parámetro que contiene la instancia del empleado
-         * @param adapterListener Parámetro que contiene el listener de la tarjeta
+         * @param recyclerAdapterListener Parámetro que contiene el listener de la tarjeta
          */
         fun bindDataToCardView(
             documentSnapshot: DocumentSnapshot,
-            adapterListener: Controller.AdapterListener
+            recyclerAdapterListener: RecyclerAdapterListener
         ) {
             try {
-                //Crea un hilo paralelo para descargar las imagenes de una URL
-                val executorService = Executors.newSingleThreadExecutor()
-                executorService.execute {
+                //Crea un hilo paralelo para que no se bloquee la UI
+                CoroutineScope(Dispatchers.Main).launch {
                     //Inicializamos un objeto a partir de una instántanea
                     val employee: Employee? = documentSnapshot.toObject(Employee::class.java)
 
@@ -56,21 +57,22 @@ class EmployeeRecyclerAdapter(
                         surname.text = employee?.surname.toString()
 
                         employeeCard.setOnClickListener {
-                            adapterListener.onItemSelected(documentSnapshot)
+                            recyclerAdapterListener.onItemSelected(documentSnapshot)
                         }
-                        //Carga la foto en el formulario a partir de la URL almacenada
-                        //Si no hay foto, muestra una imagen por defecto. Usamos post para que se ejecute después
-                        //de que se haya cargado el formulario
-                        employeeImage.post {
-                            if (employee?.photoURL.toString().isNullOrEmpty()) {
-                                employeeImage.setImageResource(R.drawable.no_image_available)
-                            } else {
-                                Controller().showImageFromUrl(
-                                    employeeImage,
-                                    employee?.photoURL.toString()
-                                )
+
+                        if (employee?.photoURL.toString().isEmpty()) {
+                            employeeImage.post {
+                                Controller.setDefaultImage(employeeImage)
+                            }
+                        } else {
+                            val bitmapFromUrl = Controller().getBitmapFromUrl(
+                                employee?.photoURL.toString()
+                            ).await()
+                            employeeImage.post {
+                                employeeImage.setImageBitmap(bitmapFromUrl)
                             }
                         }
+
                     }
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
                 }
@@ -87,7 +89,10 @@ class EmployeeRecyclerAdapter(
      * @param viewType Parámetro que contiene el tipo de vista
      * @return Devuelve el viewholder con los datos del empleado en la tarjeta
      */
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): EmployeeRecyclerAdapter.EmployeeViewHolder {
+    override fun onCreateViewHolder(
+        viewGroup: ViewGroup,
+        viewType: Int
+    ): EmployeeViewHolder {
         return EmployeeViewHolder(
             //Inflamos la vista de la tarjeta
             EmployeeCardBinding.inflate(
@@ -104,11 +109,14 @@ class EmployeeRecyclerAdapter(
      * @param employeeViewHolder Parámetro que contiene el holder
      * @param position Parámetro que contiene la posición
      */
-    override fun onBindViewHolder(employeeViewHolder: EmployeeViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        employeeViewHolder: EmployeeRecyclerAdapter.EmployeeViewHolder,
+        position: Int
+    ) {
         //Obtenemos el empleado de la posición
         getSnapshot(position)?.let { documentSnapshot ->
             //Llamamos a la función que pinta los datos en la tarjeta
-            employeeViewHolder.bindDataToCardView(documentSnapshot, adapterListener)
+            employeeViewHolder.bindDataToCardView(documentSnapshot, recyclerAdapterListener)
         }
     }
 }

@@ -3,11 +3,11 @@ package es.ilerna.proyectodam.vehiclegest.interfaces
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -23,28 +23,19 @@ import java.util.concurrent.Executors
 /**
  * Interfaz que sirve como base para los fragmentos que muestran los detalles de un modelo
  */
-abstract class DetailModelFragment : Fragment() {
+abstract class DetailFormModelFragment(val documentSnapshot: DocumentSnapshot?) : Fragment(),
+    FormModelFragment {
 
     //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
     private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
     private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
     private lateinit var floatingButton: FloatingActionButton //Botón flotante de la interfaz
-    protected lateinit var dbFirestoreReference: CollectionReference //Referencia a la colección de la base de datos
-
-    /**
-     * Metodo que rellena el formulario con los datos de la entidad
-     */
-    protected abstract fun bindDataToForm()
-
-    /**
-     * Metodo que rellena la entidad con los datos del formulario
-     */
-    protected abstract fun fillDataFromForm(): Any
-
-    /**
-     *  Hace el formulario editable
-     */
-    protected abstract fun makeFormEditable()
+    override lateinit var dbFirestoreReference: CollectionReference
+    lateinit var buttonEdit: Button //Botón de editar
+    lateinit var buttonSave: Button //Botón de guardar
+    lateinit var buttonDelete: Button //Botón de eliminar
+    lateinit var buttonClose: Button //Botón de cancelar
+    lateinit var mainFragment: Fragment //Fragmento al que se debe volver
 
     /**
      *  Añade el documento a la base de datos
@@ -66,58 +57,45 @@ abstract class DetailModelFragment : Fragment() {
         }
     }
 
-    /**
-     * Metodo para inicializar los escuchadores de la interfaz
-     * @param documentSnapshot Instantanea de firestore de la entidad
-     * @param fragmentManager Administrador de fragmentos
-     * @param fragment Fragmento al que se debe volver
-     */
-    protected open fun setListeners(
-        documentSnapshot: DocumentSnapshot?,
-        parentFragmentManager: FragmentManager,
-        fragment: Any,
-        buttonClose: Button,
-        buttonDelete: Button,
-        buttonSave: Button,
-        buttonEdit: Button
-    ) {
-        //Escuchador del boton cerrar
+    private fun navigateToMainFragment() {
+        fragmentReplacer(mainFragment, parentFragmentManager)
+    }
+
+
+    private fun setCloseButtonListener() {
         buttonClose.setOnClickListener {
-            fragmentReplacer(fragment as Fragment, parentFragmentManager)
+            navigateToMainFragment()
         }
+    }
 
-        if (documentSnapshot != null) {
-            if (documentSnapshot.exists()) {
-                //Escuchador del boton eliminar
-                 buttonDelete.setOnClickListener {
-                    delDocumentSnapshot(documentSnapshot)
-                    fragmentReplacer(fragment as Fragment, parentFragmentManager)
-                }
-
-                //Escuchador del boton editar
-                buttonSave.setOnClickListener {
-                    updateDocumentToDatabase(documentSnapshot, fillDataFromForm())
-                    fragmentReplacer(fragment as Fragment, parentFragmentManager)
-                }
-            } else {
-                showShortToast("El documento no existe")
-                fragmentReplacer(fragment as Fragment, parentFragmentManager)
+    private fun setDeleteButtonListener() {
+        buttonDelete.setOnClickListener {
+            if (documentSnapshot != null) {
+                delDocumentSnapshot(documentSnapshot)
             }
-        } else {
-            //Escuchador del boton editar
-            buttonSave.setOnClickListener {
-                addDocumentToDataBase()
-                fragmentReplacer(fragment as Fragment, parentFragmentManager)
-            }
+            navigateToMainFragment()
         }
+    }
 
+    private fun setEditButtonListener() {
         buttonEdit.setOnClickListener {
-            //Escuchador del botón de editar
             makeFormEditable()
             buttonSave.visibility = VISIBLE
             buttonEdit.visibility = GONE
         }
     }
+
+    private fun setSaveButtonListener() {
+        buttonSave.setOnClickListener {
+            if (documentSnapshot != null) {
+                updateDocumentToDatabase(documentSnapshot, fillDataFromForm())
+            } else {
+                addDocumentToDataBase()
+            }
+            navigateToMainFragment()
+        }
+    }
+
 
     /**
      * Actualiza el documento en la base de datos
@@ -181,6 +159,14 @@ abstract class DetailModelFragment : Fragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setDeleteButtonListener()
+        setSaveButtonListener()
+        setCloseButtonListener()
+        setEditButtonListener()
+    }
+
     /**
      * Se destrye el fragmento y se vuelve a mostrar las barras de navegación
      */
@@ -192,4 +178,12 @@ abstract class DetailModelFragment : Fragment() {
         floatingButton.visibility = VISIBLE
     }
 
+}
+
+interface FormModelFragment{
+
+    val dbFirestoreReference: CollectionReference
+    fun makeFormEditable()
+    fun fillDataFromForm(): Any
+    fun bindDataToForm()
 }
