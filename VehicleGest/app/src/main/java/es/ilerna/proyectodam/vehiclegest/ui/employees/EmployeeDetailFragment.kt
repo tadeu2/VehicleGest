@@ -24,14 +24,19 @@ import kotlinx.coroutines.launch
  * @param documentSnapshot Instantanea de firestore del empleado
  */
 class EmployeeDetailFragment(
-    documentSnapshot: DocumentSnapshot?
-) : DetailFormModelFragment(documentSnapshot) {
+) : DetailFormModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailEmployeeBinding: DetailEmployeeBinding? = null
     private val getDetailEmployeeBinding
         get() = detailEmployeeBinding ?: throw IllegalStateException("Binding error")
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Inicializa el fragmento principal para poder volver
+        mainFragment = EmployeeFragment()
+    }
     /**
      * Fase de creación de la vista
      * @param inflater  Inflador de la vista
@@ -51,13 +56,15 @@ class EmployeeDetailFragment(
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("employees")
 
-            //Fragmento al que se regresa cada vez que se pulsa el botón de atrás
-            mainFragment = EmployeeFragment()
-
             //Inicializa los escuchadores de los botones
             with(getDetailEmployeeBinding.bar) {
                 btsave.visibility = View.GONE
                 btedit.visibility = View.VISIBLE
+                //Escuchador del boton cerrar
+                setCloseButtonListener(btclose)
+                setEditButtonListener(btedit)
+                setSaveButtonListener(btsave)
+                setDeleteButtonListener(btdelete)
             }
             //Llama a la función que rellena los datos en el formulario
             bindDataToForm()
@@ -74,6 +81,8 @@ class EmployeeDetailFragment(
      */
     override fun makeFormEditable() {
         with(getDetailEmployeeBinding) {
+            bar.btsave.visibility = View.VISIBLE
+            bar.btedit.visibility = View.GONE
             val views = arrayOf(name, surname, employeeDni, phone, address, birthdate, urlphoto, email, checkadmin)
             for (view in views) {
                 view.isEnabled = true

@@ -8,6 +8,8 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -27,8 +29,11 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
 
     private lateinit var recyclerView: RecyclerView
 
-    //Referencia a la base de datos de Firebase
-    lateinit var collectionReference: CollectionReference
+    //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
+    private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
+    private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
+    private lateinit var floatingButton: FloatingActionButton //Botón flotante de la interfaz
+    lateinit var dbFirestoreReference: CollectionReference
 
     //Referencia a la vista de busqueda
     private lateinit var searchView: SearchView
@@ -37,21 +42,36 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
+            //Inicializa las variables y esconde barras de navegación pasándole las referencias
+            initializeUI()
             //Con with(this) nos referimos a la clase que implementa el fragmento
             with(this) {
                 //Enlaza la variable searchView a la vista de busqueda
                 searchView = (activity as MainActivity).findViewById(R.id.searchView)
-                //Crea un escuchador para el botón flotante que abre el formulario de creacion
-                (activity as MainActivity).findViewById<FloatingActionButton>(R.id.addButton)
-                    ?.setOnClickListener {
-                        onAddButtonClick()
-                    }
+
                 setSearchViewListeners()
                 getAllDataFromDatabase()
             }
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
+        }
+    }
+
+    /**
+     * Inicializa las variables y configura las barras de navegación y el botón flotante
+     */
+    private fun initializeUI() {
+        //Inicializa las variables y sconde barras de navegación pasándole las referencias
+        navBarTop = requireActivity().findViewById(R.id.topToolbar)
+        navBarTop.visibility = View.VISIBLE
+        navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
+        navBarBot.visibility = View.VISIBLE
+        floatingButton = requireActivity().findViewById(R.id.addButton)
+        floatingButton.visibility = View.VISIBLE
+        //Crea un escuchador para el botón flotante que abre el formulario de creacion
+        floatingButton.setOnClickListener {
+            onAddButtonClick()
         }
     }
 
@@ -80,18 +100,10 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
     }
 
     /**
-     * Crea un fragmento de detalle de empleado
-     * @param item Documento de la base de datos
-     * @return Fragmento de detalle de empleado
+     * Crea un fragmento de detalle
+     * @return Fragmento de detalle de tipo DetailFormModelFragment
      */
-    abstract fun getDetailFragment(item: DocumentSnapshot): Fragment
-
-    /**
-     * Crea un fragmento de añadir empleado
-     * @return Fragmento de añadir empleado
-     */
-    abstract fun getAdderFragment(): Fragment
-
+    abstract fun getDetailFragment(): DetailFormModelFragment
 
     /**
      * Crea un objeto de tipo T a partir de un documento de la base de datos
@@ -101,7 +113,9 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
     //abstract fun createObject(documentSnapshot: DocumentSnapshot?): T*/
 
     override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        val detailFragment = getDetailFragment(documentSnapshot!!)
+        val detailFragment = getDetailFragment()
+        detailFragment.documentSnapshot = documentSnapshot
+        detailFragment.setAddFragment()
         fragmentReplacer(detailFragment, parentFragmentManager)
     }
 
@@ -109,12 +123,14 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
      * Al pulsar el botón flotante se abre el fragmento de creación
      */
     open fun onAddButtonClick() {
-        fragmentReplacer(getAdderFragment(), parentFragmentManager)
+        //Crea un fragment de añadir y lo reemplaza por el actual
+        val detailFragment = getDetailFragment()
+        detailFragment.setAddFragment()
+        fragmentReplacer(detailFragment, parentFragmentManager)
     }
 
     /**
      * Configura los listeners de la vista de busqueda
-     * @param searchView Vista de busqueda a configurar
      */
     open fun setSearchViewListeners() {
         with(this) {
@@ -154,7 +170,7 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
      * Recupera todos los datos de la base de datos y ejecuta la función updateData que se encarga de actualizar los datos del adaptador
      */
     open fun getAllDataFromDatabase() {
-        collectionReference.get()
+        dbFirestoreReference.get()
             .addOnSuccessListener { task ->
                 updateRecyclerViewAdapterFromDocumentList(task.documents as ArrayList<DocumentSnapshot>)
             }

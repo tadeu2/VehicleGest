@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
@@ -17,12 +16,9 @@ import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.Service
 
 /**
- * Abre una ventana diálogo con los detalles del vehículo
- * @param documentSnapshot Instantanea de firestore del servicio
+ * Abre una ventana diálogo con los detalles del servicio
  */
-class ServiceDetail(
-    documentSnapshot: DocumentSnapshot?
-) : DetailFormModelFragment(documentSnapshot) {
+class ServiceDetailFragment : DetailFormModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailServiceBinding: DetailServiceBinding? = null
@@ -30,6 +26,12 @@ class ServiceDetail(
         get() = detailServiceBinding ?: throw IllegalStateException(
             "Binding error"
         )  // Si no se enlaza el XML con el código, lanza una excepción
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Crea una instancia del fragmento principal para poder volver a él
+        mainFragment = ServiceFragment()
+    }
 
     /**
      *  Fase de creación de la vista
@@ -53,6 +55,11 @@ class ServiceDetail(
             with(getDetailServiceBinding.bar) {
                 btsave.visibility = View.GONE
                 btedit.visibility = View.VISIBLE
+                //Escuchador del boton cerrar
+                setCloseButtonListener(btclose)
+                setEditButtonListener(btedit)
+                setSaveButtonListener(btsave)
+                setDeleteButtonListener(btdelete)
             }
 
             //Llama a la función que rellena los datos en el formulario

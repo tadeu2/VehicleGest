@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
@@ -22,11 +21,8 @@ import kotlinx.coroutines.launch
 
 /**
  * Abre una ventana diálogo con los detalles del vehículo
- * @param documentSnapshot Instantanea de firestore del vehículo
  */
-class VehicleDetail(
-    documentSnapshot: DocumentSnapshot?
-) : DetailFormModelFragment(documentSnapshot) {
+class VehicleDetailFragment : DetailFormModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailVehicleBinding: DetailVehicleBinding? = null
@@ -34,6 +30,12 @@ class VehicleDetail(
         get() = detailVehicleBinding ?: throw IllegalStateException(
             "Binding error"
         ) // Lanza una excepción si el binding es nulo
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Crea una instancia del fragmento principal para poder volver a él
+        mainFragment = VehiclesFragment()
+    }
 
     /**
      *  Fase de creación de la vista
@@ -53,6 +55,14 @@ class VehicleDetail(
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("vehicle")
             //Escuchador del boton cerrar
 
+            getDetailVehicleBinding.bar.apply {
+                //Escuchador del boton cerrar
+                setCloseButtonListener(btclose)
+                setEditButtonListener(btedit)
+                setSaveButtonListener(btsave)
+                setDeleteButtonListener(btdelete)
+            }
+
             bindDataToForm() //Llama a la función que rellena los datos en el formulario
 
         } catch (exception: Exception) {
@@ -67,7 +77,7 @@ class VehicleDetail(
      */
     override fun bindDataToForm() {
         CoroutineScope(Dispatchers.Main).launch {
-            with(getDetailVehicleBinding) {
+            getDetailVehicleBinding.apply {
                 //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
                 val vehicle: Vehicle? = documentSnapshot?.toObject(Vehicle::class.java)
                 urlphoto.setText(vehicle?.photoURL)
@@ -108,15 +118,16 @@ class VehicleDetail(
      */
     override fun fillDataFromForm(): Any {
         getDetailVehicleBinding.apply {
-            val inputString = totalDistance.text.toString()
-            val inputNumber = if (inputString.isNullOrEmpty()) 0 else inputString.toInt()
+            val inputStringDistance = totalDistance.text.toString()
+            val totalDistance =
+                if (inputStringDistance.isEmpty()) 0 else inputStringDistance.toInt()
             return Vehicle(
                 plateNumber.text.toString(),
                 type.text.toString(),
                 brand.text.toString(),
                 model.text.toString(),
                 stringToDateFormat(expiringItvDate.text.toString()),
-                inputNumber,
+                totalDistance,
                 checkItvPassed.isChecked,
                 vehicleDescription.text.toString(),
                 urlphoto.text.toString()
@@ -129,7 +140,8 @@ class VehicleDetail(
      *  Hace el formulario editable
      */
     override fun makeFormEditable() {
-        with(getDetailVehicleBinding) {
+        getDetailVehicleBinding.apply {
+
             val views = arrayOf(
                 plateNumber,
                 type,

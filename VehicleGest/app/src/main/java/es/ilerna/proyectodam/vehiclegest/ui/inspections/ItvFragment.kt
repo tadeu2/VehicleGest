@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -16,6 +15,7 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ItvRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInspectionBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
 
 /**
@@ -37,12 +37,8 @@ class ItvFragment : FragmentModel() {
         try {
 
             //Referencia a la base de datos de Firebase
-            collectionReference = Firebase.firestore.collection("ITV")
-            //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            activity?.findViewById<FloatingActionButton>(R.id.addButton)
-                ?.setOnClickListener {
-                    onAddButtonClick()
-                }
+            dbFirestoreReference = Firebase.firestore.collection("ITV")
+
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -64,7 +60,7 @@ class ItvFragment : FragmentModel() {
             fragmentInspectionBinding =
                 FragmentInspectionBinding.inflate(inflater, container, false)
             //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            recyclerAdapter = ItvRecyclerAdapter(collectionReference, this)
+            recyclerAdapter = ItvRecyclerAdapter(dbFirestoreReference, this)
 
             //Configura el recycler view con un layout manager y un adaptador
             configRecyclerView(getFragmentInspectionBinding.recycleritv)
@@ -76,32 +72,18 @@ class ItvFragment : FragmentModel() {
     }
 
     /**
+     * Crea un fragmento de detalle
+     * @return Fragmento de detalle de tipo DetailFormModelFragment
+     */
+    override fun getDetailFragment(): DetailFormModelFragment = ItvDetailFragment()
+
+    /**
      * Al seleccionar un item de la lista se abre el fragmento de detalle
      * @param documentSnapshot Documento de firestore
      */
     override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        fragmentReplacer(ItvDetailFragment(documentSnapshot!!), parentFragmentManager)
+        fragmentReplacer(ItvDetailFragment(), parentFragmentManager)
     }
-
-    /**
-     * Al pulsar el botón flotante se abre el fragmento de creación
-     */
-    override fun onAddButtonClick() {
-        fragmentReplacer(ItvAdderFragment(), parentFragmentManager)
-    }
-
-    /**
-     * Crea un fragmento de detalle de empleado
-     * @param item Documento de la base de datos
-     * @return Fragmento de detalle de empleado
-     */
-    override fun getDetailFragment(item: DocumentSnapshot): Fragment = ItvDetailFragment(item)
-
-    /**
-     * Crea un fragmento de añadir empleado
-     * @return Fragmento de añadir empleado
-     */
-    override fun getAdderFragment(): Fragment = ItvAdderFragment()
 
     /**
      * Al destruir el fragmento se destruye el binding

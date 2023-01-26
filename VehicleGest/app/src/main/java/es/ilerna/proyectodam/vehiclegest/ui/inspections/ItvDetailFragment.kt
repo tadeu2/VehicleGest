@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
@@ -18,16 +17,20 @@ import es.ilerna.proyectodam.vehiclegest.models.ITV
 
 /**
  * Abre una ventana diálogo con los detalles de la ITV
- * @param documentSnapshot Instantanea de firestore de la ITV
  */
 class ItvDetailFragment(
-    documentSnapshot: DocumentSnapshot?
-) : DetailFormModelFragment(documentSnapshot) {
+) : DetailFormModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailItvBinding: DetailItvBinding? = null
     private val getDetailItvBinding
         get() = detailItvBinding ?: throw IllegalStateException("Binding error")
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Crea una instancia del fragmento principal para poder volver a él
+        mainFragment = ItvFragment()
+    }
 
     /**
      * Fase de creación de la vista
@@ -50,6 +53,11 @@ class ItvDetailFragment(
 
             //Iniciliza los escuchadores de los botones
             with(getDetailItvBinding.bar) {
+                //Escuchador del boton cerrar
+                setCloseButtonListener(btclose)
+                setEditButtonListener(btedit)
+                setSaveButtonListener(btsave)
+                setDeleteButtonListener(btdelete)
                 btsave.visibility = View.GONE
                 btedit.visibility = View.VISIBLE
             }
@@ -68,12 +76,12 @@ class ItvDetailFragment(
     override fun bindDataToForm() {
         //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
         val itv: ITV? = documentSnapshot?.toObject(ITV::class.java)
-       with(getDetailItvBinding){
-           //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-           //El formato se puede modificar en strings.xml
-           date.setText(dateToStringFormat(itv?.date))
-          remarks.setText(itv?.remarks)
-       }
+        with(getDetailItvBinding) {
+            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+            //El formato se puede modificar en strings.xml
+            date.setText(dateToStringFormat(itv?.date))
+            remarks.setText(itv?.remarks)
+        }
 
 
     }
@@ -92,6 +100,8 @@ class ItvDetailFragment(
      */
     override fun makeFormEditable() {
         getDetailItvBinding.apply {
+            bar.btsave.visibility = View.VISIBLE
+            bar.btedit.visibility = View.GONE
             date.isEnabled = true
             date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
             remarks.isEnabled = true

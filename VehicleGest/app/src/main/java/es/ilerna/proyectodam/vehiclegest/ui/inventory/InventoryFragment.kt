@@ -12,7 +12,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.adapters.ItemRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
+import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment
 
 /**
  * Fragmento de listado de inventario
@@ -25,6 +27,12 @@ class InventoryFragment : FragmentModel() {
         get() = fragmentInventoryBinding ?: throw IllegalStateException("Binding error")
 
     /**
+     * Crea un fragmento de detalle
+     * @return Fragmento de detalle de tipo DetailFormModelFragment
+     */
+    override fun getDetailFragment(): DetailFormModelFragment  = ItemDetailFragment()
+
+    /**
      * Fase de creación del fragmento
      * @param savedInstanceState Bundle de datos
      */
@@ -33,7 +41,7 @@ class InventoryFragment : FragmentModel() {
         try {
 
             //Referencia a la base de datos de Firebase
-            collectionReference = Firebase.firestore.collection("inventory")
+            dbFirestoreReference = Firebase.firestore.collection("inventory")
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
 
         } catch (exception: Exception) {
@@ -58,7 +66,7 @@ class InventoryFragment : FragmentModel() {
             fragmentInventoryBinding = FragmentInventoryBinding.inflate(inflater, container, false)
 
             //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            recyclerAdapter = ItemRecyclerAdapter(collectionReference, this)
+            recyclerAdapter = ItemRecyclerAdapter(dbFirestoreReference, this)
 
             //Configura el recyclerview
             configRecyclerView(getfragmentInventoryBinding.recycleritems)
@@ -68,19 +76,6 @@ class InventoryFragment : FragmentModel() {
         }
         return getfragmentInventoryBinding.root
     }
-
-    /**
-     * Crea un fragmento de detalle de empleado
-     * @param item Documento de la base de datos
-     * @return Fragmento de detalle de empleado
-     */
-    override fun getDetailFragment(item: DocumentSnapshot): Fragment = ItemDetailFragment(item)
-
-    /**
-     * Crea un fragmento de añadir empleado
-     * @return Fragmento de añadir empleado
-     */
-    override fun getAdderFragment(): Fragment = ItemAdderFragment()
 
     /**
      * Al destruir el fragmento, se destruye el binding
@@ -106,7 +101,7 @@ class InventoryFragment : FragmentModel() {
      * @return Lista de filtros
      */
     override fun generateFilteredItemListFromString(searchString: String): List<Query> {
-        val queryPlateNumber = collectionReference
+        val queryPlateNumber = dbFirestoreReference
             .whereGreaterThanOrEqualTo("platenumber", searchString)
             .whereLessThanOrEqualTo("platenumber", searchString + "\uf8ff")
         return listOf(queryPlateNumber)

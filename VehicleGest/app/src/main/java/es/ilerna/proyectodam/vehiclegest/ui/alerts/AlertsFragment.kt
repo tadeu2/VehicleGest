@@ -6,13 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.adapters.AlertRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentAlertsBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
 
 /**
@@ -26,17 +26,10 @@ class AlertsFragment : FragmentModel() {
         get() = fragmentAlertsBinding ?: throw IllegalStateException("Binding error")
 
     /**
-     * Crea un fragmento de detalle de empleado
-     * @param item Documento de la base de datos
-     * @return Fragmento de detalle de empleado
+     * Crea un fragmento de detalle
+     * @return Fragmento de detalle de tipo DetailFormModelFragment
      */
-    override fun getDetailFragment(item: DocumentSnapshot): Fragment = AlertDetail(item)
-
-    /**
-     * Crea un fragmento de añadir empleado
-     * @return Fragmento de añadir empleado
-     */
-    override fun getAdderFragment(): Fragment = AlertAdder()
+    override fun getDetailFragment(): DetailFormModelFragment = AlertDetailFragment()
 
     /**
      * Fase de creación del fragmento
@@ -45,7 +38,7 @@ class AlertsFragment : FragmentModel() {
         super.onCreate(savedInstanceState)
         try {
             //Referencia a la base de datos de Firebase
-            collectionReference = Firebase.firestore.collection("alert")
+            dbFirestoreReference = Firebase.firestore.collection("alert")
         } catch (exception: Exception) {
             exception.printStackTrace()
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -68,7 +61,7 @@ class AlertsFragment : FragmentModel() {
             fragmentAlertsBinding = FragmentAlertsBinding.inflate(inflater, container, false)
 
             //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            recyclerAdapter = AlertRecyclerAdapter(collectionReference, this)
+            recyclerAdapter = AlertRecyclerAdapter(dbFirestoreReference, this)
 
             //Configura el recycler view con un layout manager y un adaptador
             configRecyclerView(getFragmentAlertsBinding.recycleralerts)
@@ -94,10 +87,10 @@ class AlertsFragment : FragmentModel() {
      * @return Lista de filtros
      */
     override fun generateFilteredItemListFromString(searchString: String): List<Query> {
-        val queryDni = collectionReference
+        val queryDni = dbFirestoreReference
             .whereGreaterThanOrEqualTo("dni", searchString)
             .whereLessThanOrEqualTo("dni", searchString + "\uf8ff")
-        val querySurname = collectionReference
+        val querySurname = dbFirestoreReference
             .whereGreaterThanOrEqualTo("surname", searchString)
             .whereLessThanOrEqualTo("surname", searchString + "\uf8ff")
         return listOf(queryDni, querySurname)

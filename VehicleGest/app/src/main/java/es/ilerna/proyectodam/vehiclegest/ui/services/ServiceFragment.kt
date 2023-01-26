@@ -6,14 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.adapters.ServiceRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentServicesBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
 
 /**
@@ -34,7 +33,7 @@ class ServiceFragment : FragmentModel() {
         try {
 
             //Consulta a firestore db de la colección de vehiculos
-            collectionReference = Firebase.firestore.collection("service")
+            dbFirestoreReference = Firebase.firestore.collection("service")
 
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -55,7 +54,7 @@ class ServiceFragment : FragmentModel() {
             fragmentServicesBinding = FragmentServicesBinding.inflate(inflater, container, false)
 
             //Obtener el recycler y el adaptador
-            recyclerAdapter = ServiceRecyclerAdapter(collectionReference, this)
+            recyclerAdapter = ServiceRecyclerAdapter(dbFirestoreReference, this)
             configRecyclerView(getFragmentServicesBinding.recyclerservices)
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -65,32 +64,10 @@ class ServiceFragment : FragmentModel() {
     }
 
     /**
-     * Al pulsar el botón flotante se abre el fragmento de creación
+     * Crea un fragmento de detalle
+     * @return Fragmento de detalle de tipo DetailFormModelFragment
      */
-    override fun onAddButtonClick() {
-        fragmentReplacer(ServiceAdderFragment(), parentFragmentManager)
-    }
-
-    /**
-     * Al pulsar el botón de editar se abre el fragmento de edición
-     * @param documentSnapshot Documento de firestore que se va a editar
-     */
-    override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        fragmentReplacer(ServiceDetail(documentSnapshot!!), parentFragmentManager)
-    }
-
-    /**
-     * Crea un fragmento de detalle de empleado
-     * @param item Documento de la base de datos
-     * @return Fragmento de detalle de empleado
-     */
-    override fun getDetailFragment(item: DocumentSnapshot): Fragment = ServiceDetail(item)
-
-    /**
-     * Crea un fragmento de añadir empleado
-     * @return Fragmento de añadir empleado
-     */
-    override fun getAdderFragment(): Fragment = ServiceAdderFragment()
+    override fun getDetailFragment(): DetailFormModelFragment = ServiceDetailFragment()
 
     /**
      * Al destruirse el fragmento se elimina la referencia al binding
@@ -115,7 +92,7 @@ class ServiceFragment : FragmentModel() {
      * @return Lista de filtros
      */
     override fun generateFilteredItemListFromString(searchString: String): List<Query> {
-        val queryplateNumber = collectionReference
+        val queryplateNumber = dbFirestoreReference
             .whereGreaterThanOrEqualTo("platenumber", searchString)
             .whereLessThanOrEqualTo("platenumber", searchString + "\uf8ff")
         return listOf(queryplateNumber)

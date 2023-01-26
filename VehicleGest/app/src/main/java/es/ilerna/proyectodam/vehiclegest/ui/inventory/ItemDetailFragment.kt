@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItemBinding
@@ -18,18 +17,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * Abre una ventana diálogo con los detalles del vehículo
- * @param documentSnapshot Instantanea de firestore del item
+ * Abre una ventana diálogo con los detalles del artículo
  */
-class ItemDetailFragment(
-    documentSnapshot: DocumentSnapshot?
-) : DetailFormModelFragment(documentSnapshot) {
+class ItemDetailFragment: DetailFormModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailItemBinding: DetailItemBinding? = null
     private val getDetailItemBinding
         get() = detailItemBinding
             ?: throw IllegalStateException("Binding error") //Si no se puede enlazar, lanza una excepción
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Crea una instancia del fragmento principal para poder volver a él
+        mainFragment = InventoryFragment()
+    }
 
     /**
      * Fase de creación de la vista

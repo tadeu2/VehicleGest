@@ -81,11 +81,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //Carga el fragmento de vehículos como inicial
-        fragmentReplacer(
-            VehiclesFragment(), supportFragmentManager
-        )
-
     }
 
     /**

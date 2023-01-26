@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Button
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -17,25 +18,42 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showLongToast
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showShortToast
+import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
 import java.util.concurrent.Executors
 
 
 /**
  * Interfaz que sirve como base para los fragmentos que muestran los detalles de un modelo
  */
-abstract class DetailFormModelFragment(val documentSnapshot: DocumentSnapshot?) : Fragment(),
-    FormModelFragment {
+abstract class DetailFormModelFragment: Fragment() {
 
     //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
     private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
     private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
     private lateinit var floatingButton: FloatingActionButton //Botón flotante de la interfaz
-    override lateinit var dbFirestoreReference: CollectionReference
-    lateinit var buttonEdit: Button //Botón de editar
-    lateinit var buttonSave: Button //Botón de guardar
-    lateinit var buttonDelete: Button //Botón de eliminar
-    lateinit var buttonClose: Button //Botón de cancelar
+    private lateinit var buttonSave: MaterialButton //Botón de guardar
+    private lateinit var buttonDelete: MaterialButton //Botón de eliminar
+    private lateinit var buttonEdit: MaterialButton //Botón de editar
+    private lateinit var imageView: View //Imagen de fondo
+    lateinit var dbFirestoreReference: CollectionReference
     lateinit var mainFragment: Fragment //Fragmento al que se debe volver
+    var documentSnapshot: DocumentSnapshot? = null //Documento que se está mostrando
+    private var isAddFragment: Boolean = false //Indica si el fragmento es de añadir o de editar
+
+    /**
+     * Fase de creación del fragmento
+     * @param savedInstanceState Bundle
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        try {
+            //Inicializa las variables y esconde barras de navegación pasándole las referencias
+            initializeUI()
+        } catch (exception: Exception) {
+            Log.e(ContentValues.TAG, exception.message.toString(), exception)
+            exception.printStackTrace()
+        }
+    }
 
     /**
      *  Añade el documento a la base de datos
@@ -57,38 +75,38 @@ abstract class DetailFormModelFragment(val documentSnapshot: DocumentSnapshot?) 
         }
     }
 
+    fun setAddFragment() {
+        isAddFragment = !isAddFragment
+    }
+
     private fun navigateToMainFragment() {
         fragmentReplacer(mainFragment, parentFragmentManager)
     }
 
 
-    private fun setCloseButtonListener() {
+    open fun setCloseButtonListener(buttonClose: MaterialButton) {
         buttonClose.setOnClickListener {
             navigateToMainFragment()
         }
     }
 
-    private fun setDeleteButtonListener() {
+    fun setDeleteButtonListener(buttonDelete: MaterialButton) {
         buttonDelete.setOnClickListener {
-            if (documentSnapshot != null) {
-                delDocumentSnapshot(documentSnapshot)
-            }
+            delDocumentSnapshot(documentSnapshot)
             navigateToMainFragment()
         }
     }
 
-    private fun setEditButtonListener() {
+    fun setEditButtonListener(buttonEdit: MaterialButton) {
         buttonEdit.setOnClickListener {
             makeFormEditable()
-            buttonSave.visibility = VISIBLE
-            buttonEdit.visibility = GONE
         }
     }
 
-    private fun setSaveButtonListener() {
+    fun setSaveButtonListener(buttonSave: MaterialButton) {
         buttonSave.setOnClickListener {
             if (documentSnapshot != null) {
-                updateDocumentToDatabase(documentSnapshot, fillDataFromForm())
+                updateDocumentToDatabase(documentSnapshot!!, fillDataFromForm())
             } else {
                 addDocumentToDataBase()
             }
@@ -121,17 +139,17 @@ abstract class DetailFormModelFragment(val documentSnapshot: DocumentSnapshot?) 
      *  Borra el documento de la base de datos
      *  @param documentSnapshot: DocumentSnapshot
      */
-    protected open fun delDocumentSnapshot(documentSnapshot: DocumentSnapshot) {
+    protected open fun delDocumentSnapshot(documentSnapshot: DocumentSnapshot?) {
         try {
-            documentSnapshot.reference.delete()
-                .addOnSuccessListener {
+            documentSnapshot?.reference?.delete()
+                ?.addOnSuccessListener {
                     Log.d(
                         ContentValues.TAG,
                         "DocumentSnapshot borrado con ID: ${documentSnapshot.id}"
                     )
                     showShortToast("Documento borrado correctamente")
                 }
-                .addOnFailureListener { e ->
+                ?.addOnFailureListener { e ->
                     Log.w(ContentValues.TAG, "Error borrando documento", e)
                     showShortToast("Error borrando documento")
                 }
@@ -141,49 +159,28 @@ abstract class DetailFormModelFragment(val documentSnapshot: DocumentSnapshot?) 
 
     }
 
-    /**
-     * Fase de creación de la actividad en el ciclo de vida de la actividad.
-     * @param savedInstanceState: Bundle? (Estado guardado de la actividad)
-     */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val toolbar = R.id.topDetailToolbar
-
+    private fun initializeUI() {
         //Inicializa las variables y sconde barras de navegación pasándole las referencias
         navBarTop = requireActivity().findViewById(R.id.topToolbar)
-        navBarTop.visibility = GONE
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
-        navBarBot.visibility = GONE
         floatingButton = requireActivity().findViewById(R.id.addButton)
+        buttonSave = requireActivity().findViewById(R.id.btdelete)
+        buttonSave = requireActivity().findViewById(R.id.btsave)
+        buttonEdit = requireActivity().findViewById(R.id.btedit)
+
+        navBarTop.visibility = GONE
+        navBarBot.visibility = GONE
         floatingButton.visibility = GONE
 
+        if (isAddFragment == true){
+            buttonDelete.visibility = GONE
+            buttonEdit.visibility = GONE
+            buttonSave.visibility = View.VISIBLE
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setDeleteButtonListener()
-        setSaveButtonListener()
-        setCloseButtonListener()
-        setEditButtonListener()
-    }
-
-    /**
-     * Se destrye el fragmento y se vuelve a mostrar las barras de navegación
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        //La barra superior vuelve a ser visible al destruirse el fragmento
-        navBarTop.visibility = VISIBLE
-        navBarBot.visibility = VISIBLE
-        floatingButton.visibility = VISIBLE
-    }
-
+    abstract fun makeFormEditable()
+    abstract fun fillDataFromForm(): Any
+    abstract fun bindDataToForm()
 }
 
-interface FormModelFragment{
-
-    val dbFirestoreReference: CollectionReference
-    fun makeFormEditable()
-    fun fillDataFromForm(): Any
-    fun bindDataToForm()
-}

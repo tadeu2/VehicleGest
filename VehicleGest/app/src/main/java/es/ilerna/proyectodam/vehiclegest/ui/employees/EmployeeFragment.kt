@@ -6,17 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.adapters.EmployeeRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentEmployeesBinding
+import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
-import es.ilerna.proyectodam.vehiclegest.models.Employee
 
 /**
  * Fragmento de listado de empleados
@@ -28,12 +25,22 @@ class EmployeeFragment : FragmentModel() {
     private val getFragmentEmployeesBinding
         get() = fragmentEmployeesBinding ?: throw IllegalStateException("Binding error")
 
-    //Fase de creación del fragmento
+    /**
+     * Crea un fragmento de detalle de empleado
+     * @return Fragmento de detalle de empleado
+     */
+    override fun getDetailFragment(): DetailFormModelFragment =
+        EmployeeDetailFragment()
+
+    /**
+     * Fase de creación del fragmento
+     * @param savedInstanceState Estado de la instancia
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
             //Referencia a la base de datos de Firebase
-            collectionReference = Firebase.firestore.collection("employees")
+            dbFirestoreReference = Firebase.firestore.collection("employees")
 
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -41,6 +48,12 @@ class EmployeeFragment : FragmentModel() {
         }
     }
 
+    /**
+     * Fase de creación de la vista
+     * @param inflater Inflador de la vista
+     * @param container Contenedor de la vista
+     * @param savedInstanceState Estado de la instancia
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -49,7 +62,7 @@ class EmployeeFragment : FragmentModel() {
             fragmentEmployeesBinding = FragmentEmployeesBinding.inflate(inflater, container, false)
 
             //Enlaza el recycler al adaptador
-            recyclerAdapter  = EmployeeRecyclerAdapter(collectionReference, this)
+            recyclerAdapter = EmployeeRecyclerAdapter(dbFirestoreReference, this)
 
             //Configura el recycler view con un layout manager y un adaptador
             configRecyclerView(getFragmentEmployeesBinding.recyclerEmployees)
@@ -60,27 +73,27 @@ class EmployeeFragment : FragmentModel() {
         }
         return getFragmentEmployeesBinding.root
     }
+
     /**
      * Genera las consultas para filtrar los datos de la base de datos
      */
     override fun generateFilteredItemListFromString(searchString: String): List<Query> {
-        val queryDni = collectionReference
+        val queryDni = dbFirestoreReference
             .whereGreaterThanOrEqualTo("dni", searchString)
             .whereLessThanOrEqualTo("dni", searchString + "\uf8ff")
-        val querySurname = collectionReference
+        val querySurname = dbFirestoreReference
             .whereGreaterThanOrEqualTo("surname", searchString)
             .whereLessThanOrEqualTo("surname", searchString + "\uf8ff")
         return listOf(queryDni, querySurname)
     }
 
+    /**
+     * Actualiza el adaptador del recycler view a partir de una lista de documentos de la base de datos
+     * @param documentSnapshots Lista de documentos de la base de datos
+     */
     override fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: ArrayList<DocumentSnapshot>) {
-        (recyclerAdapter as EmployeeRecyclerAdapter).updateData(documentSnapshots) as EmployeeRecyclerAdapter
+        (recyclerAdapter as EmployeeRecyclerAdapter).updateData(documentSnapshots)
     }
-
-    override fun getDetailFragment(item: DocumentSnapshot): Fragment = EmployeeDetailFragment(item)
-
-    override fun getAdderFragment(): Fragment = EmployeeAdderFragment()
-
 
     /**
      * Fase de destrucción del fragmento se elimina el binding
