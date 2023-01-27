@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.AlertCardBinding
 import es.ilerna.proyectodam.vehiclegest.interfaces.RecyclerAdapterListener
 import es.ilerna.proyectodam.vehiclegest.models.Alert
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
@@ -34,7 +35,7 @@ class AlertRecyclerAdapter(
      */
     class AlertViewHolder(
         private val alertCardBinding: AlertCardBinding,
-        ) : RecyclerView.ViewHolder(alertCardBinding.root) {
+    ) : RecyclerView.ViewHolder(alertCardBinding.root) {
         /**
          * Función que se encarga de pintar los datos en la tarjeta
          * @param documentSnapshot Parámetro que contiene la instancia de la alerta
@@ -46,8 +47,7 @@ class AlertRecyclerAdapter(
         ) {
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
-                val executorService = Executors.newSingleThreadExecutor()
-                executorService.execute {
+                CoroutineScope(Dispatchers.Main).launch {
 
                     //Inicializamos un objeto a partir de una instántanea
                     val alert: Alert? = documentSnapshot.toObject(Alert::class.java)

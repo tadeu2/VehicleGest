@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
@@ -23,8 +22,7 @@ import kotlinx.coroutines.launch
  * Abre una ventana diálogo con los detalles del empleado
  * @param documentSnapshot Instantanea de firestore del empleado
  */
-class EmployeeDetailFragment(
-) : DetailFormModelFragment() {
+class EmployeeDetailFragment : DetailFormModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailEmployeeBinding: DetailEmployeeBinding? = null
@@ -37,6 +35,7 @@ class EmployeeDetailFragment(
         //Inicializa el fragmento principal para poder volver
         mainFragment = EmployeeFragment()
     }
+
     /**
      * Fase de creación de la vista
      * @param inflater  Inflador de la vista
@@ -56,19 +55,6 @@ class EmployeeDetailFragment(
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("employees")
 
-            //Inicializa los escuchadores de los botones
-            with(getDetailEmployeeBinding.bar) {
-                btsave.visibility = View.GONE
-                btedit.visibility = View.VISIBLE
-                //Escuchador del boton cerrar
-                setCloseButtonListener(btclose)
-                setEditButtonListener(btedit)
-                setSaveButtonListener(btsave)
-                setDeleteButtonListener(btdelete)
-            }
-            //Llama a la función que rellena los datos en el formulario
-            bindDataToForm()
-
         } catch (exception: Exception) {
             Log.w(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -80,13 +66,22 @@ class EmployeeDetailFragment(
      * Hace editable el formulario
      */
     override fun makeFormEditable() {
-        with(getDetailEmployeeBinding) {
-            bar.btsave.visibility = View.VISIBLE
-            bar.btedit.visibility = View.GONE
-            val views = arrayOf(name, surname, employeeDni, phone, address, birthdate, urlphoto, email, checkadmin)
-            for (view in views) {
+        getDetailEmployeeBinding.apply {
+            //Habilita los campos del formulario y los pinta de rojo
+            val viewListToEnable = arrayOf(
+                name,
+                surname,
+                employeeDni,
+                phone,
+                address,
+                birthdate,
+                urlphoto,
+                email,
+                checkadmin
+            )
+            for (view in viewListToEnable) {
                 view.isEnabled = true
-                view.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+                view.setTextColor(editableEditTextColor)
             }
             birthdate.setOnClickListener {
                 DatePickerFragment { day, month, year ->
@@ -105,15 +100,21 @@ class EmployeeDetailFragment(
             val employee: Employee? = documentSnapshot?.toObject(Employee::class.java)
             //Rellena los campos del formulario con los datos del empleado
             with(getDetailEmployeeBinding) {
-
-                name.setText(employee?.name)
-                surname.setText(employee?.surname)
-                employeeDni.setText(employee?.dni)
-                phone.setText(employee?.phone)
-                address.setText(employee?.address)
-                urlphoto.setText(employee?.photoURL)
-                email.setText(employee?.email)
                 checkadmin.isChecked = employee?.admin == true
+                val formFieldsToFill = arrayOf(
+                    Pair(employeeDni, employee?.dni),
+                    Pair(name, employee?.name),
+                    Pair(surname, employee?.surname),
+                    Pair(employeeDni, employee?.dni),
+                    Pair(phone, employee?.phone),
+                    Pair(address, employee?.address),
+                    Pair(urlphoto, employee?.photoURL),
+                    Pair(email, employee?.email)
+                )
+
+                formFieldsToFill.forEach { (field, valueToFill) ->
+                    field.setText(valueToFill)
+                }
                 //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                 //El formato se puede modificar en strings.xml
                 birthdate.setText(dateToStringFormat(employee?.birthdate))
@@ -134,7 +135,6 @@ class EmployeeDetailFragment(
                         employeeImage.setImageBitmap(bitmapFromUrl)
                     }
                 }
-
             }
         }
     }

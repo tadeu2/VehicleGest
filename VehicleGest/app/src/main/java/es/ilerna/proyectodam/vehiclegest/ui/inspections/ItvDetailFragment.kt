@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailItvBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDateFormat
@@ -18,8 +17,7 @@ import es.ilerna.proyectodam.vehiclegest.models.ITV
 /**
  * Abre una ventana diálogo con los detalles de la ITV
  */
-class ItvDetailFragment(
-) : DetailFormModelFragment() {
+class ItvDetailFragment : DetailFormModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailItvBinding: DetailItvBinding? = null
@@ -51,19 +49,6 @@ class ItvDetailFragment(
             //Referencia a la base de datos
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("ITV")
 
-            //Iniciliza los escuchadores de los botones
-            with(getDetailItvBinding.bar) {
-                //Escuchador del boton cerrar
-                setCloseButtonListener(btclose)
-                setEditButtonListener(btedit)
-                setSaveButtonListener(btsave)
-                setDeleteButtonListener(btdelete)
-                btsave.visibility = View.GONE
-                btedit.visibility = View.VISIBLE
-            }
-
-            //Llama a la función que rellena los datos en el formulario
-            bindDataToForm()
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
         }
@@ -82,8 +67,6 @@ class ItvDetailFragment(
             date.setText(dateToStringFormat(itv?.date))
             remarks.setText(itv?.remarks)
         }
-
-
     }
 
     override fun fillDataFromForm(): Any {
@@ -100,12 +83,13 @@ class ItvDetailFragment(
      */
     override fun makeFormEditable() {
         getDetailItvBinding.apply {
-            bar.btsave.visibility = View.VISIBLE
-            bar.btedit.visibility = View.GONE
-            date.isEnabled = true
-            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            remarks.isEnabled = true
-            remarks.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
+            //Habilita los campos de texto y los pinta de rojo
+            val viewListToEnable = arrayOf(date, remarks)
+
+            for (view in viewListToEnable) {
+                view.isEnabled = true
+                view.setTextColor(editableEditTextColor)
+            }
 
             //Escuchador del botón de fecha
             date.setOnClickListener {

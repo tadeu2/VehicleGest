@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailServiceBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.dateToStringFormat
@@ -51,19 +50,6 @@ class ServiceDetailFragment : DetailFormModelFragment() {
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("employees")
 
-            //Inicializa los escuchadores de los botones
-            with(getDetailServiceBinding.bar) {
-                btsave.visibility = View.GONE
-                btedit.visibility = View.VISIBLE
-                //Escuchador del boton cerrar
-                setCloseButtonListener(btclose)
-                setEditButtonListener(btedit)
-                setSaveButtonListener(btsave)
-                setDeleteButtonListener(btdelete)
-            }
-
-            //Llama a la función que rellena los datos en el formulario
-            bindDataToForm()
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
         }
@@ -77,13 +63,20 @@ class ServiceDetailFragment : DetailFormModelFragment() {
         with(getDetailServiceBinding) {
             //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
             val service: Service? = documentSnapshot?.toObject(Service::class.java)
-            plateNumber.setText(service?.plateNumber.toString())
-            costumer.setText(service?.costumer.toString())
-            remarks.setText(service?.remarks.toString())
+
+            val views = arrayOf(
+                Pair(plateNumber, service?.plateNumber),
+                Pair(costumer, service?.costumer),
+                Pair(remarks, service?.remarks)
+            )
+
+            views.forEach { (view, value) ->
+                view.setText(value)
+            }
 
             //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
             //El formato se puede modificar en strings.xml
-            date.setText(service?.date?.let { dateToStringFormat(it) })
+            date.setText(dateToStringFormat(service?.date))
         }
     }
 
@@ -106,15 +99,12 @@ class ServiceDetailFragment : DetailFormModelFragment() {
      */
     override fun makeFormEditable() {
         getDetailServiceBinding.apply {
-            plateNumber.isEnabled = true
-            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            costumer.isEnabled = true
-            costumer.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            remarks.isEnabled = true
-            remarks.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            date.isEnabled = true
-            date.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-
+            //Crea una lista de los campos de texto y los pinta de rojo
+            val viewListToEnable = arrayOf(plateNumber, costumer, remarks, date)
+            viewListToEnable.forEach { view ->
+                view.isEnabled = true
+                view.setTextColor(editableEditTextColor)
+            }
             //Escuchador del botón de fecha
             date.setOnClickListener {
                 //ºAbre el selector de fecha

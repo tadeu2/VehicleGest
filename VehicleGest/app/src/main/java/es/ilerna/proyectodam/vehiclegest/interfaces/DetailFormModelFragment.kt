@@ -1,12 +1,12 @@
 package es.ilerna.proyectodam.vehiclegest.interfaces
 
 import android.content.ContentValues
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
-import android.widget.Button
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,28 +18,32 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showLongToast
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showShortToast
-import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
-import java.util.concurrent.Executors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 /**
  * Interfaz que sirve como base para los fragmentos que muestran los detalles de un modelo
  */
-abstract class DetailFormModelFragment: Fragment() {
+abstract class DetailFormModelFragment : Fragment() {
 
-    //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
+    //Variables que almacenarán las instancias de los controles de la interfaz
     private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
     private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
-    private lateinit var floatingButton: FloatingActionButton //Botón flotante de la interfaz
+    private lateinit var searchTopBar: SearchView //Barra de búsqueda superior
+    private lateinit var floatingAddButton: FloatingActionButton //Botón flotante de la interfaz
     private lateinit var buttonSave: MaterialButton //Botón de guardar
     private lateinit var buttonDelete: MaterialButton //Botón de eliminar
     private lateinit var buttonEdit: MaterialButton //Botón de editar
+    private lateinit var buttonClose: MaterialButton //Botón de cancelar
     private lateinit var imageView: View //Imagen de fondo
     lateinit var dbFirestoreReference: CollectionReference
     lateinit var mainFragment: Fragment //Fragmento al que se debe volver
     var documentSnapshot: DocumentSnapshot? = null //Documento que se está mostrando
     private var isAddFragment: Boolean = false //Indica si el fragmento es de añadir o de editar
-
+    val editableEditTextColor: Int = Color.RED //Color de los EditText editables
+    //Color de los EditText editables
     /**
      * Fase de creación del fragmento
      * @param savedInstanceState Bundle
@@ -49,6 +53,10 @@ abstract class DetailFormModelFragment: Fragment() {
         try {
             //Inicializa las variables y esconde barras de navegación pasándole las referencias
             initializeUI()
+            //Rellenar los datos del formulario con los datos del documento
+            if (!isAddFragment) {
+                bindDataToForm()
+            }
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -58,8 +66,9 @@ abstract class DetailFormModelFragment: Fragment() {
     /**
      *  Añade el documento a la base de datos
      */
-    protected open fun addDocumentToDataBase() {
-        Executors.newSingleThreadExecutor().execute {
+    protected open
+    fun addDocumentToDataBase() {
+        CoroutineScope(Dispatchers.IO).launch {
             dbFirestoreReference.add(fillDataFromForm())
                 .addOnSuccessListener { documentReference ->
                     Log.d(
@@ -84,26 +93,28 @@ abstract class DetailFormModelFragment: Fragment() {
     }
 
 
-    open fun setCloseButtonListener(buttonClose: MaterialButton) {
+    open fun setCloseButtonListener() {
         buttonClose.setOnClickListener {
             navigateToMainFragment()
         }
     }
 
-    fun setDeleteButtonListener(buttonDelete: MaterialButton) {
+    private fun setDeleteButtonListener() {
         buttonDelete.setOnClickListener {
             delDocumentSnapshot(documentSnapshot)
             navigateToMainFragment()
         }
     }
 
-    fun setEditButtonListener(buttonEdit: MaterialButton) {
+    private fun setEditButtonListener() {
         buttonEdit.setOnClickListener {
+            buttonEdit.visibility = GONE
+            buttonSave.visibility = View.VISIBLE
             makeFormEditable()
         }
     }
 
-    fun setSaveButtonListener(buttonSave: MaterialButton) {
+    private fun setSaveButtonListener() {
         buttonSave.setOnClickListener {
             if (documentSnapshot != null) {
                 updateDocumentToDatabase(documentSnapshot!!, fillDataFromForm())
@@ -114,14 +125,14 @@ abstract class DetailFormModelFragment: Fragment() {
         }
     }
 
-
     /**
      * Actualiza el documento en la base de datos
      * @param documentSnapshot Documento a actualizar
      * @param any Entidad a actualizar
      */
-    protected open fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
-        Executors.newSingleThreadExecutor().execute {
+    protected open
+    fun updateDocumentToDatabase(documentSnapshot: DocumentSnapshot, any: Any) {
+        CoroutineScope(Dispatchers.IO).launch {
             val documentReference = dbFirestoreReference.document(documentSnapshot.id)
             documentReference.set(any) //Actualiza el documento con los datos del formulario
                 .addOnSuccessListener {
@@ -139,48 +150,70 @@ abstract class DetailFormModelFragment: Fragment() {
      *  Borra el documento de la base de datos
      *  @param documentSnapshot: DocumentSnapshot
      */
-    protected open fun delDocumentSnapshot(documentSnapshot: DocumentSnapshot?) {
-        try {
-            documentSnapshot?.reference?.delete()
-                ?.addOnSuccessListener {
-                    Log.d(
-                        ContentValues.TAG,
-                        "DocumentSnapshot borrado con ID: ${documentSnapshot.id}"
-                    )
-                    showShortToast("Documento borrado correctamente")
-                }
-                ?.addOnFailureListener { e ->
-                    Log.w(ContentValues.TAG, "Error borrando documento", e)
-                    showShortToast("Error borrando documento")
-                }
-        } catch (exception: Exception) {
-            exception.printStackTrace()
+    protected open
+    fun delDocumentSnapshot(documentSnapshot: DocumentSnapshot?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                documentSnapshot?.reference?.delete()
+                    ?.addOnSuccessListener {
+                        Log.d(
+                            ContentValues.TAG,
+                            "DocumentSnapshot borrado con ID: ${documentSnapshot.id}"
+                        )
+                        showShortToast("Documento borrado correctamente")
+                    }
+                    ?.addOnFailureListener { e ->
+                        Log.w(ContentValues.TAG, "Error borrando documento", e)
+                        showShortToast("Error borrando documento")
+                    }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
         }
-
     }
 
     private fun initializeUI() {
         //Inicializa las variables y sconde barras de navegación pasándole las referencias
         navBarTop = requireActivity().findViewById(R.id.topToolbar)
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
-        floatingButton = requireActivity().findViewById(R.id.addButton)
-        buttonSave = requireActivity().findViewById(R.id.btdelete)
+        searchTopBar = requireActivity().findViewById(R.id.searchView)
+        floatingAddButton = requireActivity().findViewById(R.id.addButton)
+        buttonDelete = requireActivity().findViewById(R.id.btdelete)
         buttonSave = requireActivity().findViewById(R.id.btsave)
         buttonEdit = requireActivity().findViewById(R.id.btedit)
+        buttonClose = requireActivity().findViewById(R.id.btclose)
 
+        searchTopBar.visibility = GONE
         navBarTop.visibility = GONE
         navBarBot.visibility = GONE
-        floatingButton.visibility = GONE
+        floatingAddButton.visibility = GONE
 
-        if (isAddFragment == true){
+        if (isAddFragment) {
+            makeFormEditable()
             buttonDelete.visibility = GONE
             buttonEdit.visibility = GONE
             buttonSave.visibility = View.VISIBLE
         }
+
+        setCloseButtonListener()
+        setEditButtonListener()
+        setSaveButtonListener()
+        setDeleteButtonListener()
     }
 
+    /**
+     * Hace editable el formulario
+     */
     abstract fun makeFormEditable()
+
+    /**
+     * Rellena los datos del formulario con los datos del documento
+     */
     abstract fun fillDataFromForm(): Any
+
+    /**
+     *  Crea un documento con los datos del formulario
+     */
     abstract fun bindDataToForm()
 }
 

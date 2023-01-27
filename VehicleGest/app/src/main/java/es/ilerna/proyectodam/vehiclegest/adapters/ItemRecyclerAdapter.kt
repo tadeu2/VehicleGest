@@ -53,10 +53,17 @@ class ItemRecyclerAdapter(
                         plateNumber.text = item?.plateNumber.toString()
                         name.text = item?.name.toString()
 
-                        val bitmapFromUrl =
-                            Controller().getBitmapFromUrl(item?.photoURL.toString()).await()
-                        itemImage.post {
-                            itemImage.setImageBitmap(bitmapFromUrl)
+                        if (item?.photoURL.toString().isEmpty()) {
+                            itemImage.post {
+                                Controller.setDefaultImage(itemImage)
+                            }
+                        } else {
+                            val bitmapFromUrl = Controller().getBitmapFromUrl(
+                                item?.photoURL.toString()
+                            ).await()
+                            itemImage.post {
+                                itemImage.setImageBitmap(bitmapFromUrl)
+                            }
                         }
 
                         //Iniciamos el escuchador que accionamos al pulsar una ficha
@@ -84,8 +91,8 @@ class ItemRecyclerAdapter(
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         viewType: Int
-    ): ItemRecyclerAdapter.ItemViewHolder {
-        return ItemRecyclerAdapter.ItemViewHolder(
+    ): ItemViewHolder {
+        return ItemViewHolder(
             //Infla la vista de la tarjeta y la devuelve
             ItemCardBinding.inflate(
                 LayoutInflater.from(viewGroup.context),
@@ -101,7 +108,7 @@ class ItemRecyclerAdapter(
      * @param position Parámetro que contiene la posición del objeto en la lista
      */
     override fun onBindViewHolder(
-        itemViewHolder: ItemRecyclerAdapter.ItemViewHolder,
+        itemViewHolder: ItemViewHolder,
         position: Int
     ) {
         //Obtiene el objeto de la lista

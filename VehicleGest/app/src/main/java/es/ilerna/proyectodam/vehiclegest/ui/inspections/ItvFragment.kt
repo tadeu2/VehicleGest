@@ -6,15 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.ItvRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInspectionBinding
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
 
@@ -76,14 +73,6 @@ class ItvFragment : FragmentModel() {
      * @return Fragmento de detalle de tipo DetailFormModelFragment
      */
     override fun getDetailFragment(): DetailFormModelFragment = ItvDetailFragment()
-
-    /**
-     * Al seleccionar un item de la lista se abre el fragmento de detalle
-     * @param documentSnapshot Documento de firestore
-     */
-    override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-        fragmentReplacer(ItvDetailFragment(), parentFragmentManager)
-    }
 
     /**
      * Al destruir el fragmento se destruye el binding

@@ -6,14 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
-import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ServiceCardBinding
 import es.ilerna.proyectodam.vehiclegest.interfaces.RecyclerAdapterListener
 import es.ilerna.proyectodam.vehiclegest.models.Service
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.Executors
 
 /**
  * El adapter se encarga de meter los datos en el recyclerview
@@ -47,8 +48,7 @@ class ServiceRecyclerAdapter(
             try {
 
                 //Crea un hilo paralelo para descargar las imagenes de una URL
-                val executorService = Executors.newSingleThreadExecutor()
-                executorService.execute {
+                CoroutineScope(Dispatchers.Main).launch {
 
                     //Inicializamos un objeto a partir de una instántanea
                     val service = documentSnapshot.toObject(Service::class.java)

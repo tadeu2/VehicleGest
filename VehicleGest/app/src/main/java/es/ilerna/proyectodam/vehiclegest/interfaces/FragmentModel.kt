@@ -28,10 +28,12 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
     lateinit var recyclerAdapter: RecyclerView.Adapter<*>
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var searchTopBar: SearchView //Barra de búsqueda superior
 
     //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
     private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
     private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
+
     private lateinit var floatingButton: FloatingActionButton //Botón flotante de la interfaz
     lateinit var dbFirestoreReference: CollectionReference
 
@@ -67,6 +69,7 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
         navBarTop.visibility = View.VISIBLE
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = View.VISIBLE
+        searchTopBar.visibility = View.GONE
         floatingButton = requireActivity().findViewById(R.id.addButton)
         floatingButton.visibility = View.VISIBLE
         //Crea un escuchador para el botón flotante que abre el formulario de creacion
@@ -91,6 +94,10 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
         (recyclerAdapter as FirestoreAdapter).stopListening()
     }
 
+    /**
+     * Configura el recycler view y el adaptador
+     * @param recyclerReference Referencia al recycler view
+     */
     fun configRecyclerView(recyclerReference: RecyclerView) {
         recyclerView = recyclerReference
         recyclerView.adapter = recyclerAdapter
@@ -107,15 +114,18 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
 
     /**
      * Crea un objeto de tipo T a partir de un documento de la base de datos
-     * @param documentSnapshot Documento de la base de datos
      * @return Objeto de tipo T
      */
     //abstract fun createObject(documentSnapshot: DocumentSnapshot?): T*/
 
+    /**
+     * Al pulsar un elemento de la lista se abre el fragmento de detalle
+     * @param documentSnapshot Documento de la base de datos
+     */
     override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
         val detailFragment = getDetailFragment()
         detailFragment.documentSnapshot = documentSnapshot
-        detailFragment.setAddFragment()
+
         fragmentReplacer(detailFragment, parentFragmentManager)
     }
 

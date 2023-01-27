@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 /**
  * Abre una ventana diálogo con los detalles del artículo
  */
-class ItemDetailFragment: DetailFormModelFragment() {
+class ItemDetailFragment : DetailFormModelFragment() {
 
     //Variable para enlazar el achivo de código con el XML de interfaz
     private var detailItemBinding: DetailItemBinding? = null
@@ -48,14 +48,10 @@ class ItemDetailFragment: DetailFormModelFragment() {
         try {
             //Enlaza al XML del formulario y lo infla
             detailItemBinding = DetailItemBinding.inflate(inflater, container, false)
+
+            //Crea una instancia de la base de datos
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("inventory")
 
-            //Inicializa los escuchadores de los botones
-            with(getDetailItemBinding.bar) {
-                btsave.visibility = View.GONE
-                btedit.visibility = View.VISIBLE
-            }
-            bindDataToForm()//Llama a la función que rellena los datos en el formulario
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -111,24 +107,17 @@ class ItemDetailFragment: DetailFormModelFragment() {
      */
     override fun makeFormEditable() {
         getDetailItemBinding.apply {
-            name.isEnabled = true
-            name.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            plateNumber.isEnabled = true
-            plateNumber.setTextColor(resources.getColor(R.color.md_theme_dark_errorContainer, null))
-            itemDescription.isEnabled = true
-            itemDescription.setTextColor(
-                resources.getColor(
-                    R.color.md_theme_dark_errorContainer,
-                    null
-                )
+
+            val viewListToEnable = arrayOf(
+                plateNumber,
+                name,
+                itemDescription,
+                itemUrlphoto
             )
-            itemUrlphoto.isEnabled = true
-            itemUrlphoto.setTextColor(
-                resources.getColor(
-                    R.color.md_theme_dark_errorContainer,
-                    null
-                )
-            )
+            for (view in viewListToEnable) {
+                view.isEnabled = true
+                view.setTextColor(editableEditTextColor)
+            }
         }
     }
 

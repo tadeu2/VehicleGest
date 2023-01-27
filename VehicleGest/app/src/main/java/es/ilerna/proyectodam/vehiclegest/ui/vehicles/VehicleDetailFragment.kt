@@ -53,17 +53,6 @@ class VehicleDetailFragment : DetailFormModelFragment() {
             detailVehicleBinding = DetailVehicleBinding.inflate(inflater, container, false)
             // Referencia a la base de datos
             dbFirestoreReference = FirebaseFirestore.getInstance().collection("vehicle")
-            //Escuchador del boton cerrar
-
-            getDetailVehicleBinding.bar.apply {
-                //Escuchador del boton cerrar
-                setCloseButtonListener(btclose)
-                setEditButtonListener(btedit)
-                setSaveButtonListener(btsave)
-                setDeleteButtonListener(btdelete)
-            }
-
-            bindDataToForm() //Llama a la función que rellena los datos en el formulario
 
         } catch (exception: Exception) {
             Log.e(TAG, exception.message.toString(), exception)
@@ -77,24 +66,30 @@ class VehicleDetailFragment : DetailFormModelFragment() {
      */
     override fun bindDataToForm() {
         CoroutineScope(Dispatchers.Main).launch {
+
+            //Obtiene la instantanea de la base de datos y la convierte en un objeto
+            val vehicle: Vehicle? = documentSnapshot?.toObject(Vehicle::class.java)
+
             getDetailVehicleBinding.apply {
-                //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-                val vehicle: Vehicle? = documentSnapshot?.toObject(Vehicle::class.java)
-                urlphoto.setText(vehicle?.photoURL)
-                plateNumber.setText(vehicle?.plateNumber)
-                type.setText(vehicle?.type)
-                brand.setText(vehicle?.brand)
-                model.setText(vehicle?.model)
-                vehicleDescription.setText(vehicle?.description)
+                val formFieldsToFill = arrayOf(
+                    Pair(plateNumber, vehicle?.plateNumber),
+                    Pair(type, vehicle?.type),
+                    Pair(brand, vehicle?.brand),
+                    Pair(model, vehicle?.model),
+                    Pair(totalDistance, vehicle?.totalDistance),
+                    Pair(vehicleDescription, vehicle?.description),
+                    Pair(urlphoto, vehicle?.photoURL)
+                )
+
+                formFieldsToFill.forEach { (field, valueToFill) ->
+                    field.setText(valueToFill.toString())
+                }
+
                 checkItvPassed.isChecked = vehicle?.itvPassed == false
 
                 //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                 //El formato se puede modificar en strings.xml
-                expiringItvDate.setText(vehicle?.expiryDateITV?.let {
-                    dateToStringFormat(
-                        it
-                    )
-                })
+                expiringItvDate.setText(dateToStringFormat(vehicle?.expiryDateITV))
 
                 if (vehicle?.photoURL.toString().isEmpty()) {
                     vehicleImage.post {
@@ -110,7 +105,6 @@ class VehicleDetailFragment : DetailFormModelFragment() {
                 }
             }
         }
-
     }
 
     /**
@@ -134,7 +128,6 @@ class VehicleDetailFragment : DetailFormModelFragment() {
             )
         }
     }
-
 
     /**
      *  Hace el formulario editable

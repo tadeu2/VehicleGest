@@ -56,10 +56,6 @@ class EmployeeRecyclerAdapter(
                         name.text = employee?.name.toString()
                         surname.text = employee?.surname.toString()
 
-                        employeeCard.setOnClickListener {
-                            recyclerAdapterListener.onItemSelected(documentSnapshot)
-                        }
-
                         if (employee?.photoURL.toString().isEmpty()) {
                             employeeImage.post {
                                 Controller.setDefaultImage(employeeImage)
@@ -71,6 +67,10 @@ class EmployeeRecyclerAdapter(
                             employeeImage.post {
                                 employeeImage.setImageBitmap(bitmapFromUrl)
                             }
+                        }
+
+                        employeeCard.setOnClickListener {
+                            recyclerAdapterListener.onItemSelected(documentSnapshot)
                         }
 
                     }
@@ -110,7 +110,7 @@ class EmployeeRecyclerAdapter(
      * @param position Parámetro que contiene la posición
      */
     override fun onBindViewHolder(
-        employeeViewHolder: EmployeeRecyclerAdapter.EmployeeViewHolder,
+        employeeViewHolder: EmployeeViewHolder,
         position: Int
     ) {
         //Obtenemos el empleado de la posición

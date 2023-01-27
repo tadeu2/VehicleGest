@@ -52,10 +52,17 @@ class VehicleRecyclerAdapter(
                         brand.text = vehicle?.brand.toString()
                         model.text = vehicle?.model.toString()
 
-                        val bitmapFromUrl =
-                            Controller().getBitmapFromUrl(vehicle?.photoURL.toString()).await()
-                        vehicleImage.post {
-                            vehicleImage.setImageBitmap(bitmapFromUrl)
+                        if (vehicle?.photoURL.toString().isEmpty()) {
+                            vehicleImage.post {
+                                Controller.setDefaultImage(vehicleImage)
+                            }
+                        } else {
+                            val bitmapFromUrl = Controller().getBitmapFromUrl(
+                                vehicle?.photoURL.toString()
+                            ).await()
+                            vehicleImage.post {
+                                vehicleImage.setImageBitmap(bitmapFromUrl)
+                            }
                         }
 
                         //Iniciamos el escuchador que accionamos al pulsar una ficha
@@ -83,8 +90,8 @@ class VehicleRecyclerAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): VehicleRecyclerAdapter.VehicleViewHolder {
-        return VehicleRecyclerAdapter.VehicleViewHolder(
+    ): VehicleViewHolder {
+        return VehicleViewHolder(
             VehicleCardBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -99,7 +106,7 @@ class VehicleRecyclerAdapter(
      * @param position Posición de la tarjeta a rellenar
      */
     override fun onBindViewHolder(
-        vehicleViewHolder: VehicleRecyclerAdapter.VehicleViewHolder,
+        vehicleViewHolder: VehicleViewHolder,
         position: Int
     ) {
         //Obtiene la instántanea del documento
