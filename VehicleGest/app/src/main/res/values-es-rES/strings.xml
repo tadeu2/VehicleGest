@@ -66,7 +66,7 @@
     <string name="register">Registrar</string>
     <string name="repeat_password">Repetir password</string>
     <string name="register_error">Error de registro</string>
-    <string name="solution_description">Solution</string>
+    <string name="solution_description">Solución</string>
     <string name="alert_details">Alert Details</string>
     <string name="date_solved">Date Solved</string>
     <string name="solved">Solucionado</string>
@@ -74,10 +74,11 @@
     <string name="urlphoto">URL Foto</string>
     <string name="personal_information">Información Personal</string>
     <string name="solved_date">Fecha de solución</string>
-    <string name="item_information">Item Information</string>
-    <string name="itv_information">ITV Information</string>
-    <string name="vehicle_information">Vehicle Information</string>
-    <string name="itv_passed">ITV passed</string>
-    <string name="kilometer">Kilometer</string>
-    <string name="close">Close</string>
+    <string name="item_information">Información del item</string>
+    <string name="itv_information">Información de ITV</string>
+    <string name="vehicle_information">Información del Vehículo</string>
+    <string name="itv_passed">ITV pasada</string>
+    <string name="kilometer">Kilometros</string>
+    <string name="service_information">Servicio de información</string>
+    <string name="close">Cerrar</string>
 </resources>

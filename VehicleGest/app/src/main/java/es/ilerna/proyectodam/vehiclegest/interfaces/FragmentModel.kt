@@ -69,7 +69,8 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
         navBarTop.visibility = View.VISIBLE
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = View.VISIBLE
-        searchTopBar.visibility = View.GONE
+        searchTopBar = requireActivity().findViewById(R.id.searchView)
+        searchTopBar.visibility = View.VISIBLE
         floatingButton = requireActivity().findViewById(R.id.addButton)
         floatingButton.visibility = View.VISIBLE
         //Crea un escuchador para el botón flotante que abre el formulario de creacion
