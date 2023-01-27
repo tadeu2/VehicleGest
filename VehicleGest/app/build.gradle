@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "es.ilerna.proyectodam.vehiclegest"
-        minSdk 30
+        minSdk 22
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -53,7 +53,7 @@ android {
 
         //Retrocompatibilidad con APIS viejas
         implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-        implementation 'androidx.appcompat:appcompat:1.5.1'
+        implementation 'androidx.appcompat:appcompat:1.6.0'
         /*
         //Dependencias de ciclo de vida
         implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
@@ -84,7 +84,7 @@ android {
         implementation 'androidx.annotation:annotation:1.5.0'
 
         //****FIREBASE*****
-        implementation 'com.google.firebase:firebase-bom:31.1.1'
+        implementation 'com.google.firebase:firebase-bom:31.2.0'
         //Lista de materiales para adminsitrar todas las versiones
         //No será necesario especificar las versiones a continuación teniendo el BOM
         implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
@@ -92,7 +92,7 @@ android {
         implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
         implementation 'com.google.firebase:firebase-auth:21.1.0'
         //Firestore
-        implementation 'com.google.firebase:firebase-firestore-ktx:24.4.1'
+        implementation 'com.google.firebase:firebase-firestore-ktx:24.4.2'
 
     }
 

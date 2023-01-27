@@ -36,7 +36,7 @@ data class Item(
 
     /**
      * Método que escribe los datos del objeto Item en un Parcel
-     * @param parcel Parcel donde se escribirán los datos del item
+     * @param dest Parcel donde se escribirán los datos
      * @param flags Flags
      */
     override fun writeToParcel(dest: Parcel, flags: Int) {

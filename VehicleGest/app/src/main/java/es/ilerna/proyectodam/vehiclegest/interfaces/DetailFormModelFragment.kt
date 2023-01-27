@@ -53,6 +53,7 @@ abstract class DetailFormModelFragment : Fragment() {
         try {
             //Inicializa las variables y esconde barras de navegación pasándole las referencias
             initializeUI()
+
             //Rellenar los datos del formulario con los datos del documento
             if (!isAddFragment) {
                 bindDataToForm()

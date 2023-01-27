@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 
 /**
  * Abre una ventana diálogo con los detalles del empleado
- * @param documentSnapshot Instantanea de firestore del empleado
  */
 class EmployeeDetailFragment : DetailFormModelFragment() {
 

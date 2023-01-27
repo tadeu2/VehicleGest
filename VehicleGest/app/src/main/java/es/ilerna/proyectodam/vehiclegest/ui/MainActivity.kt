@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
     @ExperimentalBadgeUtils
     private fun initializeAlertsBadgeCounter() {
         //Variables para crear el contador de alertas
-        var alertCount= 0
+        var alertCount: Int
         // Inicializa la autenticación de Firebase
         val alertCollectionReference: CollectionReference = firestoreDatabaseReference.collection("alert")
 

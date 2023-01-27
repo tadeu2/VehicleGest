@@ -12,7 +12,6 @@ import java.util.*
  * @param name: String? (Nombre del empleado)
  * @param surname: String? (Apellidos del empleado)
  * @param email: String? (Email del empleado)
- * @param password: String? (Contraseña del empleado)
  * @param photoURL: String? (URL de la foto del empleado)
  * @param phone: String? (Teléfono del empleado)
  * @param address: String? (Dirección del empleado)

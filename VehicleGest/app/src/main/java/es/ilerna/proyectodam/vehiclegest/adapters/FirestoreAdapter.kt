@@ -1,9 +1,9 @@
 package es.ilerna.proyectodam.vehiclegest.adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
-import es.ilerna.proyectodam.vehiclegest.models.Vehicle
 
 /**
  * Clase abstracta
@@ -36,6 +36,7 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
     /**
      * Función que detiene el listener de la consulta a la base de datos
      */
+    @SuppressLint("NotifyDataSetChanged")
     open fun stopListening() {
         if (listenerRegistration != null) {
             listenerRegistration!!.remove()
@@ -126,7 +127,8 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
         return documentSnapshotArrayList[position]
     }
 
-    fun updateData(query:ArrayList<DocumentSnapshot>) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(query: ArrayList<DocumentSnapshot>) {
         documentSnapshotArrayList = query
         notifyDataSetChanged()
     }

@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="edit">Editar</string>
     <string name="vehiculos_menu_inferior">Vehiculos</string>
     <string name="servicios_menu_inferior">Servicios</string>
     <string name="personal_menu_inferior">Empleados</string>
-    <string name="next">Siguiente</string>
-    <string name="previous">Anterior</string>
     <string name="title_activity_vehiculos">Vehículos</string>
-    <string name="more">Más</string>
     <string name="favorite">Favorito</string>
     <string name="inventario_menu_inferior">Inventario</string>
     <string name="username">Nombre de Usuario</string>
@@ -81,4 +77,5 @@
     <string name="kilometer">Kilometros</string>
     <string name="service_information">Servicio de información</string>
     <string name="close">Cerrar</string>
+    <string name="addElement">Add Element</string>
 </resources>

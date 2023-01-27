@@ -28,7 +28,7 @@ class Controller {
     /**
      * Función que descarga una imagen de una URL y la pinta en un ImageView
      * @param url Parámetro que contiene la URL de la imagen
-     * @param imageView Parámetro que contiene el ImageView donde se pintará la imagen
+     * @return Devuelve un bitmap con la imagen descargada
      */
     @OptIn(DelicateCoroutinesApi::class)
     fun getBitmapFromUrl(url: String): Deferred<Bitmap?> {
@@ -141,7 +141,7 @@ class Controller {
                     }
                 }
             }
-            return false
+            return true
         }
 
         /* fun checkVehicleProblems(){

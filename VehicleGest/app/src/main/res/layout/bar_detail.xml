@@ -18,9 +18,11 @@
             android:background="?attr/colorPrimary"
             android:elevation="0dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/detail_navigation_menu"
-            app:subtitle="Login"
-            app:title="Vehiclegest"
+            app:subtitle="Vehicle"
+            app:subtitleCentered="true"
+            app:subtitleTextColor="@color/md_theme_light_surface"
+            app:title="Login"
+            app:titleCentered="true"
             app:titleTextColor="@color/md_theme_light_surface">
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -35,7 +37,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/buttonclose"
         android:minWidth="32dp"
-        app:icon="@drawable/ic_baseline_close_48"
+        app:icon="@drawable/outline_close_24"
         app:iconPadding="0dp"
         app:iconSize="36dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +50,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/buttondelete"
         android:minWidth="48dp"
-        app:icon="@drawable/ic_baseline_delete_outline_24"
+        app:icon="@drawable/outline_delete_24"
         app:iconPadding="0dp"
         app:iconSize="36dp"
         app:layout_constraintEnd_toStartOf="@id/btedit"
