@@ -58,7 +58,7 @@ class ItemRecyclerAdapter(
                                 Controller.setDefaultImage(itemImage)
                             }
                         } else {
-                            val bitmapFromUrl = Controller().getBitmapFromUrl(
+                            val bitmapFromUrl = Controller().getBitmapFromUrlAsync(
                                 item?.photoURL.toString()
                             ).await()
                             itemImage.post {

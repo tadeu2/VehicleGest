@@ -51,7 +51,6 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
             android:hint="@string/date"
             android:textColorHint="@android:color/black"
             android:padding="@dimen/small_margin"
@@ -77,7 +76,6 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
             android:hint="@string/remarks"
             android:padding="@dimen/small_margin"
             android:enabled="false"
@@ -91,12 +89,11 @@
                 android:id="@+id/remarks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
                 android:nestedScrollingEnabled="true"
                 android:scrollbars="vertical"
                 android:textAlignment="textStart"
                 android:textColor="@android:color/black"
-                tools:text="This is a automobile, byname auto, also called motorcar or car,
+                tools:text="This is a automobile, by name auto, also called motorcar or car,
                     a usually four-wheeled vehicle designed primarily for passenger
                     transportation and commonly propelled by an internal-combustion engine
                     using a volatile fuel. This is a automobile, byname auto, also called motorcar or car,

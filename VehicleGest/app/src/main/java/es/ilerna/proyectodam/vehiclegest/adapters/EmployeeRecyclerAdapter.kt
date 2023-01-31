@@ -61,7 +61,7 @@ class EmployeeRecyclerAdapter(
                                 Controller.setDefaultImage(employeeImage)
                             }
                         } else {
-                            val bitmapFromUrl = Controller().getBitmapFromUrl(
+                            val bitmapFromUrl = Controller().getBitmapFromUrlAsync(
                                 employee?.photoURL.toString()
                             ).await()
                             employeeImage.post {

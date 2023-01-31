@@ -96,7 +96,7 @@ class VehicleDetailFragment : DetailFormModelFragment() {
                         vehicleImage.setImageResource(R.drawable.no_image_available)
                     }
                 } else {
-                    val bitmapFromUrl = Controller().getBitmapFromUrl(
+                    val bitmapFromUrl = Controller().getBitmapFromUrlAsync(
                         vehicle?.photoURL.toString()
                     ).await()
                     vehicleImage.post {

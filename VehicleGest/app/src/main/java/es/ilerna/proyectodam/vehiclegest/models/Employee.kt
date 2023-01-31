@@ -44,7 +44,7 @@ data class Employee(
         phone = parcel.readString()
         birthdate = Timestamp(parcel.readLong(), 0).toDate()
         photoURL = parcel.readString()
-        admin = parcel.readBoolean()
+        admin = parcel.readByte() != 0.toByte()
     }
 
     /**
@@ -69,7 +69,7 @@ data class Employee(
         dest.writeString(phone)
         birthdate?.time?.let { dest.writeLong(it) }
         dest.writeString(photoURL)
-        admin?.let { dest.writeBoolean(it) }
+        dest.writeByte(if (admin == true) 1 else 0)
     }
 
     /**

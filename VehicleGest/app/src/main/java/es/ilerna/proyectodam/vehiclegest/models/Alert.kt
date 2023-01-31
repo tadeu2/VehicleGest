@@ -11,6 +11,9 @@ import java.util.*
  * @param plateNumber Matrícula del vehículo
  * @param description Descripción de la alerta
  * @param date Fecha de la alerta
+ * @param solved Indica si la alerta ha sido resuelta
+ * @param solveddate Fecha de resolución de la alerta
+ * @param solution Descripción de la solución de la alerta
  * @para solved Indica si la alerta ha sido resuelta
  */
 @IgnoreExtraProperties //Annotación para ignorar propiedades no utilizadas
@@ -31,7 +34,7 @@ data class Alert(
         plateNumber = parcel.readString()
         date = Timestamp(parcel.readLong(), 0).toDate()
         description = parcel.readString()
-        solved = parcel.readBoolean()
+        solved = parcel.readByte() != 0.toByte()
         solveddate = Timestamp(parcel.readLong(), 0).toDate()
         solution = parcel.readString()
     }
@@ -53,7 +56,7 @@ data class Alert(
         dest.writeString(plateNumber)
         dest.writeString(description)
         date?.time?.let { dest.writeLong(it) }
-        solved?.let { dest.writeBoolean(it) }
+        dest.writeByte(if (solved == true) 1 else 0)
         solveddate?.time?.let { dest.writeLong(it) }
         dest.writeString(solution)
     }

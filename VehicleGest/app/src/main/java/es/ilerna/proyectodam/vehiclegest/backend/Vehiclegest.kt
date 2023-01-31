@@ -1,9 +1,6 @@
 package es.ilerna.proyectodam.vehiclegest.backend
 
 import android.app.Application
-import android.content.Context
-import android.content.res.Configuration
-import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 
 /**
  * Clase principal de la aplicación

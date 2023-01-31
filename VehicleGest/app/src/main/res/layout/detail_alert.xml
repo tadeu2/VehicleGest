@@ -55,7 +55,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-                android:fontFamily="@font/roboto"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
                 tools:text="1234ABC" />
@@ -111,7 +110,6 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:enabled="false"
-            android:fontFamily="@font/roboto"
             android:hint="@string/description"
             android:padding="@dimen/small_margin"
 
@@ -128,7 +126,6 @@
                 android:nestedScrollingEnabled="true"
                 android:scrollbars="vertical"
                 android:textColor="@android:color/black"
-                android:justificationMode="inter_word"
                 tools:ignore="DuplicateSpeakableTextCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,7 +152,6 @@
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:fontFamily="@font/roboto"
             android:hint="@string/solved"
             android:padding="0dp"
             android:textColorHint="@android:color/black"
@@ -214,7 +210,6 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:enabled="false"
-            android:fontFamily="@font/roboto"
             android:hint="@string/solution"
             android:textColorHint="@android:color/black"
             app:errorEnabled="true"
@@ -233,7 +228,6 @@
                 android:textAlignment="viewStart"
                 android:textColor="@android:color/black"
                 android:textColorHint="#8D6E63"
-                android:justificationMode="inter_word"
                 tools:ignore="DuplicateSpeakableTextCheck" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

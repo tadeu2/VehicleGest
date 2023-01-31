@@ -42,7 +42,7 @@ data class Vehicle(
         model = parcel.readString()
         expiryDateITV = Timestamp(parcel.readLong(), 0).toDate()
         totalDistance = parcel.readInt()
-        itvPassed = parcel.readBoolean()
+        itvPassed = parcel.readByte() != 0.toByte()
         description = parcel.readString()
         photoURL = parcel.readString()
     }
@@ -67,7 +67,7 @@ data class Vehicle(
         dest.writeString(model)
         expiryDateITV?.time?.let { dest.writeLong(it) }
         totalDistance?.let { dest.writeInt(it) }
-        itvPassed?.let { dest.writeBoolean(it) }
+        itvPassed?.let { dest.writeByte(if (it) 1 else 0) }
         dest.writeString(description)
         dest.writeString(photoURL)
     }

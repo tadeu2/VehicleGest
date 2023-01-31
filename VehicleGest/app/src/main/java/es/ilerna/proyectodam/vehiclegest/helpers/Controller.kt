@@ -8,9 +8,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import kotlinx.coroutines.*
@@ -31,7 +29,7 @@ class Controller {
      * @return Devuelve un bitmap con la imagen descargada
      */
     @OptIn(DelicateCoroutinesApi::class)
-    fun getBitmapFromUrl(url: String): Deferred<Bitmap?> {
+    fun getBitmapFromUrlAsync(url: String): Deferred<Bitmap?> {
         return GlobalScope.async(Dispatchers.Main) {
             try {
                 if (url.isEmpty()) {
@@ -66,10 +64,9 @@ class Controller {
          */
         fun dateToStringFormat(time: Date?): String {
             val simpleDateFormat = SimpleDateFormat(
-                Vehiclegest.instance.resources
-                    .getString(R.string.dateFormat), Locale.getDefault()
+                Vehiclegest.instance.resources.getString(R.string.dateFormat), Locale.getDefault()
             )
-            return simpleDateFormat.format(time)
+            return time?.let { simpleDateFormat.format(it) }.toString()
         }
 
         /**
@@ -80,8 +77,7 @@ class Controller {
         fun fragmentReplacer(fragment: Fragment, fragmentManager: FragmentManager) {
             try {
                 fragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment_content_main, fragment)
-                    .commit()
+                    .replace(R.id.nav_host_fragment_content_main, fragment).commit()
             } catch (e: URISyntaxException) {
                 Log.e("Error", "Error al cambiar de fragmento")
                 throw URISyntaxException("Error al cambiar de fragmento", "Error")
@@ -97,8 +93,7 @@ class Controller {
                 return Date()
             }
             val simpleDateFormat = SimpleDateFormat(
-                Vehiclegest.instance.resources
-                    .getString(R.string.dateFormat), Locale.getDefault()
+                Vehiclegest.instance.resources.getString(R.string.dateFormat), Locale.getDefault()
             )
             return simpleDateFormat.parse(time)!!
         }

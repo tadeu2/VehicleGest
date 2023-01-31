@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -14,7 +13,6 @@ import es.ilerna.proyectodam.vehiclegest.adapters.ItemRecyclerAdapter
 import es.ilerna.proyectodam.vehiclegest.databinding.FragmentInventoryBinding
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.FragmentModel
-import es.ilerna.proyectodam.vehiclegest.ui.vehicles.VehiclesFragment
 
 /**
  * Fragmento de listado de inventario
@@ -30,7 +28,7 @@ class InventoryFragment : FragmentModel() {
      * Crea un fragmento de detalle
      * @return Fragmento de detalle de tipo DetailFormModelFragment
      */
-    override fun getDetailFragment(): DetailFormModelFragment  = ItemDetailFragment()
+    override fun getDetailFragment(): DetailFormModelFragment = ItemDetailFragment()
 
     /**
      * Fase de creación del fragmento

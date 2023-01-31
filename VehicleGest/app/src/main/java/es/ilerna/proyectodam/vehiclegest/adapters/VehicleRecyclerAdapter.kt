@@ -57,7 +57,7 @@ class VehicleRecyclerAdapter(
                                 Controller.setDefaultImage(vehicleImage)
                             }
                         } else {
-                            val bitmapFromUrl = Controller().getBitmapFromUrl(
+                            val bitmapFromUrl = Controller().getBitmapFromUrlAsync(
                                 vehicle?.photoURL.toString()
                             ).await()
                             vehicleImage.post {

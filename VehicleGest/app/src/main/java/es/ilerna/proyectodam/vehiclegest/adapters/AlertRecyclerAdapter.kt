@@ -48,22 +48,23 @@ class AlertRecyclerAdapter(
             try {
                 //Crea un hilo paralelo para descargar las imagenes de una URL
                 CoroutineScope(Dispatchers.Main).launch {
+                    alertCardBinding.apply {
+                        //Inicializamos un objeto a partir de una instántanea
+                        val alert: Alert? = documentSnapshot.toObject(Alert::class.java)
+                        plateNumber.text = alert?.plateNumber.toString()
 
-                    //Inicializamos un objeto a partir de una instántanea
-                    val alert: Alert? = documentSnapshot.toObject(Alert::class.java)
-                    alertCardBinding.plateNumber.text = alert?.plateNumber.toString()
-
-                    //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-                    //El formato se puede modificar en strings.xml
-                    alertCardBinding.date.text = alert?.date?.let {
-                        SimpleDateFormat(
-                            Vehiclegest.instance.getString(R.string.dateFormat),
-                            Locale.getDefault()
-                        ).format(it)
-                    }
-                    //Iniciamos el escuchador que accionamos al pulsar una ficha
-                    alertCardBinding.alertCard.setOnClickListener {
-                        recyclerAdapterListener.onItemSelected(documentSnapshot)
+                        //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                        //El formato se puede modificar en strings.xml
+                        date.text = alert?.date?.let {
+                            SimpleDateFormat(
+                                Vehiclegest.instance.getString(R.string.dateFormat),
+                                Locale.getDefault()
+                            ).format(it)
+                        }
+                        //Iniciamos el escuchador que accionamos al pulsar una ficha
+                        alertCard.setOnClickListener {
+                            recyclerAdapterListener.onItemSelected(documentSnapshot)
+                        }
                     }
                 }
             } catch (exception: Exception) {

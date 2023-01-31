@@ -45,14 +45,14 @@ class RegisterActivity : AppCompatActivity() {
 
                 if (username.isBlank()) {
                     tilUsername.error = getString(R.string.invalid_username)
-                    Log.w(ContentValues.TAG, "El nombre de usuario no puede estar vacío")
+                    Log.w(ContentValues.TAG, getString(R.string.invalid_username))
                 } else if (password.isBlank() || password.length < 6) {
                     tilPassword.error = getString(R.string.invalid_password)
-                    Log.w(ContentValues.TAG, "Longitud de contraseña no válida")
+                    Log.w(ContentValues.TAG, getString(R.string.invalid_password))
                 } else if (password != passwordRepeat) {
                     tilPassword.error = getString(R.string.match_password)
                     tilPassword2.error = getString(R.string.match_password)
-                    Log.w(ContentValues.TAG, "Longitud de contraseña no válida")
+                    Log.w(ContentValues.TAG, getString(R.string.match_password))
                 } else {
                     tilUsername.error = null
                     tilPassword.error = null
