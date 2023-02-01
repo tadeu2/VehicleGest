@@ -81,5 +81,8 @@
     <string name="kilometer">Kilometer</string>
     <string name="close">Close</string>
     <string name="addElement">Add Element</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="edit">Editar</string>
 
 </resources>

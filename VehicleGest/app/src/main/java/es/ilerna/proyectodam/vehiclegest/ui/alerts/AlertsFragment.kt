@@ -6,8 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.adapters.AlertRecyclerAdapter
@@ -39,6 +37,7 @@ class AlertsFragment : FragmentModel() {
         try {
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = Firebase.firestore.collection("alert")
+            searchStringList = listOf("date") // Lista de campos por los que se puede buscar
         } catch (exception: Exception) {
             exception.printStackTrace()
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -71,29 +70,6 @@ class AlertsFragment : FragmentModel() {
             exception.printStackTrace()
         }
         return getFragmentAlertsBinding.root
-    }
-
-    /**
-     * Actualiza los datos del adaptador a partir de una lista de documentos
-     * @param documentSnapshots Lista de documentos a partir de los que se actualiza el adaptador
-     */
-    override fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: ArrayList<DocumentSnapshot>) {
-        (recyclerAdapter as AlertRecyclerAdapter).updateData(documentSnapshots)
-    }
-
-    /**
-     * Genera una lista de filtros a partir de un string de búsqueda
-     * @param searchString String de búsqueda
-     * @return Lista de filtros
-     */
-    override fun generateFilteredItemListFromString(searchString: String): List<Query> {
-        val queryDni = dbFirestoreReference
-            .whereGreaterThanOrEqualTo("dni", searchString)
-            .whereLessThanOrEqualTo("dni", searchString + "\uf8ff")
-        val querySurname = dbFirestoreReference
-            .whereGreaterThanOrEqualTo("surname", searchString)
-            .whereLessThanOrEqualTo("surname", searchString + "\uf8ff")
-        return listOf(queryDni, querySurname)
     }
 
     /**

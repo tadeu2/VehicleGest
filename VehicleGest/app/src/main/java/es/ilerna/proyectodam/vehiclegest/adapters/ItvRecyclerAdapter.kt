@@ -9,7 +9,6 @@ import com.google.firebase.firestore.Query
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.backend.Vehiclegest
 import es.ilerna.proyectodam.vehiclegest.databinding.ItvCardBinding
-import es.ilerna.proyectodam.vehiclegest.interfaces.RecyclerAdapterListener
 import es.ilerna.proyectodam.vehiclegest.models.ITV
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,8 +23,7 @@ import java.util.*
  *  @param recyclerAdapterListener Parámetro que contiene el listener del adapter
  */
 class ItvRecyclerAdapter(
-    queryFireStoreDatabase: Query,
-    private val recyclerAdapterListener: RecyclerAdapterListener
+    queryFireStoreDatabase: Query, private val recyclerAdapterListener: RecyclerAdapterListener
 ) : FirestoreAdapter<ItvRecyclerAdapter.ItvViewHolder>(queryFireStoreDatabase) {
 
     /**
@@ -56,8 +54,7 @@ class ItvRecyclerAdapter(
                     //El formato se puede modificar en strings.xml
                     itvCardBinding.date.text = itv?.date?.let {
                         SimpleDateFormat(
-                            Vehiclegest.instance.getString(R.string.dateFormat),
-                            Locale.getDefault()
+                            Vehiclegest.instance.getString(R.string.dateFormat), Locale.getDefault()
                         ).format(it)
                     }
                     //Iniciamos el escuchador que accionamos al pulsar una ficha
@@ -84,9 +81,7 @@ class ItvRecyclerAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItvViewHolder {
         return ItvViewHolder(
             ItvCardBinding.inflate(
-                LayoutInflater.from(viewGroup.context),
-                viewGroup,
-                false
+                LayoutInflater.from(viewGroup.context), viewGroup, false
             )
         )
     }

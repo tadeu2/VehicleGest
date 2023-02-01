@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.adapters.EmployeeRecyclerAdapter
@@ -41,6 +40,7 @@ class EmployeeFragment : FragmentModel() {
         try {
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = Firebase.firestore.collection("employees")
+            searchStringList = listOf ("dni", "surname") //Lista de campos de busqueda
 
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -74,26 +74,6 @@ class EmployeeFragment : FragmentModel() {
         return getFragmentEmployeesBinding.root
     }
 
-    /**
-     * Genera las consultas para filtrar los datos de la base de datos
-     */
-    override fun generateFilteredItemListFromString(searchString: String): List<Query> {
-        val queryDni = dbFirestoreReference
-            .whereGreaterThanOrEqualTo("dni", searchString)
-            .whereLessThanOrEqualTo("dni", searchString + "\uf8ff")
-        val querySurname = dbFirestoreReference
-            .whereGreaterThanOrEqualTo("surname", searchString)
-            .whereLessThanOrEqualTo("surname", searchString + "\uf8ff")
-        return listOf(queryDni, querySurname)
-    }
-
-    /**
-     * Actualiza el adaptador del recycler view a partir de una lista de documentos de la base de datos
-     * @param documentSnapshots Lista de documentos de la base de datos
-     */
-    override fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: ArrayList<DocumentSnapshot>) {
-        (recyclerAdapter as EmployeeRecyclerAdapter).updateData(documentSnapshots)
-    }
 
     /**
      * Fase de destrucción del fragmento se elimina el binding

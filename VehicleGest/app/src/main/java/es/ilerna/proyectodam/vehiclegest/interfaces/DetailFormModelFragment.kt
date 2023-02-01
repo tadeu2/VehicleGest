@@ -4,13 +4,14 @@ import android.content.ContentValues
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.View.GONE
-import android.widget.SearchView
+import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -29,14 +30,14 @@ import kotlinx.coroutines.launch
 abstract class DetailFormModelFragment : Fragment() {
 
     //Variables que almacenarán las instancias de los controles de la interfaz
-    private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
+    private lateinit var topToolBar: MaterialToolbar //Barra de navegación superior
     private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
-    private lateinit var searchTopBar: SearchView //Barra de búsqueda superior
+    private lateinit var searchTopBar: MaterialToolbar //Barra de búsqueda superior
     private lateinit var floatingAddButton: FloatingActionButton //Botón flotante de la interfaz
-    private lateinit var buttonSave: MaterialButton //Botón de guardar
-    private lateinit var buttonDelete: MaterialButton //Botón de eliminar
-    private lateinit var buttonEdit: MaterialButton //Botón de editar
-    private lateinit var buttonClose: MaterialButton //Botón de cancelar
+    private lateinit var buttonSave: ActionMenuItemView //Botón de guardar
+    private lateinit var buttonDelete: ActionMenuItemView //Botón de eliminar
+    private lateinit var buttonEdit: ActionMenuItemView//Botón de editar
+    private lateinit var buttonClose: ActionMenuItemView //Botón de cancelar
     private lateinit var imageView: View //Imagen de fondo
     lateinit var dbFirestoreReference: CollectionReference
     lateinit var mainFragment: Fragment //Fragmento al que se debe volver
@@ -52,6 +53,7 @@ abstract class DetailFormModelFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         try {
             //Inicializa las variables y esconde barras de navegación pasándole las referencias
+
             initializeUI()
 
             //Rellenar los datos del formulario con los datos del documento
@@ -62,6 +64,10 @@ abstract class DetailFormModelFragment : Fragment() {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     /**
@@ -95,7 +101,7 @@ abstract class DetailFormModelFragment : Fragment() {
 
 
     open fun setCloseButtonListener() {
-        buttonClose.setOnClickListener {
+        topToolBar.setNavigationOnClickListener {
             navigateToMainFragment()
         }
     }
@@ -175,17 +181,17 @@ abstract class DetailFormModelFragment : Fragment() {
 
     private fun initializeUI() {
         //Inicializa las variables y sconde barras de navegación pasándole las referencias
-        navBarTop = requireActivity().findViewById(R.id.topToolbar)
+        topToolBar = requireActivity().findViewById(R.id.topToolbar)
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
-        searchTopBar = requireActivity().findViewById(R.id.searchView)
+        searchTopBar = requireActivity().findViewById(R.id.searchToolbar)
         floatingAddButton = requireActivity().findViewById(R.id.addButton)
-        buttonDelete = requireActivity().findViewById(R.id.btdelete)
-        buttonSave = requireActivity().findViewById(R.id.btsave)
-        buttonEdit = requireActivity().findViewById(R.id.btedit)
-        buttonClose = requireActivity().findViewById(R.id.btclose)
+        buttonDelete = requireActivity().findViewById(R.id.deleteButton)
+        buttonSave = requireActivity().findViewById(R.id.saveButton)
+        buttonEdit = requireActivity().findViewById(R.id.editButton)
+
 
         searchTopBar.visibility = GONE
-        navBarTop.visibility = GONE
+        topToolBar.visibility = GONE
         navBarBot.visibility = GONE
         floatingAddButton.visibility = GONE
 

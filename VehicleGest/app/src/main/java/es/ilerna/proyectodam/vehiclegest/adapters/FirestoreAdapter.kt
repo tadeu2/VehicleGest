@@ -128,8 +128,27 @@ abstract class FirestoreAdapter<fireStoreViewHolder : RecyclerView.ViewHolder>(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(query: ArrayList<DocumentSnapshot>) {
+    fun updateDocumentSnapshotData(query: ArrayList<DocumentSnapshot>) {
         documentSnapshotArrayList = query
         notifyDataSetChanged()
     }
+}
+
+/**
+ * Interfaz para implementar como se comportará al hacer click a una ficha
+ */
+interface RecyclerAdapterListener {
+    /**
+     * Función que determina que hacer al hacer click a una ficha
+     * @param documentSnapshot Parámetro que contiene la instancia
+     */
+    fun onItemSelected(documentSnapshot: DocumentSnapshot?)
+
+    /* */
+    /**
+     * Actualiza los datos del adaptador a partir de una lista de documentos
+     * @param documentSnapshots Lista de documentos a partir de los que se actualiza el adaptador
+     *//*
+    fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: java.util.ArrayList<DocumentSnapshot>)
+*/
 }

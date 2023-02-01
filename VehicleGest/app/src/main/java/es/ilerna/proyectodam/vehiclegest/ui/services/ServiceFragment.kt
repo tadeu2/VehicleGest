@@ -6,8 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.adapters.ServiceRecyclerAdapter
@@ -34,6 +32,7 @@ class ServiceFragment : FragmentModel() {
 
             //Consulta a firestore db de la colección de vehiculos
             dbFirestoreReference = Firebase.firestore.collection("service")
+            searchStringList = listOf("date", "platenumber", "costumer")
 
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -76,25 +75,5 @@ class ServiceFragment : FragmentModel() {
         super.onDestroyView()
         //Vaciamos la variable de enlace al xml
         fragmentServicesBinding = null
-    }
-
-    /**
-     * Actualiza los datos del adaptador a partir de una lista de documentos
-     * @param documentSnapshots Lista de documentos a partir de los que se actualiza el adaptador
-     */
-    override fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: ArrayList<DocumentSnapshot>) {
-        (recyclerAdapter as ServiceRecyclerAdapter).updateData(documentSnapshots)
-    }
-
-    /**
-     * Genera una lista de filtros a partir de un string de búsqueda
-     * @param searchString String de búsqueda
-     * @return Lista de filtros
-     */
-    override fun generateFilteredItemListFromString(searchString: String): List<Query> {
-        val queryplateNumber = dbFirestoreReference
-            .whereGreaterThanOrEqualTo("platenumber", searchString)
-            .whereLessThanOrEqualTo("platenumber", searchString + "\uf8ff")
-        return listOf(queryplateNumber)
     }
 }

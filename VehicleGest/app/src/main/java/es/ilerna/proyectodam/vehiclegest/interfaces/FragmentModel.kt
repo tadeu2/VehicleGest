@@ -3,19 +3,26 @@ package es.ilerna.proyectodam.vehiclegest.interfaces
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.adapters.FirestoreAdapter
+import es.ilerna.proyectodam.vehiclegest.adapters.RecyclerAdapterListener
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
 
@@ -28,10 +35,10 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
     lateinit var recyclerAdapter: RecyclerView.Adapter<*>
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var searchTopBar: SearchView //Barra de búsqueda superior
+    private lateinit var searchTopBar: MaterialToolbar//Barra de búsqueda superior
 
     //Variables que almacenarán las instancias de las barras de navegación y el bóton flotante
-    private lateinit var navBarTop: MaterialToolbar //Barra de navegación superior
+    private lateinit var topToolBar: MaterialToolbar //Barra de navegación superior
     private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
 
     private lateinit var floatingButton: FloatingActionButton //Botón flotante de la interfaz
@@ -39,20 +46,19 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
 
     //Referencia a la vista de busqueda
     private lateinit var searchView: SearchView
+    lateinit var searchStringList: List<String> //Lista de campos de busqueda
 
     //Fase de creación de la vista
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
+            //Obtiene los datos de la base de datos
+             getDataFromDatabase(null)
             //Inicializa las variables y esconde barras de navegación pasándole las referencias
             initializeUI()
             //Con with(this) nos referimos a la clase que implementa el fragmento
             with(this) {
-                //Enlaza la variable searchView a la vista de busqueda
-                searchView = (activity as MainActivity).findViewById(R.id.searchView)
 
-                setSearchViewListeners()
-                getAllDataFromDatabase()
             }
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -65,11 +71,12 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
      */
     private fun initializeUI() {
         //Inicializa las variables y sconde barras de navegación pasándole las referencias
-        navBarTop = requireActivity().findViewById(R.id.topToolbar)
-        navBarTop.visibility = View.VISIBLE
+        topToolBar = requireActivity().findViewById(R.id.topToolbar)
+        topToolBar.visibility = View.VISIBLE
+        searchView = searchTopBar.menu.findItem(R.id.searchButton).actionView as SearchView
         navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
         navBarBot.visibility = View.VISIBLE
-        searchTopBar = requireActivity().findViewById(R.id.searchView)
+        searchTopBar = requireActivity().findViewById(R.id.searchToolbar)
         searchTopBar.visibility = View.VISIBLE
         floatingButton = requireActivity().findViewById(R.id.addButton)
         floatingButton.visibility = View.VISIBLE
@@ -77,6 +84,47 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
         floatingButton.setOnClickListener {
             onAddButtonClick()
         }
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val menuHost = requireActivity() as MainActivity //Obtiene la actividad que aloja el fragmento
+        //Añade un menú de opciones a la barra de navegación superior
+        menuHost.addMenuProvider(object : MenuProvider {
+            /**
+             * Called by the [MenuHost] to allow the [MenuProvider]
+             * to inflate [MenuItem]s into the menu.
+             *
+             * @param menu         the menu to inflate the new menu items into
+             * @param menuInflater the inflater to be used to inflate the updated menu
+             */
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.search_bar_items, menu)
+            }
+
+            /**
+             * Called by the [MenuHost] when a [MenuItem] is selected from the menu.
+             *
+             * @param menuItem the menu item that was selected
+             * @return `true` if the given menu item is handled by this menu provider,
+             * `false` otherwise
+             */
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                menuItem.apply {
+                    when (itemId) {R.id.searchButton -> {
+                            searchTopBar.visibility = View.VISIBLE
+                            topToolBar.visibility = View.GONE
+                            navBarBot.visibility = View.GONE
+                            floatingButton.visibility = View.GONE
+                            return true
+                        }
+                    }
+                }
+                return false
+            }
+        })
     }
 
     /**
@@ -126,7 +174,6 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
     override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
         val detailFragment = getDetailFragment()
         detailFragment.documentSnapshot = documentSnapshot
-
         fragmentReplacer(detailFragment, parentFragmentManager)
     }
 
@@ -152,11 +199,7 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
                  * @return Booleano que indica si se ha consumido el evento
                  */
                 override fun onQueryTextSubmit(searchViewText: String?): Boolean {
-                    if (searchViewText.isNullOrEmpty()) {
-                        getAllDataFromDatabase()
-                    } else {
-                        filterDataFromString(searchViewText)
-                    }
+                    getDataFromDatabase(searchViewText)
                     return false
                 }
 
@@ -174,61 +217,62 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
                     return false
                 }
             })
+            searchView.setOnCloseListener {
+                getDataFromDatabase(null)
+                false
+            }
         }
     }
 
     /**
      * Recupera todos los datos de la base de datos y ejecuta la función updateData que se encarga de actualizar los datos del adaptador
      */
-    open fun getAllDataFromDatabase() {
-        dbFirestoreReference.get()
-            .addOnSuccessListener { task ->
-                updateRecyclerViewAdapterFromDocumentList(task.documents as ArrayList<DocumentSnapshot>)
-            }
-    }
-
-    /**
-     * Filtra los datos de la base de datos y los pasa al adaptador
-     * @param searchString String de búsqueda
-     */
-    open fun filterDataFromString(searchString: String): ArrayList<DocumentSnapshot> {
-        val queryList = generateFilteredItemListFromString(searchString)
-        val tempList = ArrayList<DocumentSnapshot>()
-        queryList.forEach { query ->
-            query.get()
+    open fun getDataFromDatabase(searchViewText: String?) {
+        var documentSnapshotList: ArrayList<DocumentSnapshot>
+        if (searchViewText.isNullOrEmpty()) {
+            dbFirestoreReference.get()
                 .addOnSuccessListener { task ->
-                    task.documents.forEach { document ->
-                        tempList.add(document)
-                    }
+                    documentSnapshotList = task.documents as ArrayList<DocumentSnapshot>
+                    (recyclerAdapter as FirestoreAdapter).updateDocumentSnapshotData(
+                        documentSnapshotList
+                    )
                 }
+        } else {
+            generateFilteredItemListFromString(searchViewText).addOnSuccessListener { result ->
+                documentSnapshotList = result
+                (recyclerAdapter as FirestoreAdapter).updateDocumentSnapshotData(
+                    documentSnapshotList
+                )
+            }
         }
-        return tempList
     }
-
-}
-
-/**
- * Interfaz para implementar como se comportará al hacer click a una ficha
- */
-interface RecyclerAdapterListener {
-    /**
-     * Función que determina que hacer al hacer click a una ficha
-     * @param documentSnapshot Parámetro que contiene la instancia
-     */
-    fun onItemSelected(documentSnapshot: DocumentSnapshot?)
-
-    /**
-     * Actualiza los datos del adaptador a partir de una lista de documentos
-     * @param documentSnapshots Lista de documentos a partir de los que se actualiza el adaptador
-     */
-    fun updateRecyclerViewAdapterFromDocumentList(documentSnapshots: java.util.ArrayList<DocumentSnapshot>)
 
     /**
      * Genera una lista de filtros a partir de un string de búsqueda
      * @param searchString String de búsqueda
      * @return Lista de filtros
      */
-    fun generateFilteredItemListFromString(searchString: String): List<Query>
-
+    private fun generateFilteredItemListFromString(searchString: String?): Task<ArrayList<DocumentSnapshot>> {
+        val filteredItemList = ArrayList<DocumentSnapshot>()
+        val listOfTasks = arrayListOf<Task<QuerySnapshot>>()
+        for (it in searchStringList) {
+            //listOfTasks.add(dbFirestoreReference.whereArrayContains(it, searchString!!).get())
+            //listOfTasks.add(dbFirestoreReference.whereEqualTo(it, searchString).get())
+            //listOfTasks.add(dbFirestoreReference.whereLessThan(it, searchString + "\uf8ff").get())
+            listOfTasks.add(
+                dbFirestoreReference
+                    .whereGreaterThanOrEqualTo(it, searchString!!)
+                    .whereLessThan(it, searchString + "\uf8ff").get()
+            )
+        }
+        return Tasks.whenAllSuccess<QuerySnapshot>(listOfTasks)
+            .continueWith { task ->
+                for (querySnapshotTask in task.result) {
+                    filteredItemList.addAll(querySnapshotTask.documents)
+                }
+                filteredItemList
+            }
+    }
 }
+
 

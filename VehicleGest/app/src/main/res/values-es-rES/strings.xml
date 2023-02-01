@@ -28,7 +28,7 @@
     <string name="dialog_error_title">Credenciales erróneas</string>
     <string name="authError">Error de autenticación</string>
     <string name="accept">Aceptar</string>
-    <string name="dateFormat">dd/MM//yyyy</string>
+    <string name="dateFormat">dd/MM/yyyy</string>
     <string name="plate_number">Matrícula</string>
     <string name="car_type">Tipo coche</string>
     <string name="brand">Marca</string>
@@ -77,4 +77,7 @@
     <string name="service_information">Servicio de información</string>
     <string name="close">Cerrar</string>
     <string name="addElement">Add Element</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="edit">Editar</string>
 </resources>

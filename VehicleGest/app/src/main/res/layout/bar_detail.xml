@@ -5,83 +5,75 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/top_bar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         app:layout_constraintTop_toTopOf="parent"
         app:liftOnScroll="true">
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topDetailToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:elevation="0dp"
+            app:menu="@menu/detail_bar_items"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:subtitle="Vehicle"
-            app:subtitleCentered="true"
-            app:subtitleTextColor="@color/md_theme_light_surface"
-            app:title="Login"
-            app:titleCentered="true"
-            app:titleTextColor="@color/md_theme_light_surface">
+            app:navigationIcon="@drawable/outline_close_white_24">
+            <!--
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btclose"
+                            style="?attr/materialIconButtonFilledTonalStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/buttonclose"
+                            android:minWidth="32dp"
+                            app:icon="@drawable/outline_close_24"
+                            app:iconPadding="0dp"
+                            app:iconSize="36dp"
+                       app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                       <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btdelete"
+                            style="?attr/materialIconButtonFilledTonalStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/buttondelete"
+                            android:minWidth="48dp"
+                            app:icon="@drawable/outline_delete_24"
+                            app:iconPadding="0dp"
+                            app:iconSize="36dp"
+                            app:layout_constraintEnd_toStartOf="@id/btedit"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btedit"
+                            style="?attr/materialIconButtonFilledTonalStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/buttonedit"
+                            android:minWidth="32dp"
+                            app:icon="@drawable/ic_outline_edit_24"
+                            app:iconPadding="0dp"
+                            app:iconSize="36dp"
+                            app:layout_constraintEnd_toStartOf="@id/btsave"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btsave"
+                            style="?attr/materialIconButtonFilledTonalStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/buttonedit"
+                            android:minWidth="32dp"
+                            android:visibility="gone"
+                            app:icon="@drawable/ic_outline_save_24"
+                            app:iconPadding="0dp"
+                            app:iconSize="36dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />-->
+
         </com.google.android.material.appbar.MaterialToolbar>
-
-
     </com.google.android.material.appbar.AppBarLayout>
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btclose"
-        style="?attr/materialIconButtonFilledTonalStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/buttonclose"
-        android:minWidth="32dp"
-        app:icon="@drawable/outline_close_24"
-        app:iconPadding="0dp"
-        app:iconSize="36dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btdelete"
-        style="?attr/materialIconButtonFilledTonalStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/buttondelete"
-        android:minWidth="48dp"
-        app:icon="@drawable/outline_delete_24"
-        app:iconPadding="0dp"
-        app:iconSize="36dp"
-        app:layout_constraintEnd_toStartOf="@id/btedit"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btedit"
-        style="?attr/materialIconButtonFilledTonalStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/buttonedit"
-        android:minWidth="32dp"
-        app:icon="@drawable/ic_outline_edit_24"
-        app:iconPadding="0dp"
-        app:iconSize="36dp"
-        app:layout_constraintEnd_toStartOf="@id/btsave"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btsave"
-        style="?attr/materialIconButtonFilledTonalStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/buttonedit"
-        android:minWidth="32dp"
-        android:visibility="gone"
-        app:icon="@drawable/ic_outline_save_24"
-        app:iconPadding="0dp"
-        app:iconSize="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
