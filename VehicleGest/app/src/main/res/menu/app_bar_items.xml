@@ -9,7 +9,7 @@
         android:icon="@drawable/outline_notifications_white_24"
         android:tint="?attr/colorControlNormal"
         android:title="@string/alert"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/logout_icon"
@@ -18,5 +18,6 @@
         android:icon="@drawable/outline_logout_white_24"
         android:tint="?attr/colorControlNormal"
         android:title="@string/logout"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|collapseActionView" />
+
 </menu>

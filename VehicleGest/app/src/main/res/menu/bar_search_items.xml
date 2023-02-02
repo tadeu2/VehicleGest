@@ -10,6 +10,7 @@
         android:tint="?attr/colorControlNormal"
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always|collapseActionView" />
+        app:showAsAction="ifRoom|collapseActionView" />
+
 
 </menu>

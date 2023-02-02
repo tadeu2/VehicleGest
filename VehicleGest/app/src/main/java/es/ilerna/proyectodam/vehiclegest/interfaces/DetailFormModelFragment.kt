@@ -6,19 +6,19 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showLongToast
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.showShortToast
+import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,24 +27,20 @@ import kotlinx.coroutines.launch
 /**
  * Interfaz que sirve como base para los fragmentos que muestran los detalles de un modelo
  */
-abstract class DetailFormModelFragment : Fragment() {
+abstract class DetailFormModelFragment : Fragment(), MenuProvider {
+
+    lateinit var mainActivity: MainActivity
 
     //Variables que almacenarán las instancias de los controles de la interfaz
-    private lateinit var topToolBar: MaterialToolbar //Barra de navegación superior
-    private lateinit var navBarBot: BottomNavigationView //Barra de navegación inferior
-    private lateinit var searchTopBar: MaterialToolbar //Barra de búsqueda superior
-    private lateinit var floatingAddButton: FloatingActionButton //Botón flotante de la interfaz
     private lateinit var buttonSave: ActionMenuItemView //Botón de guardar
     private lateinit var buttonDelete: ActionMenuItemView //Botón de eliminar
     private lateinit var buttonEdit: ActionMenuItemView//Botón de editar
-    private lateinit var buttonClose: ActionMenuItemView //Botón de cancelar
-    private lateinit var imageView: View //Imagen de fondo
     lateinit var dbFirestoreReference: CollectionReference
     lateinit var mainFragment: Fragment //Fragmento al que se debe volver
     var documentSnapshot: DocumentSnapshot? = null //Documento que se está mostrando
     private var isAddFragment: Boolean = false //Indica si el fragmento es de añadir o de editar
     val editableEditTextColor: Int = Color.RED //Color de los EditText editables
-    //Color de los EditText editables
+
     /**
      * Fase de creación del fragmento
      * @param savedInstanceState Bundle
@@ -53,6 +49,14 @@ abstract class DetailFormModelFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         try {
             //Inicializa las variables y esconde barras de navegación pasándole las referencias
+            mainActivity = activity as MainActivity
+            val toolbar =
+                mainActivity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.topDetailToolbar)
+            mainActivity.setSupportActionBar(toolbar)
+
+            toolbar.setNavigationOnClickListener {
+                navigateToMainFragment()
+            }
 
             initializeUI()
 
@@ -66,9 +70,61 @@ abstract class DetailFormModelFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
+    /**
+     * Inicializa las variables y esconde barras de navegación pasándole las referencias
+     */
+    private fun initializeUI() {
+        mainActivity.apply {
+            topToolBar.visibility = GONE
+            navBarBot.visibility = GONE
+            floatingButton.visibility = GONE
+        }
+
+        if (isAddFragment) {
+            makeFormEditable()
+            buttonDelete.visibility = GONE
+            buttonEdit.visibility = GONE
+            buttonSave.visibility = View.VISIBLE
+        }
+
     }
+
+    /**
+     * Called by the [MenuHost] to allow the [MenuProvider]
+     * to inflate [MenuItem]s into the menu.
+     *
+     * @param menu         the menu to inflate the new menu items into
+     * @param menuInflater the inflater to be used to inflate the updated menu
+     */
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.detail_bar_items, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        menuItem.apply {
+            when (itemId) {
+                R.id.saveButton -> {
+                    if (documentSnapshot != null) {
+                        updateDocumentToDatabase(documentSnapshot!!, fillDataFromForm())
+                    } else {
+                        addDocumentToDataBase()
+                    }
+                    navigateToMainFragment()
+                }
+                R.id.deleteButton -> {
+                    delDocumentSnapshot(documentSnapshot)
+                    navigateToMainFragment()
+                }
+                R.id.editButton -> {
+                    buttonEdit.visibility = GONE
+                    buttonSave.visibility = View.VISIBLE
+                    makeFormEditable()
+                }
+            }
+        }
+        return true
+    }
+
 
     /**
      *  Añade el documento a la base de datos
@@ -95,42 +151,15 @@ abstract class DetailFormModelFragment : Fragment() {
         isAddFragment = !isAddFragment
     }
 
+    /**
+     * Navega al fragmento principal
+     */
     private fun navigateToMainFragment() {
         fragmentReplacer(mainFragment, parentFragmentManager)
     }
 
 
-    open fun setCloseButtonListener() {
-        topToolBar.setNavigationOnClickListener {
-            navigateToMainFragment()
-        }
-    }
 
-    private fun setDeleteButtonListener() {
-        buttonDelete.setOnClickListener {
-            delDocumentSnapshot(documentSnapshot)
-            navigateToMainFragment()
-        }
-    }
-
-    private fun setEditButtonListener() {
-        buttonEdit.setOnClickListener {
-            buttonEdit.visibility = GONE
-            buttonSave.visibility = View.VISIBLE
-            makeFormEditable()
-        }
-    }
-
-    private fun setSaveButtonListener() {
-        buttonSave.setOnClickListener {
-            if (documentSnapshot != null) {
-                updateDocumentToDatabase(documentSnapshot!!, fillDataFromForm())
-            } else {
-                addDocumentToDataBase()
-            }
-            navigateToMainFragment()
-        }
-    }
 
     /**
      * Actualiza el documento en la base de datos
@@ -179,34 +208,6 @@ abstract class DetailFormModelFragment : Fragment() {
         }
     }
 
-    private fun initializeUI() {
-        //Inicializa las variables y sconde barras de navegación pasándole las referencias
-        topToolBar = requireActivity().findViewById(R.id.topToolbar)
-        navBarBot = requireActivity().findViewById(R.id.bottom_nav_menu)
-        searchTopBar = requireActivity().findViewById(R.id.searchToolbar)
-        floatingAddButton = requireActivity().findViewById(R.id.addButton)
-        buttonDelete = requireActivity().findViewById(R.id.deleteButton)
-        buttonSave = requireActivity().findViewById(R.id.saveButton)
-        buttonEdit = requireActivity().findViewById(R.id.editButton)
-
-
-        searchTopBar.visibility = GONE
-        topToolBar.visibility = GONE
-        navBarBot.visibility = GONE
-        floatingAddButton.visibility = GONE
-
-        if (isAddFragment) {
-            makeFormEditable()
-            buttonDelete.visibility = GONE
-            buttonEdit.visibility = GONE
-            buttonSave.visibility = View.VISIBLE
-        }
-
-        setCloseButtonListener()
-        setEditButtonListener()
-        setSaveButtonListener()
-        setDeleteButtonListener()
-    }
 
     /**
      * Hace editable el formulario
@@ -222,5 +223,7 @@ abstract class DetailFormModelFragment : Fragment() {
      *  Crea un documento con los datos del formulario
      */
     abstract fun bindDataToForm()
+
+
 }
 

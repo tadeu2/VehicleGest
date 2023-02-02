@@ -3,7 +3,10 @@ package es.ilerna.proyectodam.vehiclegest.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
@@ -14,6 +17,7 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.interfaces.OnSearchListener
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inspections.ItvFragment
@@ -27,19 +31,26 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 
+
 /**
  * Actividad principal de la aplicación
  */
 class MainActivity : AppCompatActivity() {
 
     //Variables principales de la actividad
-    private lateinit var activityMainBinding: ActivityMainBinding //Binding de la actividad
+    lateinit var activityMainBinding: ActivityMainBinding //Binding de la actividad
 
     private lateinit var firebaseAuthReference: FirebaseAuth //Autenticación de Firebase
     private lateinit var firestoreDatabaseReference: FirebaseFirestore //Base de datos de Firebase
 
     // Referencia al badge de alertas
     private lateinit var badgeAlert: BadgeDrawable
+
+    // Referencia a las barras de herramientas superiores
+    val topToolBar by lazy { activityMainBinding.topBarMain.topToolbar }
+    val navBarBot by lazy { activityMainBinding.bottomBarMain.bottomNavMenu }
+    val floatingButton by lazy { activityMainBinding.contentMain.addButton }
+    lateinit var currentFragment: Fragment
 
     @ExperimentalBadgeUtils
     override fun onCreate(
@@ -49,19 +60,22 @@ class MainActivity : AppCompatActivity() {
 
         //Bindeamos el xml con la actividad y lo inflamos
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+
+
         //Establecemos la vista de la actividad
         setContentView(activityMainBinding.root)
         // Inicializa la instancia de Firestore y firebaseAuth
         firestoreDatabaseReference = FirebaseFirestore.getInstance()
-        firebaseAuthReference = FirebaseAuth.getInstance() //Obtenemos la instancia de autenticación de Firebase
+        firebaseAuthReference =
+            FirebaseAuth.getInstance() //Obtenemos la instancia de autenticación de Firebase
         //Activamos el logueo de Firestore para debuggear fallos en el logcat
         FirebaseFirestore.setLoggingEnabled(true)
         //Barra de navegación superior
-        setSupportActionBar(activityMainBinding.topBarMain.topToolbar)
+        setSupportActionBar(topToolBar)
 
         //Configura las opciones de las barras de navegación
         setTopBarSettings()
-        setBottomBarSettings()
+        setNavBarListeners()
 
         //TODO:Subrutina de prueba para la creación de alertas
         val inspectionDate = Date()
@@ -80,7 +94,6 @@ class MainActivity : AppCompatActivity() {
                 delay(3_600_000)
             }
         }
-
     }
 
     /**
@@ -88,38 +101,45 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setTopBarSettings() {
         with(activityMainBinding.topBarMain) {
-
             // Muestra el email del usuario en el subtitulo de la barra de navegación
             topToolbar.subtitle = firebaseAuthReference.currentUser?.email.toString()
             topToolbar.setSubtitleTextColor(
-                resources.getColor(R.color.ic_launcher_background, null)
+                resources.getColor(
+                    R.color.ic_launcher_background,
+                    null
+                )
             )
-            //Escuchador del menú superior
-            topToolbar.setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.logout_icon -> {
-                        firebaseAuthReference.signOut()
-                        checkIsLoggedUser()
-                    }
-                    R.id.alert_icon -> fragmentReplacer(AlertsFragment(), supportFragmentManager)
-                }
-                true
-            }
         }
     }
 
     /**
      * Configura las opciones del menú inferior
      */
-    private fun setBottomBarSettings() {
+    private fun setNavBarListeners() {
+
         //Escuchador del menú inferior, al hacer click en cada uno de los iconos se cargar un fragmento
-        activityMainBinding.bottomBarMain.bottomNavMenu.setOnItemSelectedListener {
+        navBarBot.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.vehicles -> fragmentReplacer(VehiclesFragment(), supportFragmentManager)
-                R.id.itv -> fragmentReplacer(ItvFragment(), supportFragmentManager)
-                R.id.services -> fragmentReplacer(ServiceFragment(), supportFragmentManager)
-                R.id.inventory -> fragmentReplacer(InventoryFragment(), supportFragmentManager)
-                R.id.employees -> fragmentReplacer(EmployeeFragment(), supportFragmentManager)
+                R.id.vehicles -> fragmentReplacer(
+                    VehiclesFragment(),
+                    supportFragmentManager
+                )
+                R.id.itv -> fragmentReplacer(
+                    ItvFragment(),
+                    supportFragmentManager
+                )
+                R.id.services -> fragmentReplacer(
+                    ServiceFragment(),
+                    supportFragmentManager
+                )
+                R.id.inventory -> fragmentReplacer(
+                    InventoryFragment(),
+                    supportFragmentManager
+                )
+                R.id.employees -> fragmentReplacer(
+                    EmployeeFragment(),
+                    supportFragmentManager
+                )
             }
             true
         }
@@ -133,7 +153,8 @@ class MainActivity : AppCompatActivity() {
         //Variables para crear el contador de alertas
         var alertCount: Int
         // Inicializa la autenticación de Firebase
-        val alertCollectionReference: CollectionReference = firestoreDatabaseReference.collection("alert")
+        val alertCollectionReference: CollectionReference =
+            firestoreDatabaseReference.collection("alert")
 
         // Si se completa la consulta, se obtiene el número de alertas y se muestra en el badge
         alertCollectionReference.get().addOnCompleteListener(this) { task ->
@@ -149,7 +170,7 @@ class MainActivity : AppCompatActivity() {
                 // Añade el badge al icono de alertas
                 BadgeUtils.attachBadgeDrawable(
                     badgeAlert,
-                    activityMainBinding.topBarMain.topToolbar,
+                    topToolBar,
                     R.id.alert_icon
                 )
             }
@@ -173,9 +194,56 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         //Pinta la barra superior
         val inflater = menuInflater
-        inflater.inflate(R.menu.app_bar_items, menu)
-        initializeAlertsBadgeCounter()
+
+        inflater.inflate(R.menu.app_bar_items, menu) //Infla el menú de la barra superior
+
+        initializeAlertsBadgeCounter() // Inicializa el badge de alertas y lo muestra si hay alertas
+/*
+        // Inicializa la vista de busqueda y sus escuchadores
+        val searchView = menu?.findItem(R.id.searchButton)?.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            *//**
+             * Se ejecuta cuando se pulsa el botón de buscar
+             * @param searchViewText Texto de la vista de busqueda
+             * @return Booleano que indica si se ha consumido el evento
+             *//*
+            override fun onQueryTextSubmit(searchViewText: String?): Boolean {
+                if (currentFragment is OnSearchListener) {
+                    (currentFragment as OnSearchListener?)?.getDataFromDatabase(searchViewText)
+                }
+                return false
+            }
+
+            *//**
+             * Se ejecuta cada vez que se modifica el texto de la vista de busqueda
+             * @param newText Nuevo texto de la vista de busqueda
+             * @return Booleano que indica si se ha consumido el evento
+             *//*
+            override fun onQueryTextChange(newText: String?): Boolean {
+                //No hace nada cuando se modifica el texto de la vista de busqueda
+                return false
+            }
+        })*/
+
         return super.onCreateOptionsMenu(menu)
+    }
+
+    /**
+     * Asocia los iconos de la barra superior a sus escuchadores
+     * @param item Icono de la barra superior
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.alert_icon -> {
+                fragmentReplacer(AlertsFragment(), supportFragmentManager)
+            }
+            R.id.logout_icon -> {
+                firebaseAuthReference.signOut()
+                checkIsLoggedUser()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /**

@@ -27,6 +27,6 @@
         android:icon="@drawable/outline_edit_white_24"
         android:tint="?attr/colorControlNormal"
         android:title="@string/edit"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>
