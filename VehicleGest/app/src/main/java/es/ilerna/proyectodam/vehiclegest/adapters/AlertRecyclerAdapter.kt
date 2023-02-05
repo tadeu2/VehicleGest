@@ -1,5 +1,6 @@
 package es.ilerna.proyectodam.vehiclegest.adapters
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -63,6 +64,9 @@ class AlertRecyclerAdapter(
                         //Iniciamos el escuchador que accionamos al pulsar una ficha
                         alertCard.setOnClickListener {
                             recyclerAdapterListener.onItemSelected(documentSnapshot)
+                        }
+                        if (alert?.solved == true) {
+                            alertCardBinding.alertImage.setColorFilter(Color.GREEN)
                         }
                     }
                 }

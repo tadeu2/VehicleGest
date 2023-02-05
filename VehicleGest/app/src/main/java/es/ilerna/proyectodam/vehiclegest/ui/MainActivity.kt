@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
@@ -17,7 +16,6 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
-import es.ilerna.proyectodam.vehiclegest.interfaces.OnSearchListener
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inspections.ItvFragment
@@ -203,11 +201,12 @@ class MainActivity : AppCompatActivity() {
         val searchView = menu?.findItem(R.id.searchButton)?.actionView as SearchView
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            *//**
-             * Se ejecuta cuando se pulsa el botón de buscar
-             * @param searchViewText Texto de la vista de busqueda
-             * @return Booleano que indica si se ha consumido el evento
-             *//*
+            */
+        /**
+         * Se ejecuta cuando se pulsa el botón de buscar
+         * @param searchViewText Texto de la vista de busqueda
+         * @return Booleano que indica si se ha consumido el evento
+         *//*
             override fun onQueryTextSubmit(searchViewText: String?): Boolean {
                 if (currentFragment is OnSearchListener) {
                     (currentFragment as OnSearchListener?)?.getDataFromDatabase(searchViewText)
@@ -215,11 +214,12 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
 
-            *//**
-             * Se ejecuta cada vez que se modifica el texto de la vista de busqueda
-             * @param newText Nuevo texto de la vista de busqueda
-             * @return Booleano que indica si se ha consumido el evento
-             *//*
+            */
+        /**
+         * Se ejecuta cada vez que se modifica el texto de la vista de busqueda
+         * @param newText Nuevo texto de la vista de busqueda
+         * @return Booleano que indica si se ha consumido el evento
+         *//*
             override fun onQueryTextChange(newText: String?): Boolean {
                 //No hace nada cuando se modifica el texto de la vista de busqueda
                 return false

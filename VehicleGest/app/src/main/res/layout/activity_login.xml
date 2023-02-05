@@ -21,10 +21,11 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btRegister"
         android:layout_width="228dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="120dp"
         android:text="@string/register"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
@@ -77,7 +78,7 @@
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:endIconDrawable="@drawable/ic_outline_email_24"
+        app:startIconDrawable="@drawable/ic_outline_email_24"
         app:endIconMode="custom"
         app:errorEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
@@ -105,12 +106,13 @@
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:endIconDrawable="@drawable/ic_outline_password_24"
+        app:startIconDrawable="@drawable/ic_outline_password_24"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_90"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
-        app:layout_constraintTop_toBottomOf="@+id/til_username">
+        app:layout_constraintTop_toBottomOf="@+id/til_username"
+      >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_password"

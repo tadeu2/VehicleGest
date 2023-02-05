@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailEmployeeBinding
@@ -17,6 +18,7 @@ import es.ilerna.proyectodam.vehiclegest.models.Employee
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * Abre una ventana diálogo con los detalles del empleado
@@ -67,7 +69,7 @@ class EmployeeDetailFragment : DetailFormModelFragment() {
     override fun makeFormEditable() {
         getDetailEmployeeBinding.apply {
             //Habilita los campos del formulario y los pinta de rojo
-            val viewListToEnable = arrayOf(
+            arrayOf(
                 name,
                 surname,
                 employeeDni,
@@ -77,11 +79,11 @@ class EmployeeDetailFragment : DetailFormModelFragment() {
                 urlphoto,
                 email,
                 checkadmin
-            )
-            for (view in viewListToEnable) {
+            ).forEach { view ->
                 view.isEnabled = true
                 view.setTextColor(editableEditTextColor)
             }
+
             birthdate.setOnClickListener {
                 DatePickerFragment { day, month, year ->
                     birthdate.setText(String.format("$day/$month/$year"))
@@ -93,14 +95,15 @@ class EmployeeDetailFragment : DetailFormModelFragment() {
     /**
      * Rellena los datos del formulario con los datos
      */
+    @Suppress("CAST_NEVER_SUCCEEDS") //Para que no de error al hacer el cast de la fecha
     override fun bindDataToForm() {
         CoroutineScope(Dispatchers.Main).launch {
             //Obtiene el empleado de la base de datos
             val employee: Employee? = documentSnapshot?.toObject(Employee::class.java)
             //Rellena los campos del formulario con los datos del empleado
             with(getDetailEmployeeBinding) {
-                checkadmin.isChecked = employee?.admin == true
-                val formFieldsToFill = arrayOf(
+                //Rellena los campos del formulario con los datos del empleado
+                arrayOf(
                     Pair(employeeDni, employee?.dni),
                     Pair(name, employee?.name),
                     Pair(surname, employee?.surname),
@@ -108,15 +111,16 @@ class EmployeeDetailFragment : DetailFormModelFragment() {
                     Pair(phone, employee?.phone),
                     Pair(address, employee?.address),
                     Pair(urlphoto, employee?.photoURL),
-                    Pair(email, employee?.email)
-                )
-
-                formFieldsToFill.forEach { (field, valueToFill) ->
-                    field.setText(valueToFill)
+                    Pair(email, employee?.email),
+                    Pair(checkadmin,employee?.admin),
+                    Pair(birthdate,employee?.birthdate)
+                ).forEach { (field, valueToFill) ->
+                    when(field){
+                        birthdate -> field.text = dateToStringFormat(valueToFill as Date)
+                        checkadmin -> (field as CheckBox).isChecked = valueToFill as Boolean
+                        else -> field.text = valueToFill.toString()
+                    }
                 }
-                //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-                //El formato se puede modificar en strings.xml
-                birthdate.setText(dateToStringFormat(employee?.birthdate))
 
                 //Carga la foto en el formulario a partir de la URL almacenada
                 //Si no hay foto, muestra una imagen por defecto. Usamos post para que se ejecute después

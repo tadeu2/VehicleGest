@@ -16,6 +16,7 @@ import es.ilerna.proyectodam.vehiclegest.models.Alert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * Abre una ventana diálogo con los detalles de la alert
@@ -67,15 +68,13 @@ class AlertDetailFragment : DetailFormModelFragment() {
     override fun makeFormEditable() {
         with(getDetailAlertBinding) {
 
-            val viewListToEnable = arrayOf(
+            arrayOf(
                 plateNumber,
                 date,
                 description,
                 dateSolved,
                 alertSolution
-            )
-
-            for (view in viewListToEnable) {
+            ).forEach { view ->
                 view.isEnabled = true
                 view.setTextColor(editableEditTextColor)
             }
@@ -108,49 +107,48 @@ class AlertDetailFragment : DetailFormModelFragment() {
             val alert: Alert? = documentSnapshot?.toObject(Alert::class.java)
 
             getDetailAlertBinding.apply {
-                val formFieldsToFill = arrayOf(
+                arrayOf(
                     Pair(plateNumber, alert?.plateNumber),
                     Pair(description, alert?.description),
-                    Pair(alertSolution, alert?.solution)
-                )
-
-                formFieldsToFill.forEach { (field, valueToFill) ->
-                    field.setText(valueToFill)
+                    Pair(alertSolution, alert?.solution),
+                    Pair(date, alert?.date),
+                    Pair(dateSolved, alert?.solveddate)
+                ).forEach { (field, valueToFill) ->
+                    if (field == date || field == dateSolved) {
+                        field.setText(dateToStringFormat(valueToFill as Date?))
+                    } else {
+                        field.setText(valueToFill.toString())
+                    }
                 }
-                checksolved.isChecked = alert?.solved ?: false
 
-                //Formatea los timestamp a fecha normal dd/mm/aa
-                //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-                //El formato se puede modificar en strings.xml
-                date.setText(dateToStringFormat(alert?.date))
-                dateSolved.setText(dateToStringFormat(alert?.solveddate))
             }
         }
     }
-        /**
-         * Devuelve un objeto Alert con los datos del formulario
-         * @return Objeto Alert
-         */
-        override fun fillDataFromForm(): Any {
-            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-            getDetailAlertBinding.apply {
-                return Alert(
-                    plateNumber.text.toString(),
-                    Controller.stringToDateFormat(date.text.toString()),
-                    description.text.toString(),
-                    checksolved.isChecked,
-                    Controller.stringToDateFormat(dateSolved.text.toString()),
-                    alertSolution.text.toString()
-                )
-            }
-        }
 
-        /**
-         *  Al destruir el fragmento, elimina la referencia al binding
-         */
-        override fun onDestroyView() {
-            super.onDestroyView()
-            //Vaciamos la variable de enlace al xml
-            detailAlertBinding = null
+    /**
+     * Devuelve un objeto Alert con los datos del formulario
+     * @return Objeto Alert
+     */
+    override fun fillDataFromForm(): Any {
+        //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+        getDetailAlertBinding.apply {
+            return Alert(
+                plateNumber.text.toString(),
+                Controller.stringToDateFormat(date.text.toString()),
+                description.text.toString(),
+                checksolved.isChecked,
+                Controller.stringToDateFormat(dateSolved.text.toString()),
+                alertSolution.text.toString()
+            )
         }
     }
+
+    /**
+     *  Al destruir el fragmento, elimina la referencia al binding
+     */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        //Vaciamos la variable de enlace al xml
+        detailAlertBinding = null
+    }
+}

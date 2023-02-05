@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.DetailVehicleBinding
@@ -79,13 +80,13 @@ class VehicleDetailFragment : DetailFormModelFragment() {
                     Pair(totalDistance, vehicle?.totalDistance),
                     Pair(vehicleDescription, vehicle?.description),
                     Pair(urlphoto, vehicle?.photoURL)
-                )
-
-                formFieldsToFill.forEach { (field, valueToFill) ->
-                    field.setText(valueToFill.toString())
+                ).forEach { (field, valueToFill) ->
+                    if (field == checkItvPassed) {
+                        (field as CheckBox).isChecked = valueToFill as Boolean
+                    } else {
+                        field.setText(valueToFill.toString())
+                    }
                 }
-
-                checkItvPassed.isChecked = vehicle?.itvPassed == false
 
                 //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
                 //El formato se puede modificar en strings.xml
@@ -134,7 +135,6 @@ class VehicleDetailFragment : DetailFormModelFragment() {
      */
     override fun makeFormEditable() {
         getDetailVehicleBinding.apply {
-
             val views = arrayOf(
                 plateNumber,
                 type,

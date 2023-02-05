@@ -76,7 +76,7 @@ android {
         implementation 'androidx.fragment:fragment-ktx:1.5.5'
 
         //Intefaz gráfica
-        implementation 'com.google.android.material:material:1.8.0'
+        implementation 'com.google.android.material:material:1.7.0'
         implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 //Para poder usar constraintlayout
 

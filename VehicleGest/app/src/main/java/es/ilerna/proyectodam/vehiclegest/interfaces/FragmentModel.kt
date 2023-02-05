@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,19 +21,15 @@ import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
 /**
  * Fragmento de listado de empleados
  */
-abstract class FragmentModel : Fragment(), RecyclerAdapterListener, OnSearchListener {
-
-    private val mainActivity by lazy { activity as MainActivity }
+abstract class FragmentModel : Fragment(), RecyclerAdapterListener {
 
     //Creamos una variable para el adaptador
     lateinit var recyclerAdapter: RecyclerView.Adapter<*>
 
-    //Variable del recycler view
     private lateinit var recyclerView: RecyclerView
+    lateinit var mainBinding: MainActivity
 
     lateinit var dbFirestoreReference: CollectionReference
-
-    //Referencia a la vista de busqueda
 
     lateinit var searchStringList: List<String> //Lista de campos de busqueda
 
@@ -42,15 +39,10 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener, OnSearchList
         try {
             //Obtiene los datos de la base de datos
             getDataFromDatabase(null)
-            mainActivity.currentFragment = this
-
+            mainBinding = activity as MainActivity
             //Inicializa las variables y esconde barras de navegación pasándole las referencias
             initializeUI()
-            //Con with(this) nos referimos a la clase que implementa el fragmento
-            with(this) {
-                //Configura el recycler view y el adaptador
-                configRecyclerView(recyclerView)
-            }
+
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -61,14 +53,23 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener, OnSearchList
      * Inicializa las variables y configura las barras de navegación y el botón flotante
      */
     private fun initializeUI() {
-        mainActivity.apply { //Aplica las siguientes configuraciones a la actividad principal
-            navBarBot.visibility = View.GONE
-            topToolBar.visibility = View.VISIBLE
-            navBarBot.visibility = View.VISIBLE
+        //Inicializa las variables y sconde barras de navegación pasándole las referencias
+        mainBinding.activityMainBinding.apply {
+            arrayOf(
+                topBarMain.topToolbar,
+                bottomBarMain.bottomNavMenu,
+                searchView,
+                contentMain.addButton
+            ).forEach {
+                it.visibility = View.VISIBLE
+            }
+
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
-            floatingButton.setOnClickListener {
+            contentMain.addButton.setOnClickListener {
                 onAddButtonClick()
             }
+
+            setSearchViewListeners() //Añade los escuchadores de la barra de búsqueda
         }
     }
 
@@ -117,7 +118,7 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener, OnSearchList
      * @param documentSnapshot Documento de la base de datos
      */
     override fun onItemSelected(documentSnapshot: DocumentSnapshot?) {
-            val detailFragment = getDetailFragment()
+        val detailFragment = getDetailFragment()
         detailFragment.documentSnapshot = documentSnapshot
         fragmentReplacer(detailFragment, parentFragmentManager)
     }
@@ -132,21 +133,52 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener, OnSearchList
         fragmentReplacer(detailFragment, parentFragmentManager)
     }
 
+    /**
+     * Configura los listeners de la vista de busqueda
+     */
+    open fun setSearchViewListeners() {
+        mainBinding.activityMainBinding.apply {
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                /**
+                 * Se ejecuta cuando se pulsa el botón de buscar
+                 * @param searchViewText Texto de la vista de busqueda
+                 * @return Booleano que indica si se ha consumido el evento
+                 */
+                override fun onQueryTextSubmit(searchViewText: String?): Boolean {
+                    getDataFromDatabase(searchViewText)
+                    return false
+                }
+
+                /**
+                 * Se ejecuta cada vez que se modifica el texto de la vista de busqueda
+                 * @param newText Nuevo texto de la vista de busqueda
+                 * @return Booleano que indica si se ha consumido el evento
+                 */
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText.isNullOrEmpty()) {
+                        getDataFromDatabase(null)
+                    }
+                    return false
+                }
+            })
+        }
+    }
 
     /**
      * Recupera todos los datos de la base de datos y ejecuta la función updateData que se encarga de actualizar los datos del adaptador
      */
-    override fun getDataFromDatabase(searchString: String?) {
+    open fun getDataFromDatabase(searchViewText: String?) {
         var documentSnapshotList: ArrayList<DocumentSnapshot>
-        if (searchString.isNullOrEmpty()) {
-            dbFirestoreReference.get().addOnSuccessListener { task ->
-                documentSnapshotList = task.documents as ArrayList<DocumentSnapshot>
-                (recyclerAdapter as FirestoreAdapter).updateDocumentSnapshotData(
-                    documentSnapshotList
-                )
-            }
+        if (searchViewText.isNullOrEmpty()) {
+            dbFirestoreReference.get()
+                .addOnSuccessListener { task ->
+                    documentSnapshotList = task.documents as ArrayList<DocumentSnapshot>
+                    (recyclerAdapter as FirestoreAdapter).updateDocumentSnapshotData(
+                        documentSnapshotList
+                    )
+                }
         } else {
-            generateFilteredItemListFromString(searchString).addOnSuccessListener { result ->
+            generateFilteredItemListFromString(searchViewText).addOnSuccessListener { result ->
                 documentSnapshotList = result
                 (recyclerAdapter as FirestoreAdapter).updateDocumentSnapshotData(
                     documentSnapshotList
@@ -168,25 +200,19 @@ abstract class FragmentModel : Fragment(), RecyclerAdapterListener, OnSearchList
             //listOfTasks.add(dbFirestoreReference.whereEqualTo(it, searchString).get())
             //listOfTasks.add(dbFirestoreReference.whereLessThan(it, searchString + "\uf8ff").get())
             listOfTasks.add(
-                dbFirestoreReference.whereGreaterThanOrEqualTo(it, searchString!!)
+                dbFirestoreReference
+                    .whereGreaterThanOrEqualTo(it, searchString!!)
                     .whereLessThan(it, searchString + "\uf8ff").get()
             )
         }
-        return Tasks.whenAllSuccess<QuerySnapshot>(listOfTasks).continueWith { task ->
-            for (querySnapshotTask in task.result) {
-                filteredItemList.addAll(querySnapshotTask.documents)
+        return Tasks.whenAllSuccess<QuerySnapshot>(listOfTasks)
+            .continueWith { task ->
+                for (querySnapshotTask in task.result) {
+                    filteredItemList.addAll(querySnapshotTask.documents)
+                }
+                filteredItemList
             }
-            filteredItemList
-        }
     }
-}
-
-interface OnSearchListener {
-
-    /**
-     * Recupera todos los datos de la base de datos y ejecuta la función updateData que se encarga de actualizar los datos del adaptador
-     */
-    fun getDataFromDatabase(searchString: String?)
 }
 
 

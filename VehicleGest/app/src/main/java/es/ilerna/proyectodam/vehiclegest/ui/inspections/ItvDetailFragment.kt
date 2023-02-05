@@ -13,6 +13,10 @@ import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.stringToDa
 import es.ilerna.proyectodam.vehiclegest.helpers.DatePickerFragment
 import es.ilerna.proyectodam.vehiclegest.interfaces.DetailFormModelFragment
 import es.ilerna.proyectodam.vehiclegest.models.ITV
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.Date
 
 /**
  * Abre una ventana diálogo con los detalles de la ITV
@@ -59,13 +63,23 @@ class ItvDetailFragment : DetailFormModelFragment() {
      * Rellena los datos del formulario a partir de la ficha que hemos seleccionado
      */
     override fun bindDataToForm() {
-        //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
-        val itv: ITV? = documentSnapshot?.toObject(ITV::class.java)
-        with(getDetailItvBinding) {
-            //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
-            //El formato se puede modificar en strings.xml
-            date.setText(dateToStringFormat(itv?.date))
-            remarks.setText(itv?.remarks)
+        CoroutineScope(Dispatchers.Main).launch {
+            //Crea una instancia del objeto pasandole los datos de la instantanea de firestore
+            val itv: ITV? = documentSnapshot?.toObject(ITV::class.java)
+            with(getDetailItvBinding) {
+                //Usa la función creada en Vehiclegest para dar formato a las fechas dadas en timestamp
+                //El formato se puede modificar en strings.xml
+                arrayOf(
+                    Pair(date, itv?.date),
+                    Pair(remarks, itv?.remarks)
+                ).forEach { (field, valueToFill) ->
+                    if (field == date) {
+                        field.setText(dateToStringFormat(valueToFill as Date?))
+                    } else {
+                        field.setText(valueToFill.toString())
+                    }
+                }
+            }
         }
     }
 
@@ -84,9 +98,7 @@ class ItvDetailFragment : DetailFormModelFragment() {
     override fun makeFormEditable() {
         getDetailItvBinding.apply {
             //Habilita los campos de texto y los pinta de rojo
-            val viewListToEnable = arrayOf(date, remarks)
-
-            for (view in viewListToEnable) {
+           arrayOf(date, remarks).forEach { view ->
                 view.isEnabled = true
                 view.setTextColor(editableEditTextColor)
             }
