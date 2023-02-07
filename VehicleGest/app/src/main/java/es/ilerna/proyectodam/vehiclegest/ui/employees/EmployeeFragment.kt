@@ -40,7 +40,7 @@ class EmployeeFragment : FragmentModel() {
         try {
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = Firebase.firestore.collection("employees")
-            searchStringList = listOf ("dni", "surname") //Lista de campos de busqueda
+            searchStringList = listOf ("dni", "surname","email") //Lista de campos de busqueda
 
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)

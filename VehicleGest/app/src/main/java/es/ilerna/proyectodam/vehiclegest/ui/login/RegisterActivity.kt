@@ -10,10 +10,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityRegisterBinding
+import es.ilerna.proyectodam.vehiclegest.helpers.Controller
+import es.ilerna.proyectodam.vehiclegest.models.Employee
 import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.Date
 
 
 /**
@@ -25,6 +33,7 @@ class RegisterActivity : AppCompatActivity() {
 
     //Declaramos la variable auth para la autenticación de Firebase auth
     private lateinit var firebaseAuth: FirebaseAuth
+    lateinit var dbFirestoreReference: CollectionReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +42,8 @@ class RegisterActivity : AppCompatActivity() {
         activityRegisterBinding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(activityRegisterBinding.root)
 
+//Referencia a la base de datos de Firebase
+        dbFirestoreReference = FirebaseFirestore.getInstance().collection("employees")
         // Inicializamos la variable auth de firebase
         firebaseAuth = Firebase.auth
 
@@ -73,17 +84,57 @@ class RegisterActivity : AppCompatActivity() {
         firebaseAuth.createUserWithEmailAndPassword(username, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Log.d(ContentValues.TAG, "regInWithEmail: register success")
+                    Log.d(ContentValues.TAG, "Registro correcto")
+                    addUserToDataBase()
                     navigateMain(firebaseAuth.currentUser)
+                    Controller.showShortToast("Registro correcto")
                 } else {
-                    Log.w(ContentValues.TAG, "reWithEmail:register failure", task.exception)
-                    //Backend.showSnackbar(binding.root, task.exception?.message.toString())
+                    Log.w(ContentValues.TAG, "Registro fallido", task.exception)
                     MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.register_error))
                         .setMessage(task.exception?.message.toString())
                         .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
                         }.setIcon(R.drawable.outline_error_24).show()
                 }
             }
+    }
+
+    private fun addUserToDataBase() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val newUser = newEmployee()
+            val currentAuthUser = firebaseAuth.currentUser
+            newUser.email = currentAuthUser?.email.toString()
+            newUser.birthdate = Controller.stringToDateFormat("12/12/12")
+            dbFirestoreReference.document(currentAuthUser?.uid.toString()).set(newUser)
+                .addOnSuccessListener {
+                    Log.d(
+                        ContentValues.TAG,
+                        "Usuario escrito}"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.w(ContentValues.TAG, "Error añadiendo Usuario", e)
+                }
+        }
+    }
+
+    /**
+     * Devuelve un objeto de tipo empleado con los datos del formulario
+     * @return Objeto de tipo empleado
+     */
+    private fun newEmployee(): Employee {
+        activityRegisterBinding.apply {
+            return Employee(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                null,
+                "",
+                false
+            )
+        }
     }
 
     /**

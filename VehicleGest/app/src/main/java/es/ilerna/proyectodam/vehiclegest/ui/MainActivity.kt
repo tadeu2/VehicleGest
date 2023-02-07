@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,6 +16,7 @@ import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller
 import es.ilerna.proyectodam.vehiclegest.helpers.Controller.Companion.fragmentReplacer
+import es.ilerna.proyectodam.vehiclegest.models.Employee
 import es.ilerna.proyectodam.vehiclegest.ui.alerts.AlertsFragment
 import es.ilerna.proyectodam.vehiclegest.ui.employees.EmployeeFragment
 import es.ilerna.proyectodam.vehiclegest.ui.inspections.ItvFragment
@@ -47,14 +48,14 @@ class MainActivity : AppCompatActivity() {
     // Referencia a las barras de herramientas superiores
     val topToolBar by lazy { activityMainBinding.topBarMain.topToolbar }
     val navBarBot by lazy { activityMainBinding.bottomBarMain.bottomNavMenu }
-    val floatingButton by lazy { activityMainBinding.contentMain.addButton }
-    lateinit var currentFragment: Fragment
+
 
     @ExperimentalBadgeUtils
     override fun onCreate(
         savedInstanceState: Bundle?
     ) {
         super.onCreate(savedInstanceState)
+
 
         //Bindeamos el xml con la actividad y lo inflamos
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -66,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         firestoreDatabaseReference = FirebaseFirestore.getInstance()
         firebaseAuthReference =
             FirebaseAuth.getInstance() //Obtenemos la instancia de autenticación de Firebase
+        checkIsLoggedUser()
+        checkIsAdmin()
+
         //Activamos el logueo de Firestore para debuggear fallos en el logcat
         FirebaseFirestore.setLoggingEnabled(true)
         //Barra de navegación superior
@@ -122,18 +126,22 @@ class MainActivity : AppCompatActivity() {
                     VehiclesFragment(),
                     supportFragmentManager
                 )
+
                 R.id.itv -> fragmentReplacer(
                     ItvFragment(),
                     supportFragmentManager
                 )
+
                 R.id.services -> fragmentReplacer(
                     ServiceFragment(),
                     supportFragmentManager
                 )
+
                 R.id.inventory -> fragmentReplacer(
                     InventoryFragment(),
                     supportFragmentManager
                 )
+
                 R.id.employees -> fragmentReplacer(
                     EmployeeFragment(),
                     supportFragmentManager
@@ -175,14 +183,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Cuando la actividad visible para el usuario en el ciclo de vida
-     */
-    override fun onStart() {
-        super.onStart()
-        //Chequea si el usuario está logueado
-        checkIsLoggedUser()
+    private fun checkIsAdmin(){
+
+        var adminCheck: Boolean
+        //Referencia a los datos del usuario logueado
+        val adminDocument =
+            firestoreDatabaseReference.collection("employee")
+                .document(firebaseAuthReference.currentUser?.uid.toString())
+
+        adminDocument.get().addOnSuccessListener { snapshot ->
+            if (snapshot != null && snapshot.exists()) {
+                val employee = snapshot.toObject(Employee::class.java)
+                adminCheck = employee?.admin == false
+
+                if (!adminCheck) {
+                    MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.adminError))
+                        .setMessage(resources.getString(R.string.notAdmin))
+                        .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                        }.setIcon(R.drawable.outline_error_24).show()
+                    firebaseAuthReference.signOut()
+                    checkIsLoggedUser()
+                }
+            }
+        }
     }
+
 
     /**
      * Asocia la barra de herramientas superior de la actividad principal
@@ -196,12 +221,12 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.app_bar_items, menu) //Infla el menú de la barra superior
 
         initializeAlertsBadgeCounter() // Inicializa el badge de alertas y lo muestra si hay alertas
-/*
-        // Inicializa la vista de busqueda y sus escuchadores
-        val searchView = menu?.findItem(R.id.searchButton)?.actionView as SearchView
+        /*
+                // Inicializa la vista de busqueda y sus escuchadores
+                val searchView = menu?.findItem(R.id.searchButton)?.actionView as SearchView
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            */
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    */
         /**
          * Se ejecuta cuando se pulsa el botón de buscar
          * @param searchViewText Texto de la vista de busqueda
@@ -238,6 +263,7 @@ class MainActivity : AppCompatActivity() {
             R.id.alert_icon -> {
                 fragmentReplacer(AlertsFragment(), supportFragmentManager)
             }
+
             R.id.logout_icon -> {
                 firebaseAuthReference.signOut()
                 checkIsLoggedUser()
@@ -255,5 +281,5 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-}
 
+}

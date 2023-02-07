@@ -9,7 +9,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btRegister"
         android:layout_width="228dp"
-        android:layout_height="0dp"
+        android:layout_height="60dp"
         android:text="@string/register"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.02" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal_90"
@@ -55,8 +55,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_username"
         android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="82dp"
         android:gravity="center"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
@@ -65,12 +64,12 @@
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:startIconDrawable="@drawable/ic_outline_email_24"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
-        app:layout_constraintTop_toBottomOf="@id/logo">
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:startIconDrawable="@drawable/ic_outline_email_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_username"
@@ -84,8 +83,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_password"
         android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="82dp"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:minHeight="48dp"
@@ -93,12 +91,12 @@
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:startIconDrawable="@drawable/ic_outline_password_24"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_90"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
-        app:layout_constraintTop_toBottomOf="@+id/til_username">
+        app:layout_constraintTop_toBottomOf="@+id/til_username"
+        app:startIconDrawable="@drawable/ic_outline_password_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_password"
@@ -112,8 +110,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_password2"
         android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="82dp"
         android:hint="@string/repeat_password"
         android:inputType="textPassword"
         android:minHeight="48dp"
@@ -121,12 +118,12 @@
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:startIconDrawable="@drawable/ic_outline_password_24"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_90"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_10"
-        app:layout_constraintTop_toBottomOf="@+id/til_password">
+        app:layout_constraintTop_toBottomOf="@+id/til_password"
+        app:startIconDrawable="@drawable/ic_outline_password_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_password2"
@@ -139,8 +136,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="156dp"
+        android:layout_height="156dp"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_90"

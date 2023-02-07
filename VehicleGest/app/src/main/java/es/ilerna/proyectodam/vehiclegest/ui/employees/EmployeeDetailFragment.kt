@@ -95,7 +95,7 @@ class EmployeeDetailFragment : DetailFormModelFragment() {
     /**
      * Rellena los datos del formulario con los datos
      */
-    @Suppress("CAST_NEVER_SUCCEEDS") //Para que no de error al hacer el cast de la fecha
+    //Para que no de error al hacer el cast de la fecha
     override fun bindDataToForm() {
         CoroutineScope(Dispatchers.Main).launch {
             //Obtiene el empleado de la base de datos
