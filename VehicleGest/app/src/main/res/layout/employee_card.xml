@@ -35,7 +35,7 @@
                 tools:srcCompat="@drawable/no_image_available" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
@@ -50,13 +50,13 @@
                     tools:text="DNI" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/name_label"
+                    android:id="@+id/email_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/name"
-                    android:text="@string/name"
+                    android:contentDescription="@string/email"
+                    android:text="@string/email"
                     android:textStyle="bold"
-                    tools:text="Name" />
+                    tools:text="@string/email" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/surname_label"
@@ -71,7 +71,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
@@ -84,10 +84,10 @@
                     tools:text="44513234m" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/name"
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Antonio" />
+                    tools:text="hola@hola.com" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/surname"

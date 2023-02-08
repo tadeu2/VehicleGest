@@ -62,8 +62,8 @@
     <string name="repeat_password">Repetir password</string>
     <string name="register_error">Error de registro</string>
     <string name="solution_description">Solución</string>
-    <string name="alert_details">Alert Details</string>
-    <string name="date_solved">Date Solved</string>
+    <string name="alert_details">Detalle de alertas</string>
+    <string name="date_solved">Fecha de solución</string>
     <string name="solved">Solucionado</string>
     <string name="solution">Solución</string>
     <string name="urlphoto">URL Foto</string>
@@ -76,11 +76,11 @@
     <string name="kilometer">Kilometros</string>
     <string name="service_information">Servicio de información</string>
     <string name="close">Cerrar</string>
-    <string name="addElement">Add Element</string>
-    <string name="delete">Delete</string>
-    <string name="save">Save</string>
+    <string name="addElement">Añadir elemento</string>
+    <string name="delete">Borrar</string>
+    <string name="save">Salvar</string>
     <string name="edit">Editar</string>
     <string name="searchbar_hint">Prueba search</string>
     <string name="adminError">Admin auth error</string>
-    <string name="notAdmin">You have not admin privileges.</string>
+    <string name="notAdmin">"No tienes privilegios de administrador. Vas a ser redirigido a la pantalla de logueo. "</string>
 </resources>

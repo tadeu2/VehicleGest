@@ -32,7 +32,7 @@ class ServiceFragment : FragmentModel() {
 
             //Consulta a firestore db de la colección de vehiculos
             dbFirestoreReference = Firebase.firestore.collection("service")
-            searchStringList = listOf("date", "platenumber", "costumer")
+            searchStringList = listOf("date", "plateNumber", "costumer")
 
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)

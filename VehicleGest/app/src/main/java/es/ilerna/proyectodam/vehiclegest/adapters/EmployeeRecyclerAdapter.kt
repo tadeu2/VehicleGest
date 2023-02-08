@@ -52,7 +52,7 @@ class EmployeeRecyclerAdapter(
                     with(employeeCardBinding) {
                         //Asignamos los datos del empleado a los campos del formulario
                         dni.text = employee?.dni.toString()
-                        name.text = employee?.name.toString()
+                        email.text = employee?.email.toString()
                         surname.text = employee?.surname.toString()
 
                         if (employee?.photoURL.toString().isEmpty()) {

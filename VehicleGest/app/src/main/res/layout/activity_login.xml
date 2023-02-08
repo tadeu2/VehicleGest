@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:minHeight="48dp"
-            android:textColorHint="#8D6E63" />
+             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -115,8 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:minHeight="48dp"
-            android:textColorHint="#616161" />
+            android:minHeight="48dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.imageview.ShapeableImageView

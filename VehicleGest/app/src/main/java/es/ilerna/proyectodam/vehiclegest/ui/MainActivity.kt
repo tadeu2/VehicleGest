@@ -11,6 +11,7 @@ import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityMainBinding
@@ -46,9 +47,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var badgeAlert: BadgeDrawable
 
     // Referencia a las barras de herramientas superiores
-    val topToolBar by lazy { activityMainBinding.topBarMain.topToolbar }
-    val navBarBot by lazy { activityMainBinding.bottomBarMain.bottomNavMenu }
-
+    private val topToolBar by lazy { activityMainBinding.topBarMain.topToolbar }
+    private val navBarBot by lazy { activityMainBinding.bottomBarMain.bottomNavMenu }
+    private var adminCheck: Boolean = false
+    private lateinit var userReference: DocumentReference
 
     @ExperimentalBadgeUtils
     override fun onCreate(
@@ -56,19 +58,24 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onCreate(savedInstanceState)
 
-
         //Bindeamos el xml con la actividad y lo inflamos
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
-
 
         //Establecemos la vista de la actividad
         setContentView(activityMainBinding.root)
         // Inicializa la instancia de Firestore y firebaseAuth
         firestoreDatabaseReference = FirebaseFirestore.getInstance()
+
         firebaseAuthReference =
             FirebaseAuth.getInstance() //Obtenemos la instancia de autenticación de Firebase
-        checkIsLoggedUser()
-        checkIsAdmin()
+        userReference = firestoreDatabaseReference.collection("employees")
+            .document(firebaseAuthReference.currentUser?.uid.toString())
+
+        //Comprueba que el usuario logueado es administrador
+        //una vez ejecutado getuserdata ejecuta checkisadmin
+        getUserData {
+            checkIsAdmin()
+        }
 
         //Activamos el logueo de Firestore para debuggear fallos en el logcat
         FirebaseFirestore.setLoggingEnabled(true)
@@ -98,6 +105,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        checkIsLoggedUser()
+    }
+
+
     /**
      * Configura las opciones de la barra superior
      */
@@ -113,6 +126,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+
 
     /**
      * Configura las opciones del menú inferior
@@ -183,28 +197,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkIsAdmin(){
-
-        var adminCheck: Boolean
-        //Referencia a los datos del usuario logueado
-        val adminDocument =
-            firestoreDatabaseReference.collection("employee")
-                .document(firebaseAuthReference.currentUser?.uid.toString())
-
-        adminDocument.get().addOnSuccessListener { snapshot ->
+    /***
+     * Recupera los datos del usuario logueado de la base de datos
+     */
+    private fun getUserData(callback: () -> Unit) {
+        userReference.get().addOnSuccessListener { snapshot ->
             if (snapshot != null && snapshot.exists()) {
                 val employee = snapshot.toObject(Employee::class.java)
-                adminCheck = employee?.admin == false
+                adminCheck = employee?.admin == true
+                callback()
+            }
+        }
+    }
 
-                if (!adminCheck) {
-                    MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.adminError))
-                        .setMessage(resources.getString(R.string.notAdmin))
-                        .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                        }.setIcon(R.drawable.outline_error_24).show()
+    /**
+     * Chequea si el usuario logueado es administrador, en caso contrario mmuestra un dialogo y vuelve
+     * a la pantalla de logueo
+     */
+    private fun checkIsAdmin() {
+        if (!adminCheck) {
+            MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.adminError))
+                .setMessage(resources.getString(R.string.notAdmin))
+                .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
                     firebaseAuthReference.signOut()
                     checkIsLoggedUser()
-                }
-            }
+                }.setIcon(R.drawable.outline_error_24).show()
         }
     }
 
