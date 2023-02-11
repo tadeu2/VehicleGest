@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
-import java.util.*
+import java.util.Date
 
 /**
  * Escribe y lee los datos de las entidades vehículo

@@ -83,7 +83,7 @@ abstract class DetailFormModelFragment : Fragment(), MenuProvider {
                 bottomBarMain.bottomNavMenu,
                 contentMain.addButton,
 
-            ).forEach {
+                ).forEach {
                 it.visibility = GONE
             }
 
@@ -138,6 +138,7 @@ abstract class DetailFormModelFragment : Fragment(), MenuProvider {
                 makeFormEditable()
                 return true
             }
+
             R.id.saveButton -> {
                 if (documentSnapshot != null) {
                     updateDocumentToDatabase(documentSnapshot!!, fillDataFromForm())
@@ -147,6 +148,7 @@ abstract class DetailFormModelFragment : Fragment(), MenuProvider {
                 navigateToMainFragment()
                 return true
             }
+
             R.id.deleteButton -> {
                 delDocumentSnapshot(documentSnapshot)
                 navigateToMainFragment()

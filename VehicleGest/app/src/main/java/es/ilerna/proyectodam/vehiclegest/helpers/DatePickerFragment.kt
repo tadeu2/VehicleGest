@@ -5,7 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import java.util.*
+import java.util.Calendar
 
 /**
  * Clase encargada de iniciar y mostrar el datePicker para selecionar las fechas
@@ -34,6 +34,6 @@ class DatePickerFragment(val listener: (day: Int, month: Int, year: Int) -> Unit
      */
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         //Escuchador que nos devuelve los datos seleccionados
-    listener(day, month +1, year)
+        listener(day, month + 1, year)
     }
 }

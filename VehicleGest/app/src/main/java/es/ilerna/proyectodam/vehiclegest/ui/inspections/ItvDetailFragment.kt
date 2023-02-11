@@ -98,7 +98,7 @@ class ItvDetailFragment : DetailFormModelFragment() {
     override fun makeFormEditable() {
         getDetailItvBinding.apply {
             //Habilita los campos de texto y los pinta de rojo
-           arrayOf(date, remarks).forEach { view ->
+            arrayOf(date, remarks).forEach { view ->
                 view.isEnabled = true
                 view.setTextColor(editableEditTextColor)
             }

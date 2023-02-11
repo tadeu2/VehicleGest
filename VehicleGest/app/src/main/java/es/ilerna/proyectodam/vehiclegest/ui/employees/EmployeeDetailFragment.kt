@@ -18,7 +18,7 @@ import es.ilerna.proyectodam.vehiclegest.models.Employee
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Date
 
 /**
  * Abre una ventana diálogo con los detalles del empleado
@@ -112,10 +112,10 @@ class EmployeeDetailFragment : DetailFormModelFragment() {
                     Pair(address, employee?.address),
                     Pair(urlphoto, employee?.photoURL),
                     Pair(email, employee?.email),
-                    Pair(checkadmin,employee?.admin),
-                    Pair(birthdate,employee?.birthdate)
+                    Pair(checkadmin, employee?.admin),
+                    Pair(birthdate, employee?.birthdate)
                 ).forEach { (field, valueToFill) ->
-                    when(field){
+                    when (field) {
                         birthdate -> field.text = dateToStringFormat(valueToFill as Date)
                         checkadmin -> (field as CheckBox).isChecked = valueToFill as Boolean
                         else -> field.text = valueToFill.toString()

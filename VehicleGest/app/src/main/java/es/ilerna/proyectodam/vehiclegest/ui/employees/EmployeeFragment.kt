@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.adapters.EmployeeRecyclerAdapter
@@ -40,7 +39,7 @@ class EmployeeFragment : FragmentModel() {
         try {
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = Firebase.firestore.collection("employees")
-            searchStringList = listOf ("dni", "surname","email") //Lista de campos de busqueda
+            searchStringList = listOf("dni", "surname", "email") //Lista de campos de busqueda
 
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)

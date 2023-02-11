@@ -16,7 +16,7 @@ import es.ilerna.proyectodam.vehiclegest.models.Alert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Date
 
 /**
  * Abre una ventana diálogo con los detalles de la alert
