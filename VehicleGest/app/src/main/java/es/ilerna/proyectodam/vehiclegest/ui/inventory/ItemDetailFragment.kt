@@ -71,6 +71,16 @@ class ItemDetailFragment : DetailFormModelFragment() {
                 name.setText(item?.name)
                 itemDescription.setText(item?.description)
                 plateNumber.setText(item?.plateNumber)
+                itemUrlphoto.setText(item?.photoURL)
+
+                arrayOf(
+                    Pair(name, item?.name),
+                    Pair(itemDescription, item?.description),
+                    Pair(plateNumber, item?.plateNumber),
+                    Pair(itemUrlphoto, item?.photoURL)
+                ).forEach { (field, valueToFill) ->
+                    field.setText(valueToFill.toString())
+                }
                 //Carga la foto en el formulario a partir de la URL almacenada
                 if (item?.photoURL.toString().isEmpty()) {
                     itemImage.post {

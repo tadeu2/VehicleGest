@@ -179,21 +179,32 @@ abstract class DetailFormModelFragment : Fragment(), MenuProvider {
         }
     }
 
+    /**
+     * Configura si es fragmento de añadir
+     */
     fun setAddFragment() {
         isAddFragment = !isAddFragment
     }
 
+    /**
+     * Navega hacia el fragmento por defecto
+     */
     private fun navigateToMainFragment() {
         fragmentReplacer(mainFragment, parentFragmentManager)
     }
 
-
+    /**
+     * Escuchador del botón de cancelar
+     */
     open fun setCloseButtonListener() {
         detailToolBar.setNavigationOnClickListener {
             navigateToMainFragment()
         }
     }
 
+    /**
+     * Escuchador del botón borrar
+     */
     private fun setDeleteButtonListener() {
         buttonDelete.setOnClickListener {
             delDocumentSnapshot(documentSnapshot)
@@ -201,6 +212,9 @@ abstract class DetailFormModelFragment : Fragment(), MenuProvider {
         }
     }
 
+    /**
+     * Escuchador del botón de edición
+     */
     private fun setEditButtonListener() {
         buttonEdit.setOnClickListener {
             buttonEdit.visibility = GONE
@@ -209,6 +223,9 @@ abstract class DetailFormModelFragment : Fragment(), MenuProvider {
         }
     }
 
+    /**
+     * Escuchador del botón de guardar
+     */
     private fun setSaveButtonListener() {
         buttonSave.setOnClickListener {
             if (documentSnapshot != null) {

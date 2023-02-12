@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import es.ilerna.proyectodam.vehiclegest.R
 import es.ilerna.proyectodam.vehiclegest.databinding.ActivityLoginBinding
 import es.ilerna.proyectodam.vehiclegest.ui.MainActivity
+import kotlinx.coroutines.CoroutineScope
 
 
 /**
@@ -97,9 +98,7 @@ class LoginActivity : AppCompatActivity() {
      * @see Firebase
      */
     private fun navigateMain(user: FirebaseUser?) {
-        val mainIntent: Intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("currentUser", user)
-        }
+        val mainIntent = Intent(this, MainActivity::class.java)
         startActivity(mainIntent)
         finish()
     }
