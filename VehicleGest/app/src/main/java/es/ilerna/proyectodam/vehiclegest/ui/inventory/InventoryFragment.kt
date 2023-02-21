@@ -41,6 +41,10 @@ class InventoryFragment : FragmentModel() {
             //Crea un escuchador para el botón flotante que abre el formulario de creacion
             searchStringList = listOf("name", "platenumber")
 
+            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
+            recyclerAdapter = ItemRecyclerAdapter(dbFirestoreReference, this)
+
+
         } catch (exception: Exception) {
             exception.printStackTrace()
         }
@@ -61,9 +65,6 @@ class InventoryFragment : FragmentModel() {
         try {
             //Pintar el fragment
             fragmentInventoryBinding = FragmentInventoryBinding.inflate(inflater, container, false)
-
-            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            recyclerAdapter = ItemRecyclerAdapter(dbFirestoreReference, this)
 
             //Configura el recyclerview
             configRecyclerView(getfragmentInventoryBinding.recycleritems)

@@ -35,6 +35,9 @@ class ItvFragment : FragmentModel() {
             dbFirestoreReference = Firebase.firestore.collection("ITV")
             searchStringList = listOf("date")//Lista de campos de busqueda
 
+            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
+            recyclerAdapter = ItvRecyclerAdapter(dbFirestoreReference, this)
+
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -55,8 +58,6 @@ class ItvFragment : FragmentModel() {
             //Pintar el fragment
             fragmentInspectionBinding =
                 FragmentInspectionBinding.inflate(inflater, container, false)
-            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            recyclerAdapter = ItvRecyclerAdapter(dbFirestoreReference, this)
 
             //Configura el recycler view con un layout manager y un adaptador
             configRecyclerView(getFragmentInspectionBinding.recycleritv)

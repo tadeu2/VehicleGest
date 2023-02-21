@@ -41,6 +41,9 @@ class EmployeeFragment : FragmentModel() {
             dbFirestoreReference = Firebase.firestore.collection("employees")
             searchStringList = listOf("dni", "surname", "email") //Lista de campos de busqueda
 
+            //Enlaza el recycler al adaptador
+            recyclerAdapter = EmployeeRecyclerAdapter(dbFirestoreReference, this)
+
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -59,9 +62,6 @@ class EmployeeFragment : FragmentModel() {
         try {
             //Enlaza el fragmento a el xml y lo infla
             fragmentEmployeesBinding = FragmentEmployeesBinding.inflate(inflater, container, false)
-
-            //Enlaza el recycler al adaptador
-            recyclerAdapter = EmployeeRecyclerAdapter(dbFirestoreReference, this)
 
             //Configura el recycler view con un layout manager y un adaptador
             configRecyclerView(getFragmentEmployeesBinding.recyclerEmployees)

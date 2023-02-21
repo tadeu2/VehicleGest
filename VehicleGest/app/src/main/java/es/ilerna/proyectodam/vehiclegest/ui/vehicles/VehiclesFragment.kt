@@ -29,6 +29,8 @@ class VehiclesFragment : FragmentModel() {
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = Firebase.firestore.collection("vehicle")
             searchStringList = listOf("plateNumber", "model", "brand")
+            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
+            recyclerAdapter = VehicleRecyclerAdapter(dbFirestoreReference, this)
 
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -51,8 +53,6 @@ class VehiclesFragment : FragmentModel() {
         //Enlaza el fragmento a el xml y lo infla
         fragmentVehiclesBinding = FragmentVehiclesBinding.inflate(inflater, container, false)
 
-        //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-        recyclerAdapter = VehicleRecyclerAdapter(dbFirestoreReference, this)
 
         configRecyclerView(getFragmentVehiclesBinding.recyclerVehicles)
         return getFragmentVehiclesBinding.root

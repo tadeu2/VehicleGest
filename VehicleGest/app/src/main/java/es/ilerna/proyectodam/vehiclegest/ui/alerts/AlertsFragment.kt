@@ -38,6 +38,9 @@ class AlertsFragment : FragmentModel() {
             //Referencia a la base de datos de Firebase
             dbFirestoreReference = Firebase.firestore.collection("alert")
             searchStringList = listOf("date") // Lista de campos por los que se puede buscar
+
+            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
+            recyclerAdapter = AlertRecyclerAdapter(dbFirestoreReference, this)
         } catch (exception: Exception) {
             exception.printStackTrace()
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
@@ -58,9 +61,6 @@ class AlertsFragment : FragmentModel() {
         try {
             //Enlaza el fragmento a el xml y lo infla
             fragmentAlertsBinding = FragmentAlertsBinding.inflate(inflater, container, false)
-
-            //Crea una instancia del recycleradapter, con la consulta y le asigna el escuchador a este fragmento
-            recyclerAdapter = AlertRecyclerAdapter(dbFirestoreReference, this)
 
             //Configura el recycler view con un layout manager y un adaptador
             configRecyclerView(getFragmentAlertsBinding.recycleralerts)

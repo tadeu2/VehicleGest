@@ -34,6 +34,9 @@ class ServiceFragment : FragmentModel() {
             dbFirestoreReference = Firebase.firestore.collection("service")
             searchStringList = listOf("date", "plateNumber", "costumer")
 
+            //Obtener el recycler y el adaptador
+            recyclerAdapter = ServiceRecyclerAdapter(dbFirestoreReference, this)
+
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
             exception.printStackTrace()
@@ -52,8 +55,6 @@ class ServiceFragment : FragmentModel() {
             //Pintar el fragment
             fragmentServicesBinding = FragmentServicesBinding.inflate(inflater, container, false)
 
-            //Obtener el recycler y el adaptador
-            recyclerAdapter = ServiceRecyclerAdapter(dbFirestoreReference, this)
             configRecyclerView(getFragmentServicesBinding.recyclerservices)
         } catch (exception: Exception) {
             Log.e(ContentValues.TAG, exception.message.toString(), exception)
