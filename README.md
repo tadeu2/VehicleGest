@@ -45,6 +45,19 @@ This project focuses on providing an efficient and simple solution for vehicle s
 Make sure to copy the above content and paste it into the README.md file in your GitHub repository.
 Please copy the above content and paste it into your README.md file on GitHub.
 
+ehicleGest es una solución completa para Android que mejora el control y mantenimiento de la flota de vehículos de una empresa logística, con una base de datos centralizada de vehículos, técnicos, materiales y personal, permitiendo acceder a estos datos dondequiera que se encuentre el personal de la empresa.
+
+En el pasado, cuando no existían computadoras ni teléfonos, toda la información se almacenaba en papel. En las últimas décadas, la tecnología ha evolucionado rápidamente, al igual que la forma en que se almacenan los datos en negocios, empresas y corporaciones. Inicialmente, la información se almacenaba en documentos digitales, pero no resultaba productivo por muchas razones: baja disponibilidad, trabajo en equipo ineficiente, baja consistencia, baja seguridad, baja confiabilidad, entre otras.
+
+VehicleGest ofrece varias características para mejorar esta situación. En primer lugar, presenta una pantalla de advertencia que proporciona a los usuarios incidentes técnicos y fechas de ITV (Inspección Técnica de Vehículos) para evitar errores y mejorar el control de programación. Por un lado, notifica a los usuarios cuando se acercan o expiran las fechas de ITV. Por otro lado, alerta a los usuarios sobre deficiencias técnicas de los vehículos o cualquier problema que afecte a cada vehículo. VehicleGest tiene un menú principal en la parte inferior de esta pantalla que permite a los usuarios navegar a otras secciones.
+
+La segunda sección es una lista de servicios proporcionados por nuestra empresa. Incluye una barra de búsqueda con filtros para buscar servicios específicos. Cada servicio está asociado con un vehículo o grupo de vehículos y personal.
+
+La siguiente sección es una lista de vehículos que cuenta con un motor de búsqueda y filtros. Los usuarios también pueden navegar a la hoja de datos de cada vehículo y ver las ITV asignadas y el personal asociado.
+
+Por último, hay una sección de lista de personal que también incluye un motor de búsqueda. Permite a los usuarios buscar hojas de datos individuales del personal aplicando filtros y asignar una persona responsable de cada vehículo.
+
+En conclusión, VehicleGest mejorará la productividad de la empresa al eliminar los procesos basados en papel, ahorrar tiempo y garantizar que los datos sean correctos y fácilmente accesibles. Ayuda a trabajar de manera más eficiente y reduce los costos operativos.
 
 ## Tecnologías y herramientas utilizadas
 - **Microsoft Visio:** Herramienta de creación de diagramas y gráficos vectoriales utilizada para crear los diagramas de entidad-relación, diagrama relacional, diagrama de casos de uso y diagrama de clases.
